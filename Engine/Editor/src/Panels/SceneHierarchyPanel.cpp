@@ -69,7 +69,7 @@ namespace Engine
 		ImGui::Text(tag.tag.c_str());
 
 		ImGui::SetCursorPos(ImVec2(pos.x + 30, pos.y + 5));
-	
+
 
 		ImGui::SetCursorPos(ImVec2(pos.x, pos.y + 30));
 
@@ -105,10 +105,13 @@ namespace Engine
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
 			strcpy(buffer, TagComp.tag.c_str());
-			if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
+			ImGui::Text("Tag: ");
+			ImGui::SameLine();
+			if (ImGui::InputText("##", buffer, sizeof(buffer)))
 			{
 				TagComp.tag = buffer;
 			}
+			
 		}
 		const ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 
@@ -117,6 +120,7 @@ namespace Engine
 			auto& tf = entity.GetComponent<TransformComponent>();
 			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Transform Component");
 			ImGui::SameLine();
+			
 			if (ImGui::Button("..."))
 			{
 				ImGui::OpenPopup("ComponentSettings");
@@ -156,6 +160,50 @@ namespace Engine
 			if (removeComponent)
 			{
 				entity.RemoveComponent<TransformComponent>();
+			}
+		}
+		if (entity.HasComponent<ModelComponent>())
+		{
+			auto& tf = entity.GetComponent<ModelComponent>();
+			bool open = ImGui::TreeNodeEx((void*)typeid(ModelComponent).hash_code(), flags, "Model Component");
+			ImGui::SameLine();
+
+			if (ImGui::Button("..."))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					removeComponent = true;
+				}
+				ImGui::EndPopup();
+			}
+			if (open)
+			{
+				char buffer[256];
+				memset(buffer, 0, sizeof(buffer));
+				strcpy(buffer, tf.filePath);
+				ImGui::Text("Filepath: ");
+				ImGui::SameLine();
+				if (ImGui::InputText("##", buffer, sizeof(buffer)))
+				{
+					static std::string strTransfer(buffer);
+					strTransfer = buffer;
+					tf.filePath = strTransfer.c_str();
+				}
+				if (ImGui::Button("Load"))
+				{
+					tf.modelHandle = Model::Create(tf.filePath);
+				}
+				ImGui::TreePop();
+			}
+			if (removeComponent)
+			{
+				entity.RemoveComponent<ModelComponent>();
 			}
 		}
 	}

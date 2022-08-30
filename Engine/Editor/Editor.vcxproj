@@ -102,10 +102,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Panels\ConsolePanel.h" />
     <ClInclude Include="src\Editor\EditorLayer.h" />
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Panels\ConsolePanel.cpp" />
     <ClCompile Include="src\Editor\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
   </ItemGroup>

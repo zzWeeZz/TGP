@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Components.h"
+#include "Engine/Renderer/Renderer.h"
 namespace Engine
 {
 	void Scene::OnEditorStart()
@@ -9,21 +10,19 @@ namespace Engine
 
 	void Scene::OnEditorUpdate()
 	{
-	/*	m_Registry.Execute<CameraComponent, TransformComponent>([&](auto& entity, CameraComponent& C, TransformComponent& tf)
-			{
-				CameraSystem(C, tf);
-			});
+
 		m_Registry.Execute<ModelComponent, TransformComponent>([&](auto& entity, ModelComponent& mdl, TransformComponent& tf)
 			{
 				if (!mdl.modelHandle)
 				{
-					mdl.modelHandle = Model::Create(mdl.filePath);
+					if (std::filesystem::exists(mdl.filePath))
+						mdl.modelHandle = Model::Create(mdl.filePath);
 				}
-				mdl.modelHandle->SetPosition(tf.position);
-				mdl.modelHandle->SetRotation(tf.quaternion);
-				mdl.modelHandle->SetScale(tf.scale);
-				VulkanRenderer::SubmitMesh(mdl.modelHandle);
-			});*/
+				mdl.modelHandle->GetTransform().SetPosition(tf.transform.GetPosition());
+				mdl.modelHandle->GetTransform().SetRotation(tf.transform.GetRotation());
+				mdl.modelHandle->GetTransform().SetScale(tf.transform.GetScale());
+				Renderer::SubmitMesh(mdl.modelHandle.get());
+			});
 	}
 
 	void Scene::OnEditorRender()

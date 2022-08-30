@@ -29,7 +29,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
 	float4 material = MaterialTexture.Sample(defaultSampler, input.uv);
 	float3 vertexNormal = VertexNormalTexture.Sample(defaultSampler, input.uv).rgb;
 	float4 worldPosition = WorldPositionTexture.Sample(defaultSampler, input.uv);
-	float AO = AOTexture.Sample(defaultSampler, input.uv);
+	float AO = AOTexture.Sample(defaultSampler, input.uv).r;
 
     const float metalness = material.r;
     const float roughness = material.g;

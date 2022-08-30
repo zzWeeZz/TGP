@@ -12,7 +12,9 @@ void Engine::EditorLayer::OnAttach()
 	}
 	{
 		auto entt = myScene->CreateEntity();
-		entt.GetComponent<TagComponent>().tag = "gjdaja";
+		entt.GetComponent<TagComponent>().tag = "gjdajkkkkkka";
+		ModelComponent& mdl = entt.AddComponent<ModelComponent>();
+		mdl.filePath = "Model/SM_Particle_Chest.fbx";
 	}
 	{
 		auto entt = myScene->CreateEntity();
@@ -118,10 +120,7 @@ void Engine::EditorLayer::OnUpdate()
 
 		ImGui::EndMenuBar();
 	}
-	static int value = 0;
-	ImGui::Begin("DefferedStage");
-	ImGui::DragInt("value", &value, 1, 0, 6);
-	ImGui::End();
+
 	auto framebuff = Renderer::GetMainFramebuffer();
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::Begin("ViewPort", &pOpen, ImGuiWindowFlags_NoCollapse);
@@ -130,7 +129,7 @@ void Engine::EditorLayer::OnUpdate()
 		framebuff->Resize({ ImGui::GetWindowWidth(), ImGui::GetWindowHeight() });
 		myEditorCamera->SetAspectRatio((float)framebuff->GetSpecs().width, (float)framebuff->GetSpecs().height);
 	}
-	ImGui::Image((void*)framebuff->GetColorAttachment(value).Get(), { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
+	ImGui::Image((void*)framebuff->GetColorAttachment(0).Get(), { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
 	ImGui::End();
 	ImGui::PopStyleVar();
 	mySceneHierarchyPanel->OnImGuiRender();
@@ -138,6 +137,7 @@ void Engine::EditorLayer::OnUpdate()
 	ImGui::End();
 	ImGui::End();
 	myEditorCamera->Update(ToolBox::Chrono::Timestep());
+	myScene->OnEditorUpdate();
 	Renderer::SetActiveCamera(myEditorCamera);
 }
 
