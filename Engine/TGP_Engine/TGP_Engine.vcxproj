@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{65AA0CE6-5162-4E33-BA69-278FA640E923}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>TGP_Engine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\Dependencies\lib\</OutDir>
+    <IntDir>..\intermediates\TGP_Engine\Debug\</IntDir>
+    <TargetName>TGP_Engine</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\Dependencies\lib\</OutDir>
+    <IntDir>..\intermediates\TGP_Engine\Release\</IntDir>
+    <TargetName>TGP_Engine</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DisableSpecificWarnings>4996;26812;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Dependencies\Include;src;..\ToolBox\src;..\YAML\include;..\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>..\Dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DisableSpecificWarnings>4996;26812;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_RELEASE;WIN32;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Dependencies\Include;src;..\ToolBox\src;..\YAML\include;..\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>..\Dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Application\Application.h" />
+    <ClInclude Include="src\Application\Window\Window.h" />
+    <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\Engine\Assets\Asset.h" />
+    <ClInclude Include="src\Engine\Assets\Lights\DirectionalLight.h" />
+    <ClInclude Include="src\Engine\Assets\Material\Material.h" />
+    <ClInclude Include="src\Engine\Assets\Model\AnimatedModel.h" />
+    <ClInclude Include="src\Engine\Assets\Model\Model.h" />
+    <ClInclude Include="src\Engine\Assets\ParticleSystem\ParticleEmitter.h" />
+    <ClInclude Include="src\Engine\Assets\ParticleSystem\ParticleSystem.h" />
+    <ClInclude Include="src\Engine\Assets\Texture\Texture.h" />
+    <ClInclude Include="src\Engine\Assets\Texture\Texture2D.h" />
+    <ClInclude Include="src\Engine\Assets\Texture\TextureCube.h" />
+    <ClInclude Include="src\Engine\Core\Event\ApplicationEvent.h" />
+    <ClInclude Include="src\Engine\Core\Event\Event.h" />
+    <ClInclude Include="src\Engine\Core\Layer\Layer.h" />
+    <ClInclude Include="src\Engine\Core\Layer\LayerStack.h" />
+    <ClInclude Include="src\Engine\DX11\DDSTextureLoader11.h" />
+    <ClInclude Include="src\Engine\DX11\DX11.h" />
+    <ClInclude Include="src\Engine\DX11\RenderStateManager.h" />
+    <ClInclude Include="src\Engine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Engine\Renderer\Buffers\BufferData.h" />
+    <ClInclude Include="src\Engine\Renderer\Buffers\ConstantBuffer.hpp" />
+    <ClInclude Include="src\Engine\Renderer\Buffers\IndexBuffer.h" />
+    <ClInclude Include="src\Engine\Renderer\Buffers\VertexBuffer.h" />
+    <ClInclude Include="src\Engine\Renderer\Camera\Camera.h" />
+    <ClInclude Include="src\Engine\Renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Engine\Renderer\Mesh\AnimatedMesh.h" />
+    <ClInclude Include="src\Engine\Renderer\Mesh\Animation.h" />
+    <ClInclude Include="src\Engine\Renderer\Mesh\Mesh.h" />
+    <ClInclude Include="src\Engine\Renderer\Mesh\ModelData.hpp" />
+    <ClInclude Include="src\Engine\Renderer\Mesh\Skeleton.h" />
+    <ClInclude Include="src\Engine\Renderer\Mesh\SubMesh.h" />
+    <ClInclude Include="src\Engine\Renderer\RenderPass.h" />
+    <ClInclude Include="src\Engine\Renderer\Renderer.h" />
+    <ClInclude Include="src\Engine\Scene\Components.h" />
+    <ClInclude Include="src\Engine\Scene\Entity.h" />
+    <ClInclude Include="src\Engine\Scene\Scene.h" />
+    <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h" />
+    <ClInclude Include="src\Engine\ShaderClasses\GeometryShader.h" />
+    <ClInclude Include="src\Engine\ShaderClasses\PixelShader.h" />
+    <ClInclude Include="src\Engine\ShaderClasses\Shader.h" />
+    <ClInclude Include="src\Engine\ShaderClasses\ShaderLibrary.h" />
+    <ClInclude Include="src\Engine\ShaderClasses\VertexShader.h" />
+    <ClInclude Include="src\Engine\Utils\AssetHandler.h" />
+    <ClInclude Include="src\Engine\Utils\Utilities.h" />
+    <ClInclude Include="src\EntryPoint.h" />
+    <ClInclude Include="src\PlayGround.h" />
+    <ClInclude Include="src\SnowFlake\Serializer.hpp" />
+    <ClInclude Include="src\SnowFlake\SnowID.h" />
+    <ClInclude Include="src\SnowFlake\Snowflake.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application\Application.cpp" />
+    <ClCompile Include="src\Application\Window\Window.cpp" />
+    <ClCompile Include="src\Engine\Assets\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\Engine\Assets\Material\Material.cpp" />
+    <ClCompile Include="src\Engine\Assets\Model\AnimatedModel.cpp" />
+    <ClCompile Include="src\Engine\Assets\Model\Model.cpp" />
+    <ClCompile Include="src\Engine\Assets\ParticleSystem\ParticleEmitter.cpp" />
+    <ClCompile Include="src\Engine\Assets\ParticleSystem\ParticleSystem.cpp" />
+    <ClCompile Include="src\Engine\Assets\Texture\Texture2D.cpp" />
+    <ClCompile Include="src\Engine\Assets\Texture\TextureCube.cpp" />
+    <ClCompile Include="src\Engine\Core\Layer\Layer.cpp" />
+    <ClCompile Include="src\Engine\Core\Layer\LayerStack.cpp" />
+    <ClCompile Include="src\Engine\DX11\DDSTextureLoader11.cpp" />
+    <ClCompile Include="src\Engine\DX11\DX11.cpp" />
+    <ClCompile Include="src\Engine\DX11\RenderStateManager.cpp" />
+    <ClCompile Include="src\Engine\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Buffers\VertexBuffer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Camera\Camera.cpp" />
+    <ClCompile Include="src\Engine\Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Mesh\AnimatedMesh.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Mesh\Mesh.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Mesh\SubMesh.cpp" />
+    <ClCompile Include="src\Engine\Renderer\RenderPass.cpp" />
+    <ClCompile Include="src\Engine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Engine\Scene\Entity.cpp" />
+    <ClCompile Include="src\Engine\Scene\Scene.cpp" />
+    <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp" />
+    <ClCompile Include="src\Engine\ShaderClasses\GeometryShader.cpp" />
+    <ClCompile Include="src\Engine\ShaderClasses\PixelShader.cpp" />
+    <ClCompile Include="src\Engine\ShaderClasses\ShaderLibrary.cpp" />
+    <ClCompile Include="src\Engine\ShaderClasses\VertexShader.cpp" />
+    <ClCompile Include="src\Engine\Utils\AssetHandler.cpp" />
+    <ClCompile Include="src\PlayGround.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/DefferedLightCalc_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\DefferedLightCalc_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/DefferedLightCalc_vs.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\GenerateDefferedImages_ps.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/GenerateDefferedImages_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\ParticleSystem_ps.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/ParticleSystem_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\ParticleSystem_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/ParticleSystem_vs.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\QuadGenerator_gs.hlsl">
+      <ShaderType>Geometry</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/QuadGenerator_gs.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\forwardAnimated_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/forwardAnimated_vs.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\forward_ps.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/forward_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\forward_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/forward_vs.cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Shaders\ConstBuffers.hlsli" />
+    <None Include="src\Shaders\Math.hlsli" />
+    <None Include="src\Shaders\PBRFunctions.hlsli" />
+    <None Include="src\Shaders\ParticleInfo.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ToolBox\ToolBox.vcxproj">
+      <Project>{EC2ADD50-580A-5CEC-6122-E7C2CD80C24D}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\YAML\yaml-cpp.vcxproj">
+      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ImGui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

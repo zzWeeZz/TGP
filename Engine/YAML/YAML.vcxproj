@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F8FB8E7C-E432-900D-8D1F-761079350C0F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>YAML</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\dependencies\lib\</OutDir>
+    <IntDir>..\intermediates\x86_64\Debug\</IntDir>
+    <TargetName>YAML</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\dependencies\lib\</OutDir>
+    <IntDir>..\intermediates\x86_64\Release\</IntDir>
+    <TargetName>YAML</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\yaml-cpp\anchor.h" />
+    <ClInclude Include="include\yaml-cpp\binary.h" />
+    <ClInclude Include="include\yaml-cpp\contrib\anchordict.h" />
+    <ClInclude Include="include\yaml-cpp\contrib\graphbuilder.h" />
+    <ClInclude Include="include\yaml-cpp\dll.h" />
+    <ClInclude Include="include\yaml-cpp\emitfromevents.h" />
+    <ClInclude Include="include\yaml-cpp\emitter.h" />
+    <ClInclude Include="include\yaml-cpp\emitterdef.h" />
+    <ClInclude Include="include\yaml-cpp\emittermanip.h" />
+    <ClInclude Include="include\yaml-cpp\emitterstyle.h" />
+    <ClInclude Include="include\yaml-cpp\eventhandler.h" />
+    <ClInclude Include="include\yaml-cpp\exceptions.h" />
+    <ClInclude Include="include\yaml-cpp\mark.h" />
+    <ClInclude Include="include\yaml-cpp\node\convert.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\bool_type.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\impl.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\iterator.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\iterator_fwd.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\memory.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\node.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\node_data.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\node_iterator.h" />
+    <ClInclude Include="include\yaml-cpp\node\detail\node_ref.h" />
+    <ClInclude Include="include\yaml-cpp\node\emit.h" />
+    <ClInclude Include="include\yaml-cpp\node\impl.h" />
+    <ClInclude Include="include\yaml-cpp\node\iterator.h" />
+    <ClInclude Include="include\yaml-cpp\node\node.h" />
+    <ClInclude Include="include\yaml-cpp\node\parse.h" />
+    <ClInclude Include="include\yaml-cpp\node\ptr.h" />
+    <ClInclude Include="include\yaml-cpp\node\type.h" />
+    <ClInclude Include="include\yaml-cpp\noncopyable.h" />
+    <ClInclude Include="include\yaml-cpp\null.h" />
+    <ClInclude Include="include\yaml-cpp\ostream_wrapper.h" />
+    <ClInclude Include="include\yaml-cpp\parser.h" />
+    <ClInclude Include="include\yaml-cpp\stlemitter.h" />
+    <ClInclude Include="include\yaml-cpp\traits.h" />
+    <ClInclude Include="include\yaml-cpp\yaml.h" />
+    <ClInclude Include="src\collectionstack.h" />
+    <ClInclude Include="src\contrib\graphbuilderadapter.h" />
+    <ClInclude Include="src\directives.h" />
+    <ClInclude Include="src\emitterstate.h" />
+    <ClInclude Include="src\emitterutils.h" />
+    <ClInclude Include="src\exp.h" />
+    <ClInclude Include="src\indentation.h" />
+    <ClInclude Include="src\nodebuilder.h" />
+    <ClInclude Include="src\nodeevents.h" />
+    <ClInclude Include="src\ptr_vector.h" />
+    <ClInclude Include="src\regex_yaml.h" />
+    <ClInclude Include="src\regeximpl.h" />
+    <ClInclude Include="src\scanner.h" />
+    <ClInclude Include="src\scanscalar.h" />
+    <ClInclude Include="src\scantag.h" />
+    <ClInclude Include="src\setting.h" />
+    <ClInclude Include="src\singledocparser.h" />
+    <ClInclude Include="src\stream.h" />
+    <ClInclude Include="src\streamcharsource.h" />
+    <ClInclude Include="src\stringsource.h" />
+    <ClInclude Include="src\tag.h" />
+    <ClInclude Include="src\token.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-actions.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-cardinalities.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-generated-actions.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-generated-function-mockers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-generated-matchers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-generated-nice-strict.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-matchers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-more-actions.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-more-matchers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock-spec-builders.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\gmock.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\internal\custom\gmock-generated-actions.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\internal\custom\gmock-matchers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\internal\custom\gmock-port.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\internal\gmock-generated-internal-utils.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\internal\gmock-internal-utils.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\include\gmock\internal\gmock-port.h" />
+    <ClInclude Include="test\gtest-1.8.0\googlemock\test\gmock_link_test.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-death-test.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-message.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-param-test.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-printers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-spi.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-test-part.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest-typed-test.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest_pred_impl.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\gtest_prod.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\custom\gtest-port.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\custom\gtest-printers.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\custom\gtest.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-death-test-internal.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-filepath.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-internal.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-linked_ptr.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-param-util-generated.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-param-util.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-port-arch.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-port.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-string.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-tuple.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\include\gtest\internal\gtest-type-util.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\samples\prime_tables.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\samples\sample1.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\samples\sample2.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\samples\sample3-inl.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\samples\sample4.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\src\gtest-internal-inl.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\test\gtest-param-test_test.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\test\gtest-typed-test_test.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\test\production.h" />
+    <ClInclude Include="test\gtest-1.8.0\googletest\xcode\Samples\FrameworkSample\widget.h" />
+    <ClInclude Include="test\handler_test.h" />
+    <ClInclude Include="test\mock_event_handler.h" />
+    <ClInclude Include="test\specexamples.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="build\CMakeFiles\3.23.0-rc2\CompilerIdCXX\CMakeCXXCompilerId.cpp" />
+    <ClCompile Include="src\binary.cpp" />
+    <ClCompile Include="src\contrib\graphbuilder.cpp" />
+    <ClCompile Include="src\contrib\graphbuilderadapter.cpp" />
+    <ClCompile Include="src\convert.cpp" />
+    <ClCompile Include="src\directives.cpp" />
+    <ClCompile Include="src\emit.cpp" />
+    <ClCompile Include="src\emitfromevents.cpp" />
+    <ClCompile Include="src\emitter.cpp" />
+    <ClCompile Include="src\emitterstate.cpp" />
+    <ClCompile Include="src\emitterutils.cpp" />
+    <ClCompile Include="src\exceptions.cpp" />
+    <ClCompile Include="src\exp.cpp" />
+    <ClCompile Include="src\memory.cpp" />
+    <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\node_data.cpp" />
+    <ClCompile Include="src\nodebuilder.cpp" />
+    <ClCompile Include="src\nodeevents.cpp" />
+    <ClCompile Include="src\null.cpp" />
+    <ClCompile Include="src\ostream_wrapper.cpp" />
+    <ClCompile Include="src\parse.cpp" />
+    <ClCompile Include="src\parser.cpp" />
+    <ClCompile Include="src\regex_yaml.cpp" />
+    <ClCompile Include="src\scanner.cpp" />
+    <ClCompile Include="src\scanscalar.cpp" />
+    <ClCompile Include="src\scantag.cpp" />
+    <ClCompile Include="src\scantoken.cpp" />
+    <ClCompile Include="src\simplekey.cpp" />
+    <ClCompile Include="src\singledocparser.cpp" />
+    <ClCompile Include="src\stream.cpp" />
+    <ClCompile Include="src\tag.cpp" />
+    <ClCompile Include="test\integration\emitter_test.cpp" />
+    <ClCompile Include="test\integration\encoding_test.cpp" />
+    <ClCompile Include="test\integration\gen_emitter_test.cpp" />
+    <ClCompile Include="test\integration\handler_spec_test.cpp" />
+    <ClCompile Include="test\integration\handler_test.cpp" />
+    <ClCompile Include="test\integration\load_node_test.cpp" />
+    <ClCompile Include="test\integration\node_spec_test.cpp" />
+    <ClCompile Include="test\main.cpp" />
+    <ClCompile Include="test\node\node_test.cpp" />
+    <ClCompile Include="test\ostream_wrapper_test.cpp" />
+    <ClCompile Include="test\regex_test.cpp" />
+    <ClCompile Include="util\api.cpp" />
+    <ClCompile Include="util\parse.cpp">
+      <ObjectFileName>$(IntDir)\parse1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="util\read.cpp" />
+    <ClCompile Include="util\sandbox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test\gtest-1.8.0\googlemock\scripts\generator\README.cppclean" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

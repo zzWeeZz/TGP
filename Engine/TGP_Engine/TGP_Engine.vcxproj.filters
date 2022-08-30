@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Application">
+      <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Window">
+      <UniqueIdentifier>{A09D6CE7-8C81-2D3D-F5E1-2790E1E417BF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Assets">
+      <UniqueIdentifier>{5D4A3130-C90A-AD66-9245-F6E3FEC4F142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Assets\Lights">
+      <UniqueIdentifier>{B7E863A5-A377-ED6E-4C96-016A3804FE14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Assets\Material">
+      <UniqueIdentifier>{9B718C30-876B-B582-70D8-4B935C711BEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Assets\Model">
+      <UniqueIdentifier>{5D45BB90-C9A6-989E-5214-DF50BE74CF5D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Assets\ParticleSystem">
+      <UniqueIdentifier>{A5124691-91CD-353D-3A85-AE87261F80CD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Assets\Texture">
+      <UniqueIdentifier>{BD7C98B1-29E9-53AC-F2DC-EB095E087614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core">
+      <UniqueIdentifier>{130D9B61-7FC2-1357-08B7-0D2E746B0A5B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core\Event">
+      <UniqueIdentifier>{A4D048C8-10E7-465E-595E-D27FC5B317E6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core\Layer">
+      <UniqueIdentifier>{1F4CBCC8-8B62-BA5E-D4D9-4580402F8BE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DX11">
+      <UniqueIdentifier>{082F9B61-74E4-1357-FDD8-0D2E698D0A5B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ImGui">
+      <UniqueIdentifier>{45756795-31D8-F639-DA5D-2FF0C69FC2BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Renderer">
+      <UniqueIdentifier>{E1119970-4D9D-0635-56AE-8929C2B86235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Renderer\Buffers">
+      <UniqueIdentifier>{5D226EEF-C959-B686-D263-1AAA3E1ADD7F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Renderer\Camera">
+      <UniqueIdentifier>{399FCB74-2599-F4C6-0E06-8BD7FA9E5A33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Renderer\Mesh">
+      <UniqueIdentifier>{3DDC4270-296B-CC39-D289-E034BEF7DCDF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{386D1796-24D0-A63A-CD55-DFF0B99772BD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ShaderClasses">
+      <UniqueIdentifier>{8F9D2949-7B2C-B312-244B-C70D10B9C3B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils">
+      <UniqueIdentifier>{7B014596-6764-D43A-10EA-0CF1FC2BA0BD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SnowFlake">
+      <UniqueIdentifier>{2F7804B6-9BE2-B82C-E420-6AD250CA9681}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Application\Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application\Window\Window.h">
+      <Filter>Application\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\Engine\Assets\Asset.h">
+      <Filter>Engine\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Lights\DirectionalLight.h">
+      <Filter>Engine\Assets\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Material\Material.h">
+      <Filter>Engine\Assets\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Model\AnimatedModel.h">
+      <Filter>Engine\Assets\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Model\Model.h">
+      <Filter>Engine\Assets\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\ParticleSystem\ParticleEmitter.h">
+      <Filter>Engine\Assets\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\ParticleSystem\ParticleSystem.h">
+      <Filter>Engine\Assets\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Texture\Texture.h">
+      <Filter>Engine\Assets\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Texture\Texture2D.h">
+      <Filter>Engine\Assets\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Assets\Texture\TextureCube.h">
+      <Filter>Engine\Assets\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Event\ApplicationEvent.h">
+      <Filter>Engine\Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Event\Event.h">
+      <Filter>Engine\Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Layer\Layer.h">
+      <Filter>Engine\Core\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Layer\LayerStack.h">
+      <Filter>Engine\Core\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\DX11\DDSTextureLoader11.h">
+      <Filter>Engine\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\DX11\DX11.h">
+      <Filter>Engine\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\DX11\RenderStateManager.h">
+      <Filter>Engine\DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ImGui\ImGuiLayer.h">
+      <Filter>Engine\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Buffers\BufferData.h">
+      <Filter>Engine\Renderer\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Buffers\ConstantBuffer.hpp">
+      <Filter>Engine\Renderer\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Buffers\IndexBuffer.h">
+      <Filter>Engine\Renderer\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Buffers\VertexBuffer.h">
+      <Filter>Engine\Renderer\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Camera\Camera.h">
+      <Filter>Engine\Renderer\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\FrameBuffer.h">
+      <Filter>Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh\AnimatedMesh.h">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh\Animation.h">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh\Mesh.h">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh\ModelData.hpp">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh\Skeleton.h">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Mesh\SubMesh.h">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\RenderPass.h">
+      <Filter>Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Renderer.h">
+      <Filter>Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scene\Components.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scene\Entity.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scene\Scene.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ShaderClasses\GeometryShader.h">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ShaderClasses\PixelShader.h">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ShaderClasses\Shader.h">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ShaderClasses\ShaderLibrary.h">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\ShaderClasses\VertexShader.h">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Utils\AssetHandler.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Utils\Utilities.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntryPoint.h" />
+    <ClInclude Include="src\PlayGround.h" />
+    <ClInclude Include="src\SnowFlake\Serializer.hpp">
+      <Filter>SnowFlake</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SnowFlake\SnowID.h">
+      <Filter>SnowFlake</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SnowFlake\Snowflake.hpp">
+      <Filter>SnowFlake</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application\Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\Window\Window.cpp">
+      <Filter>Application\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\Lights\DirectionalLight.cpp">
+      <Filter>Engine\Assets\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\Material\Material.cpp">
+      <Filter>Engine\Assets\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\Model\AnimatedModel.cpp">
+      <Filter>Engine\Assets\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\Model\Model.cpp">
+      <Filter>Engine\Assets\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\ParticleSystem\ParticleEmitter.cpp">
+      <Filter>Engine\Assets\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\ParticleSystem\ParticleSystem.cpp">
+      <Filter>Engine\Assets\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\Texture\Texture2D.cpp">
+      <Filter>Engine\Assets\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\Texture\TextureCube.cpp">
+      <Filter>Engine\Assets\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Layer\Layer.cpp">
+      <Filter>Engine\Core\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Layer\LayerStack.cpp">
+      <Filter>Engine\Core\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\DX11\DDSTextureLoader11.cpp">
+      <Filter>Engine\DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\DX11\DX11.cpp">
+      <Filter>Engine\DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\DX11\RenderStateManager.cpp">
+      <Filter>Engine\DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ImGui\ImGuiBuild.cpp">
+      <Filter>Engine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ImGui\ImGuiLayer.cpp">
+      <Filter>Engine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Buffers\IndexBuffer.cpp">
+      <Filter>Engine\Renderer\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Buffers\VertexBuffer.cpp">
+      <Filter>Engine\Renderer\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Camera\Camera.cpp">
+      <Filter>Engine\Renderer\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\FrameBuffer.cpp">
+      <Filter>Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Mesh\AnimatedMesh.cpp">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Mesh\Mesh.cpp">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Mesh\SubMesh.cpp">
+      <Filter>Engine\Renderer\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\RenderPass.cpp">
+      <Filter>Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Renderer.cpp">
+      <Filter>Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Scene\Entity.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Scene\Scene.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ShaderClasses\GeometryShader.cpp">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ShaderClasses\PixelShader.cpp">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ShaderClasses\ShaderLibrary.cpp">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\ShaderClasses\VertexShader.cpp">
+      <Filter>Engine\ShaderClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Utils\AssetHandler.cpp">
+      <Filter>Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayGround.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\DefferedLightCalc_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\GenerateDefferedImages_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\ParticleSystem_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\ParticleSystem_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\QuadGenerator_gs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\forwardAnimated_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\forward_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\forward_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Shaders\ConstBuffers.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shaders\Math.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shaders\PBRFunctions.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shaders\ParticleInfo.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

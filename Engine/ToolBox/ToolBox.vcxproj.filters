@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Input">
+      <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{AFF4887C-9B2B-8A0D-4418-7010302E060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Matrix">
+      <UniqueIdentifier>{73311A30-DFE6-9225-68DB-8CFCD48F8929}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Vector">
+      <UniqueIdentifier>{F1B75745-5D6D-D03A-E661-CA115216C73E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{594615A9-C525-9444-CE3D-1F1B3A9CFAA5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ToolBox\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Input\InputHandler.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Matrix\Matrix.h">
+      <Filter>Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Matrix\Matrix3x3.hpp">
+      <Filter>Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Matrix\Matrix4x4.hpp">
+      <Filter>Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Transform.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Vector\Vector.h">
+      <Filter>Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Vector\Vector2.hpp">
+      <Filter>Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Vector\Vector3.hpp">
+      <Filter>Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Math\Vector\Vector4.hpp">
+      <Filter>Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Utility\Chrono.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Utility\Timer.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolBox\Utility\UtilityFunctions.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ToolBox\Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolBox\Input\InputHandler.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolBox\Math\Transform.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolBox\Utility\Chrono.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolBox\Utility\Timer.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
