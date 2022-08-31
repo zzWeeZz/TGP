@@ -141,19 +141,19 @@ namespace Engine
 				memcpy(imPos, &tf.transform.GetPosition(), sizeof(Vector3f));
 				if (ImGui::DragFloat3("Position", imPos, 0.1f))
 				{
-					memcpy(&tf.transform.GetPosition(), imPos, sizeof(Vector3f));
+					tf.transform.SetPosition({ imPos[0], imPos[1], imPos[2] });
 				}
 				float imRot[3] = { 0 };
 				memcpy(imRot, &tf.transform.GetRotation(), sizeof(Vector3f));
 				if (ImGui::DragFloat3("Rotation", imRot, 0.1f))
 				{
-					memcpy(&tf.transform.GetRotation(), imRot, sizeof(Vector3f));
+					tf.transform.SetRotation({ imRot[0], imRot[1], imRot[2] });
 				}
 				float imScale[3] = { 0 };
 				memcpy(imScale, &tf.transform.GetScale(), sizeof(Vector3f));
 				if (ImGui::DragFloat3("Scale", imScale, 0.1f))
 				{
-					memcpy(&tf.transform.GetScale(), imScale, sizeof(Vector3f));
+					tf.transform.SetScale({imScale[0], imScale[1], imScale[2]});
 				}
 				ImGui::TreePop();
 			}

@@ -50,8 +50,6 @@ void Engine::PlayGround::Init()
 	}
 
 	myCamera = Camera::Create(90, { 1280, 720 }, 0.1f, 100000.f);
-	myCamera->GetTransform().SetPosition({ 0,0, 500 });
-	myCamera->GetTransform().SetRotation(0, 3.14f, 0);
 
 	myDirLight = DirectionalLight::Create();
 	myDirLight->SetColor({ 1,1,1 });

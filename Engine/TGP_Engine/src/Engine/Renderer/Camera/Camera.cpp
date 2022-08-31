@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "ToolBox/Input/Input.h"
+#include "ToolBox/Math/Matrix/Matrix.h"
 
 Engine::Camera::Camera(float fov, Vector2i size, float zNear, float zFar)
 {
@@ -7,41 +8,50 @@ Engine::Camera::Camera(float fov, Vector2i size, float zNear, float zFar)
 	myAspect = (float)size.x/(float)size.y;
 	myZNear = zNear;
 	myZFar = zFar;
+	m_Forward = Vector3f(0.f, 0.f, -1.f);
+	m_Right = Vector3f(-1.f, 0.f, 0.f);
+	m_Up = Vector3f(0.f, 1.f, 0.f);
+	m_Rotation = Vector3f(0.f, 0.f, 0.f);
 	myProjection = Matrix4x4f::CreateLeftHandPerspectiveMatrix(myFov, size, myZNear, myZFar);
 }
 
 void Engine::Camera::Update(float aDeltaTime)
 {
-	auto position = myTransform.GetPosition();
+	
 	if (ToolBox::Input::IsMouseDown(MouseButton::Right))
 	{
 
 		if (ToolBox::Input::IsKeyDown(Keys::A))
 		{
-			position -= myTransform.GetRight() * 200.f * aDeltaTime;
+			m_Position -= m_Right * 200.f * aDeltaTime;
+			myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
 		}
 		if (ToolBox::Input::IsKeyDown(Keys::D))
 		{
-			position += myTransform.GetRight() * 200.f * aDeltaTime;
+			m_Position += m_Right * 200.f * aDeltaTime;
+			myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
 		}
 		if (ToolBox::Input::IsKeyDown(Keys::W))
 		{
-			position += myTransform.GetForward() * 200.f * aDeltaTime;
+			m_Position += m_Forward * 200.f * aDeltaTime;
+			myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
 		}
 		if (ToolBox::Input::IsKeyDown(Keys::S))
 		{
-			position -= myTransform.GetForward() * 200.f * aDeltaTime;
+			m_Position -= m_Forward * 200.f * aDeltaTime;
+			myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
 		}
 		if (ToolBox::Input::IsKeyDown(Keys::Control))
 		{
-			position -= myTransform.GetUp() * 200.f * aDeltaTime;
+			m_Position -= m_Up * 200.f * aDeltaTime;
+			myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
 		}
 		if (ToolBox::Input::IsKeyDown(Keys::Space))
 		{
-			position += myTransform.GetUp() * 200.f * aDeltaTime;
+			m_Position += m_Up * 200.f * aDeltaTime;
+			myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
 		}
 		CalcMouseMovement();
-		myTransform.SetPosition(position);
 	}
 	else
 	{
@@ -63,7 +73,18 @@ void Engine::Camera::CalcMouseMovement()
 {
 	auto mouseDelta = ToolBox::Input::GetMouseDelta();
 	auto mouseSpeed = 0.005f;
-	static auto rotation = myTransform.GetRotation();
-	rotation += Vector3f(mouseDelta.y * mouseSpeed, mouseDelta.x * mouseSpeed, 0.f);
-	myTransform.SetRotation(rotation);
+	
+	m_Rotation += Vector3f(mouseDelta.y * mouseSpeed, -mouseDelta.x * mouseSpeed, 0.f);
+	m_Rotation.z = 0;
+	auto rotMatrix = Matrix4x4f::CreateRollPitchYaw({ m_Rotation.x, m_Rotation.y, m_Rotation.z });
+	m_Forward = rotMatrix.GetForward();
+	m_Forward.Normalize();
+
+	m_Right = rotMatrix.GetRight();
+	m_Right.Normalize();
+
+	m_Up = rotMatrix.GetUp();
+	m_Up.Normalize();
+	myLookat = Matrix4x4f::CreateLookAt(m_Position, m_Position + m_Forward, m_Up);
+
 }

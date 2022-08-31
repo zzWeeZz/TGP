@@ -19,10 +19,10 @@ void ToolBox::Transform::SetPosition(float x, float y, float z)
 	CalculateTransfrom();
 }
 
-void ToolBox::Transform::SetRotation(const Vector3f& rotation)
+void ToolBox::Transform::SetRotation(const Vector3f& rotation, bool LocalRotation)
 {
 	myRotation = rotation;
-	CalculateTransfrom();
+	CalculateTransfrom(LocalRotation);
 }
 
 void ToolBox::Transform::SetRotation(float x, float y, float z)
@@ -43,13 +43,15 @@ void ToolBox::Transform::SetScale(float x, float y, float z)
 	CalculateTransfrom();
 }
 
-void ToolBox::Transform::CalculateTransfrom()
+void ToolBox::Transform::CalculateTransfrom(bool localRot)
 {
 	Matrix4x4f transform;
-	transform *= Matrix4x4f::CreateScaleMatrix(myScale);
-	transform *= Matrix4x4f::CreateRotationAroundX(myRotation.x);
-	transform *= Matrix4x4f::CreateRotationAroundZ(myRotation.z);
-	transform *= Matrix4x4f::CreateRotationAroundY(myRotation.y);
-	transform *= Matrix4x4f::CreateTranslation(myPosition);
+	if (!localRot)
+	{
+		transform = transform * Matrix4x4f::CreateScaleMatrix(myScale);
+		transform = transform * Matrix4x4f::CreateRollPitchYaw(myRotation);
+		transform = transform * Matrix4x4f::CreateTranslation(myPosition);
+	}
+	
 	myMatrix = transform;
 }

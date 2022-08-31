@@ -14,7 +14,7 @@ namespace ToolBox
 		Vector3f GetPosition() const { return myPosition; }
 		Vector3f& GetPosition() { return myPosition; }
 
-		void SetRotation(const Vector3f& rotation);
+		void SetRotation(const Vector3f& rotation, bool LocalRotation = false);
 		void SetRotation(float x, float y, float z);
 		Vector3f GetRotation() const { return myRotation; }
 		Vector3f& GetRotation() { return myRotation; }
@@ -32,9 +32,9 @@ namespace ToolBox
 		Matrix4x4f& GetMatrix() { return myMatrix; }
 
 	private:
-		void CalculateTransfrom();
+		void CalculateTransfrom(bool localRot = false);
 		
-		Matrix4x4f myMatrix;
+		ToolBox::Math::Matrix4x4<float> myMatrix;
 		
 		Vector3f myPosition;
 		Vector3f myRotation;

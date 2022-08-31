@@ -30,7 +30,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
 	float3 vertexNormal = VertexNormalTexture.Sample(defaultSampler, input.uv).rgb;
 	float4 worldPosition = WorldPositionTexture.Sample(defaultSampler, input.uv);
 	float AO = AOTexture.Sample(defaultSampler, input.uv).r;
-
+    const float3 NewDir = normalize(-DirLightDirection);
     const float metalness = material.r;
     const float roughness = material.g;
     const float emissive = material.b;
@@ -48,7 +48,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         roughness,
         colorAndInstensity.rgb,
         colorAndInstensity.a,
-        -DirLightDirection,
+        NewDir,
         toEye);
 
     float3 ambientLighting = EvaluateAmbience(

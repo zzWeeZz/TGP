@@ -30,7 +30,8 @@ namespace ToolBox
 			static Matrix4x4<T> CreateRotationAroundZ(T aAngleInRadians);
 			static Matrix4x4<T> CreateRotationInLocalSpace(Matrix4x4<T> aTransform, const float aAngle, Vector3<T> aAxis);
 			static Matrix4x4<T> CreateRotationMatrixFromQuaternionVectorWXYZ(Vector4<T> aVector);
-
+			static Matrix4x4<T> CreateRollPitchYaw(Vector3<T> rotation);
+			static Matrix4x4<T> CreateLookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up);
 			static Matrix4x4<T> CreateTranslation(const Vector4<T>& aPosition);
 			static Matrix4x4<T> CreateTranslation(const Vector3<T>& aPosition);
 
@@ -43,6 +44,36 @@ namespace ToolBox
 		private:
 			std::array<std::array<T, 4>, 4> myMatrix;
 		};
+
+
+		template<class T>
+		inline Matrix4x4<T> Matrix4x4<T>::CreateLookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up)
+		{
+			Vector3<T> const forward = (center - eye).GetNormalized();
+			Vector3<T> const right = up.Cross(forward).GetNormalized();
+			Vector3<T> const newup = forward.Cross(right);
+
+			Matrix4x4<T> result;
+
+			result(1, 1) = right.x;
+			result(1, 2) = right.y;
+			result(1, 3) = right.z;
+			result(1, 4) = 0;
+			result(2, 1) = newup.x;
+			result(2, 2) = newup.y;
+			result(2, 3) = newup.z;
+			result(2, 4) = 0;
+			result(3, 1) = forward.x;
+			result(3, 2) = forward.y;
+			result(3, 3) = forward.z;
+			result(3, 4) = 0;
+			result(4, 1) = eye.x;
+			result(4, 2) = eye.y;
+			result(4, 3) = eye.z;
+			result(4, 4) = 1;
+
+			return result;
+		}
 
 		template <class T>
 		Matrix4x4<T>::Matrix4x4()
@@ -96,33 +127,23 @@ namespace ToolBox
 		inline Vector3<float> Matrix4x4<T>::GetForward()
 		{
 			Matrix4x4<float> rotation = *this;
-			rotation(4, 1) = 0;
-			rotation(4, 2) = 0;
-			rotation(4, 3) = 0;
-			auto result = Vector4f(0, 0, 1, 1) * rotation;
-			return { result.x, result.y, result.z };
+			return { rotation(3, 1), rotation(3, 2), rotation(3, 3) };
 		}
 
 		template<class T>
 		inline Vector3<float> Matrix4x4<T>::GetUp()
 		{
 			Matrix4x4<float> rotation = *this;
-			rotation(4, 1) = 0;
-			rotation(4, 2) = 0;
-			rotation(4, 3) = 0;
-			auto result = Vector4f(0, 1, 0, 1) * rotation;
-			return { result.x, result.y, result.z };
+
+			return { rotation(2, 1), rotation(2, 2), rotation(2, 3) };
 		}
 
 		template<class T>
 		inline Vector3<float> Matrix4x4<T>::GetRight()
 		{
 			Matrix4x4<float> rotation = *this;
-			rotation(4, 1) = 0;
-			rotation(4, 2) = 0;
-			rotation(4, 3) = 0;
-			auto result = Vector4f(1, 0, 0, 1) * rotation;
-			return { result.x, result.y, result.z };
+
+			return { rotation(1, 1), rotation(1, 2), rotation(1, 3) };
 		}
 
 		template <class T>
@@ -202,22 +223,22 @@ namespace ToolBox
 			tempCopy(2, 4) = lerpPos.y;
 			tempCopy(3, 4) = lerpPos.z;
 
-			Vector3f myRightVector = Vector3f::Nlerp(tempCopy.GetRight(),aMatrix.GetRight(), aTheta);
+			Vector3f myRightVector = Vector3f::Nlerp(tempCopy.GetRight(), aMatrix.GetRight(), aTheta);
 			Vector3f myUpVector = Vector3f::Nlerp(tempCopy.GetUp(), aMatrix.GetUp(), aTheta);
 			Vector3f myFrontVector = Vector3f::Nlerp(tempCopy.GetForward(), aMatrix.GetForward(), aTheta);
-			tempCopy(1,1) = myRightVector.x;
-			tempCopy(1,2) = myRightVector.y;
-			tempCopy(1,3) = myRightVector.z;
+			tempCopy(1, 1) = myRightVector.x;
+			tempCopy(1, 2) = myRightVector.y;
+			tempCopy(1, 3) = myRightVector.z;
 
 			tempCopy(2, 1) = myUpVector.x;
 			tempCopy(2, 2) = myUpVector.y;
 			tempCopy(2, 3) = myUpVector.z;
 
-			tempCopy(3, 1)= myFrontVector.x;
-			tempCopy(3, 2)= myFrontVector.y;
+			tempCopy(3, 1) = myFrontVector.x;
+			tempCopy(3, 2) = myFrontVector.y;
 			tempCopy(3, 3) = myFrontVector.z;
 
-			
+
 
 			return tempCopy;
 		}
@@ -276,17 +297,14 @@ namespace ToolBox
 			tempMatrix4x4(1, 2) = 0;
 			tempMatrix4x4(1, 3) = -sin(aAngleInRadians);
 			tempMatrix4x4(1, 4) = 0;
-
 			tempMatrix4x4(2, 1) = 0;
 			tempMatrix4x4(2, 2) = 1;
 			tempMatrix4x4(2, 3) = 0;
 			tempMatrix4x4(2, 4) = 0;
-
 			tempMatrix4x4(3, 1) = sin(aAngleInRadians);
 			tempMatrix4x4(3, 2) = 0;
 			tempMatrix4x4(3, 3) = cos(aAngleInRadians);
 			tempMatrix4x4(3, 4) = 0;
-
 			tempMatrix4x4(4, 1) = 0;
 			tempMatrix4x4(4, 2) = 0;
 			tempMatrix4x4(4, 3) = 0;
@@ -378,6 +396,18 @@ namespace ToolBox
 			result(4, 1) = result(4, 2) = result(4, 3) = 0;
 			result(4, 4) = 1;
 			return result;
+		}
+
+
+		template<class T>
+		inline Matrix4x4<T> Matrix4x4<T>::CreateRollPitchYaw(Vector3<T> rotation)
+		{
+			auto MatRoll = CreateRotationAroundZ(rotation.z);
+			auto MatPitch = CreateRotationAroundX(rotation.x);
+			auto MatYaw = CreateRotationAroundY(rotation.y);
+			auto finalMat = MatRoll * MatYaw;
+			finalMat = finalMat * MatPitch;
+			return finalMat;
 		}
 
 		template <class T>
@@ -498,7 +528,32 @@ namespace ToolBox
 			tempPos(4, 2) = aTransform(4, 2) * -1;
 			tempPos(4, 3) = aTransform(4, 3) * -1;
 
-			return tempPos * tempRot;
+
+			Matrix4x4<T> result;
+
+			auto mat = tempRot * tempPos;
+
+			result(1, 1) = tempRot(1, 1);
+			result(1, 2) = tempRot(1, 2);
+			result(1, 3) = tempRot(1, 3);
+			result(1, 4) = 0;
+
+			result(2, 1) = tempRot(2, 1);
+			result(2, 2) = tempRot(2, 2);
+			result(2, 3) = tempRot(2, 3);
+			result(2, 4) = 0;
+
+			result(3, 1) = tempRot(3, 1);
+			result(3, 2) = tempRot(3, 2);
+			result(3, 3) = tempRot(3, 3);
+			result(3, 4) = 0;
+
+			result(4, 1) = mat(4, 1);
+			result(4, 2) = mat(4, 2);
+			result(4, 3) = mat(4, 3);
+			result(4, 4) = 1;
+
+			return result;
 		}
 
 		template <class T>
@@ -603,8 +658,10 @@ namespace ToolBox
 			aMatrix4x4Zero(4, 4) -= aMatrix4x4One(4, 4);
 		}
 
+
+
 		template<class T>
-		Matrix4x4<T> operator*(Matrix4x4<T>& aMatrix4x4Zero, const Matrix4x4<T>& aMatrix4x4One)
+		Matrix4x4<T> operator*(const Matrix4x4<T>& aMatrix4x4Zero, const Matrix4x4<T>& aMatrix4x4One)
 		{
 			Matrix4x4<T> tempMatrix;
 
