@@ -219,6 +219,7 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -324,6 +325,7 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
+    <ClCompile Include="ScriptBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">

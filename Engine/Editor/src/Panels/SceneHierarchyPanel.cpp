@@ -157,10 +157,6 @@ namespace Engine
 				}
 				ImGui::TreePop();
 			}
-			if (removeComponent)
-			{
-				entity.RemoveComponent<TransformComponent>();
-			}
 		}
 		if (entity.HasComponent<ModelComponent>())
 		{
@@ -209,7 +205,7 @@ namespace Engine
 		if (entity.HasComponent<PointLightComponent>())
 		{
 			auto& pl = entity.GetComponent<PointLightComponent>();
-			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Pointlight Component");
+			bool open = ImGui::TreeNodeEx((void*)typeid(PointLightComponent).hash_code(), flags, "Pointlight Component");
 			ImGui::SameLine();
 
 			if (ImGui::Button("..."))
@@ -245,7 +241,7 @@ namespace Engine
 			}
 			if (removeComponent)
 			{
-				entity.RemoveComponent<TransformComponent>();
+				entity.RemoveComponent<PointLightComponent>();
 			}
 			
 		}

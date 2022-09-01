@@ -31,3 +31,14 @@ COMPONENT(PointLightComponent)
 	float intensity;
 	float radius;
 };
+
+COMPONENT(AnimatorComponent)
+{
+	REGISTER_COMPONENT("{481D7E20-A5F6-4AA5-8C35-AF3105265E88}"_guid);
+};
+
+COMPONENT(ScriptComponent)
+{
+	REGISTER_COMPONENT("{9940D790-3E67-4C0B-A1B8-FCE018E3BC70}"_guid);
+
+};

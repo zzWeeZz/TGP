@@ -102,6 +102,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ScriptBase.h" />
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\Window\Window.h" />
     <ClInclude Include="src\Engine.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ScriptBase.cpp" />
     <ClCompile Include="src\Application\Application.cpp" />
     <ClCompile Include="src\Application\Window\Window.cpp" />
     <ClCompile Include="src\Engine\Assets\Lights\DirectionalLight.cpp" />

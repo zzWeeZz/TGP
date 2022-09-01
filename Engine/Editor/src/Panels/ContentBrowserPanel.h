@@ -1,10 +1,13 @@
 #pragma once
+#include "Engine/Assets/Texture/Texture2D.h"
 namespace Engine
 {
-
-class ContentBrowserPanel
-{
-public:
-	void ImGuiRender();
-};
+	class ContentBrowserPanel
+	{
+	public:
+		ContentBrowserPanel();
+		void ImGuiRender();
+	private:
+		Ref<Texture2D> myTexture;
+	};
 }
