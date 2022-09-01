@@ -102,7 +102,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ScriptBase.h" />
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\Window\Window.h" />
     <ClInclude Include="src\Engine.h" />
@@ -141,6 +140,10 @@
     <ClInclude Include="src\Engine\Scene\Components.h" />
     <ClInclude Include="src\Engine\Scene\Entity.h" />
     <ClInclude Include="src\Engine\Scene\Scene.h" />
+    <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h" />
+    <ClInclude Include="src\Engine\Scripting\ScriptBase.h" />
+    <ClInclude Include="src\Engine\Scripting\ScriptRegistry.h" />
+    <ClInclude Include="src\Engine\Scripting\TestScript.h" />
     <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h" />
     <ClInclude Include="src\Engine\ShaderClasses\GeometryShader.h" />
     <ClInclude Include="src\Engine\ShaderClasses\PixelShader.h" />
@@ -156,7 +159,6 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ScriptBase.cpp" />
     <ClCompile Include="src\Application\Application.cpp" />
     <ClCompile Include="src\Application\Window\Window.cpp" />
     <ClCompile Include="src\Engine\Assets\Lights\DirectionalLight.cpp" />
@@ -185,6 +187,8 @@
     <ClCompile Include="src\Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine\Scene\Entity.cpp" />
     <ClCompile Include="src\Engine\Scene\Scene.cpp" />
+    <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp" />
+    <ClCompile Include="src\Engine\Scripting\TestScript.cpp" />
     <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp" />
     <ClCompile Include="src\Engine\ShaderClasses\GeometryShader.cpp" />
     <ClCompile Include="src\Engine\ShaderClasses\PixelShader.cpp" />

@@ -1,5 +1,7 @@
 #include "ScriptBase.h"
 
-Engine::ScriptBase::ScriptBase(Entity& entity) : myEntity(entity)
+void Engine::ScriptBase::Create(Entity& entity)
 {
+	myEntity = entity;
+	myProperties = SetProperties();
 }

@@ -245,5 +245,66 @@ namespace Engine
 			}
 			
 		}
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			auto& sc = entity.GetComponent<ScriptComponent>();
+			bool open = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), flags, "Script Component");
+			ImGui::SameLine();
+
+			if (ImGui::Button("..."))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					removeComponent = true;
+				}
+				ImGui::EndPopup();
+			}
+			if (open)
+			{
+
+				for (auto& script : sc.scripts)
+				if (script)
+				{
+					for (auto& prop : script->myProperties.properties)
+					{
+						switch (prop.type)
+						{
+						case PropertyType::Float:
+							ImGui::DragFloat(prop.name.c_str(), (float*)prop.varible);
+							break;
+						case PropertyType::Int:
+							ImGui::DragInt(prop.name.c_str(), (int*)prop.varible);
+							break;
+						case PropertyType::String:
+							break;
+						case PropertyType::Vector2:
+							break;
+						case PropertyType::Vector3:
+							break;
+						case PropertyType::Vector4:
+							break;
+						default:
+							break;
+						}
+					}
+				}
+				if(ImGui::BeginCombo("add Script", "yea"))
+				{
+
+					ImGui::EndCombo();
+				}
+				ImGui::TreePop();
+			}
+			if (removeComponent)
+			{
+				entity.RemoveComponent<ScriptComponent>();
+			}
+		}
 	}
 }

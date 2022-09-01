@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="File">
+      <UniqueIdentifier>{053F857C-F175-860D-9A62-6C108678020F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
     </Filter>
@@ -18,6 +21,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ToolBox\File\FileDialogs.h">
+      <Filter>File</Filter>
+    </ClInclude>
     <ClInclude Include="src\ToolBox\Input\Input.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -57,9 +63,11 @@
     <ClInclude Include="src\ToolBox\Utility\UtilityFunctions.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\ToolBox\File\FileDialogs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ToolBox\File\FileDialogs.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
     <ClCompile Include="src\ToolBox\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -75,6 +83,5 @@
     <ClCompile Include="src\ToolBox\Utility\Timer.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\ToolBox\File\FileDialogs.cpp" />
   </ItemGroup>
 </Project>

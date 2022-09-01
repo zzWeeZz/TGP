@@ -31,6 +31,13 @@ namespace Engine
 				plData.radius = pl.radius;
 				Renderer::SubmitPointLight(plData);
 			});
+		m_Registry.Execute<ScriptComponent>([&](auto&, ScriptComponent& sc)
+			{
+				for (auto& script : sc.scripts)
+				{
+					script->Update();
+				}
+			});
 	}
 
 	void Scene::OnEditorRender()

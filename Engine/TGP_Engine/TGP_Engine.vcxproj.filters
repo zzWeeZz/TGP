@@ -58,6 +58,9 @@
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{386D1796-24D0-A63A-CD55-DFF0B99772BD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Scripting">
+      <UniqueIdentifier>{9D0A0F60-8903-2EB2-B235-13379E8D0DBE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ShaderClasses">
       <UniqueIdentifier>{8F9D2949-7B2C-B312-244B-C70D10B9C3B8}</UniqueIdentifier>
     </Filter>
@@ -184,6 +187,9 @@
     <ClInclude Include="src\Engine\Scene\Scene.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Scripting\ScriptBase.h">
+      <Filter>Engine\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h">
       <Filter>Engine\ShaderClasses</Filter>
     </ClInclude>
@@ -219,7 +225,9 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptBase.h" />
+    <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h" />
+    <ClInclude Include="src\Engine\Scripting\TestScript.h" />
+    <ClInclude Include="src\Engine\Scripting\ScriptRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -306,6 +314,9 @@
     <ClCompile Include="src\Engine\Scene\Scene.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp">
+      <Filter>Engine\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp">
       <Filter>Engine\ShaderClasses</Filter>
     </ClCompile>
@@ -325,7 +336,7 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
-    <ClCompile Include="ScriptBase.cpp" />
+    <ClCompile Include="src\Engine\Scripting\TestScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">

@@ -9,6 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_dx11.h" />
@@ -20,9 +21,9 @@
     <ClInclude Include="misc\cpp\imgui_stdlib.h">
       <Filter>misc\cpp</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuizmo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
@@ -33,6 +34,5 @@
     <ClCompile Include="misc\cpp\imgui_stdlib.cpp">
       <Filter>misc\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuizmo.cpp" />
   </ItemGroup>
 </Project>

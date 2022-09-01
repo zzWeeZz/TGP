@@ -102,16 +102,16 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Panels\ContentBrowserPanel.h" />
-    <ClInclude Include="src\Panels\ConsolePanel.h" />
     <ClInclude Include="src\Editor\EditorLayer.h" />
+    <ClInclude Include="src\Panels\ConsolePanel.h" />
+    <ClInclude Include="src\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="src\Panels\ThemeEditorPanel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
-    <ClCompile Include="src\Panels\ConsolePanel.cpp" />
     <ClCompile Include="src\Editor\EditorLayer.cpp" />
+    <ClCompile Include="src\Panels\ConsolePanel.cpp" />
+    <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="src\Panels\ThemeEditorPanel.cpp" />
   </ItemGroup>

@@ -1,11 +1,13 @@
 #pragma once
 #include "Engine/Scene/Entity.h"
+#include "ImGuiHelper.h"
 namespace Engine
 {
 	class ScriptBase
 	{
+		friend class SceneHierarchyPanel;
 	public:
-		ScriptBase(Entity& entity);
+		void Create(Entity& entity);
 		template<typename T>
 		T& AddComponent()
 		{
@@ -26,12 +28,13 @@ namespace Engine
 		{
 			return myEntity.HasComponent<T>();
 		}
+		virtual Properties SetProperties() = 0;
 		virtual void Start() = 0;
 		virtual void Update() = 0;
 		virtual void OnDestroy() = 0;
 	protected:
-
 	private:
-		Entity& myEntity;
+		Properties myProperties;
+		Entity myEntity;
 	};
 }

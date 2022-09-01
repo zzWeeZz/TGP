@@ -3,6 +3,7 @@
 #include "Engine/Scene/Components.h"
 #include "Engine/Renderer/Renderer.h"
 #include "ImGuizmo.h"
+#include "Engine/Scripting/TestScript.h"
 void Engine::EditorLayer::OnAttach()
 {
 	myEditorCamera = Camera::Create(90, { 100, 100 }, 0.1, 100000.f);
@@ -15,6 +16,7 @@ void Engine::EditorLayer::OnAttach()
 		entt.GetComponent<TagComponent>().tag = "gjdajkkkkkka";
 		ModelComponent& mdl = entt.AddComponent<ModelComponent>();
 		mdl.filePath = "Model/SM_Particle_Chest.fbx";
+		auto& sc = entt.AddComponent<ScriptComponent>();
 	}
 	{
 		auto entt = myScene->CreateEntity();

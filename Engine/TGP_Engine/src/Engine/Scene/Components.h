@@ -3,6 +3,7 @@
 #include "SnowFlake/Snowflake.hpp"
 #include "ToolBox/Math/Transform.h"
 #include "Engine/Assets/Model/Model.h"
+#include <Engine/Scripting/ScriptBase.h>
 
 COMPONENT(TagComponent)
 {
@@ -28,8 +29,8 @@ COMPONENT(PointLightComponent)
 {
 	REGISTER_COMPONENT("{007E3992-3BA8-4798-A8BD-9CB2BE2096D3}"_guid);
 	Vector3f color;
-	float intensity;
-	float radius;
+	float intensity = 0;
+	float radius = 0;
 };
 
 COMPONENT(AnimatorComponent)
@@ -40,5 +41,5 @@ COMPONENT(AnimatorComponent)
 COMPONENT(ScriptComponent)
 {
 	REGISTER_COMPONENT("{9940D790-3E67-4C0B-A1B8-FCE018E3BC70}"_guid);
-
+	std::vector<Engine::ScriptBase*> scripts;
 };
