@@ -140,7 +140,7 @@ namespace Engine
 		}
 		if (s_Data->ActiveCamera)
 		{
-			s_Data->CameraBufferObject.cameraSpace = Matrix4x4f::GetFastInverse(s_Data->ActiveCamera->GetLookAt());
+			s_Data->CameraBufferObject.cameraSpace = s_Data->ActiveCamera->GetLookAt();
 			s_Data->CameraBufferObject.toProjectionSpace = s_Data->ActiveCamera->GetProjection();
 			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
 			s_Data->CameraBuffer.SetData(&s_Data->CameraBufferObject);

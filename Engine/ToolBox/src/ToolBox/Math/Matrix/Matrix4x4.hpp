@@ -49,27 +49,27 @@ namespace ToolBox
 		template<class T>
 		inline Matrix4x4<T> Matrix4x4<T>::CreateLookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up)
 		{
-			Vector3<T> const forward = (center - eye).GetNormalized();
-			Vector3<T> const right = up.Cross(forward).GetNormalized();
-			Vector3<T> const newup = forward.Cross(right);
+			Vector3<T>  forward = (center - eye).GetNormalized();
+			Vector3<T>  right = up.Cross(forward).GetNormalized();
+			Vector3<T>  newup = forward.Cross(right);
 
 			Matrix4x4<T> result;
 
 			result(1, 1) = right.x;
-			result(1, 2) = right.y;
-			result(1, 3) = right.z;
+			result(1, 2) = newup.x;
+			result(1, 3) = forward.x;
 			result(1, 4) = 0;
-			result(2, 1) = newup.x;
+			result(2, 1) = right.y;
 			result(2, 2) = newup.y;
-			result(2, 3) = newup.z;
+			result(2, 3) = forward.y;
 			result(2, 4) = 0;
-			result(3, 1) = forward.x;
-			result(3, 2) = forward.y;
+			result(3, 1) = right.z;
+			result(3, 2) = newup.z;
 			result(3, 3) = forward.z;
 			result(3, 4) = 0;
-			result(4, 1) = eye.x;
-			result(4, 2) = eye.y;
-			result(4, 3) = eye.z;
+			result(4, 1) = right.Dot({ -eye.x,-eye.y,-eye.z });
+			result(4, 2) = newup.Dot({ -eye.x,-eye.y,-eye.z });
+			result(4, 3) = forward.Dot({ -eye.x,-eye.y,-eye.z });
 			result(4, 4) = 1;
 
 			return result;
