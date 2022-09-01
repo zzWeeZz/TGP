@@ -57,6 +57,7 @@
     <ClInclude Include="src\ToolBox\Utility\UtilityFunctions.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\ToolBox\File\FileDialogs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ToolBox\Input\Input.cpp">
@@ -74,5 +75,6 @@
     <ClCompile Include="src\ToolBox\Utility\Timer.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\ToolBox\File\FileDialogs.cpp" />
   </ItemGroup>
 </Project>

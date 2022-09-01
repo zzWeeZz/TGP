@@ -23,3 +23,11 @@ COMPONENT(ModelComponent)
 	Engine::Ref<Engine::Model> modelHandle = nullptr;
 	const char* filePath = "";
 };
+
+COMPONENT(PointLightComponent)
+{
+	REGISTER_COMPONENT("{007E3992-3BA8-4798-A8BD-9CB2BE2096D3}"_guid);
+	Vector3f color;
+	float intensity;
+	float radius;
+};

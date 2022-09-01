@@ -34,6 +34,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
     const float metalness = material.r;
     const float roughness = material.g;
     const float emissive = material.b;
+    const float emissiveStr = material.a;
 
     const float3 toEye = normalize(cameraPosition.xyz - worldPosition.xyz);
     const float3 specularColor = lerp((float3)0.04, albedo.xyz, metalness);
@@ -51,7 +52,13 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         NewDir,
         toEye);
 
-    float3 ambientLighting = EvaluateAmbience(
+    for (unsigned int i = 0; i < 2000; ++i)
+    {
+        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye);
+    }
+    
+    
+        float3 ambientLighting = EvaluateAmbience(
         env,
         normal,
         vertexNormal,
@@ -62,7 +69,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         specularColor,
         defaultSampler
     );
-    float3 final = directColor + ambientLighting;
+    float3 final = directColor + ambientLighting + albedo * emissive * emissiveStr;
     final = LinearToGamma(final);
     return float4(final, 1);
 }

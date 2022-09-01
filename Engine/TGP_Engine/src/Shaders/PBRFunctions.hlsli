@@ -194,6 +194,43 @@ float3 EvaluateDirectionalLight(float3 albedoColor, float3 specularColor, float3
     return saturate(lightColor * NdL * (cDiff * (1.0 - cSpec) + cSpec) * PI) * lightIntensity;
 }
 
+float3 EvaluatePointLight(float3 albedoColor, float3 specularColor, float3 normal, float roughness, float3 lightColor, float lightIntensity, float radius, float3 position, float3 camPos, float3 viewDir)
+{
+    float3 finalColor = 0;
+    
+    float distFromPixel = length(position.xyz - camPos);
+    if (distFromPixel > radius)
+    {
+        finalColor += float3(0, 0, 0);
+        return finalColor;
+    }
+    
+    
+    float3 dirToLight = normalize(position.xyz - camPos);
+    float3 halfVector = normalize(dirToLight + (viewDir));
+
+    float attenuation = clamp(1 - distFromPixel / radius, 0.f, 1.f);
+    attenuation *= attenuation;
+
+    // hard coded 0.5 falloff on the point light, BAD BAD BAD needs fixing later
+    attenuation *= lerp(attenuation, 1.f, 0.5f);
+
+    float3 radiance = (lightColor * lightIntensity) * attenuation;
+    
+    // Computer N dot L, the Lambert Attenuation.
+    const float NdL = saturate(dot(normal, dirToLight));
+    // Compute N dot V, the View Angle.
+    const float NdV = saturate(dot(normal, viewDir));
+    const float3 h = normalize(dirToLight + viewDir);
+    const float NdH = saturate(dot(normal, h));
+    const float a = max(0.001f, roughness * roughness);
+
+    const float3 cDiff = Diffuse(albedoColor);
+    const float3 cSpec = Specular(specularColor, h, viewDir, a, NdL, NdV, NdH);
+    finalColor = saturate(lightColor * NdL * (cDiff * (1.0 - cSpec) + cSpec) * PI) * radiance * lightIntensity;
+    return finalColor;
+}
+
 float3 SRGBToLinear(in float3 color)
 {
     float3 linearRGBLo = color / 12.92f;

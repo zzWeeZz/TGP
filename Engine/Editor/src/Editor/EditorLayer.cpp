@@ -2,7 +2,7 @@
 #include "imgui.h"
 #include "Engine/Scene/Components.h"
 #include "Engine/Renderer/Renderer.h"
-
+#include "ImGuizmo.h"
 void Engine::EditorLayer::OnAttach()
 {
 	myEditorCamera = Camera::Create(90, { 100, 100 }, 0.1, 100000.f);
@@ -18,15 +18,19 @@ void Engine::EditorLayer::OnAttach()
 	}
 	{
 		auto entt = myScene->CreateEntity();
+		auto comp = entt.AddComponent<PointLightComponent>();
 	}
 	{
 		auto entt = myScene->CreateEntity();
+		auto comp = entt.AddComponent<PointLightComponent>();
 	}
 	{
 		auto entt = myScene->CreateEntity();
+		auto comp = entt.AddComponent<PointLightComponent>();
 	}
 	{
 		auto entt = myScene->CreateEntity();
+		auto comp = entt.AddComponent<PointLightComponent>();
 	}
 	{
 		auto entt = myScene->CreateEntity();
@@ -41,6 +45,9 @@ void Engine::EditorLayer::OnAttach()
 		auto entt = myScene->CreateEntity();
 	}
 	mySceneHierarchyPanel = CreateRef<SceneHierarchyPanel>(myScene);
+	myContentBrowserPanel = CreateRef<ContentBrowserPanel>();
+	myThemeEditorPanel = CreateRef<ThemeEditorPanel>();
+	myThemeEditorPanel->StartUp();
 }
 
 void Engine::EditorLayer::OnUpdate()
@@ -130,11 +137,44 @@ void Engine::EditorLayer::OnUpdate()
 		myEditorCamera->SetAspectRatio((float)framebuff->GetSpecs().width, (float)framebuff->GetSpecs().height);
 	}
 	ImGui::Image((void*)framebuff->GetColorAttachment(0).Get(), { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
+
+	if (mySceneHierarchyPanel->GetSelectedEntity()())
+	{
+		ImGuizmo::SetOrthographic(false);
+		ImGuizmo::SetDrawlist();
+		float windowWidth = (float)ImGui::GetWindowWidth();
+		float windowHeight = (float)ImGui::GetWindowHeight();
+		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+		float view[16] = { 0 };
+		memcpy(view, &myEditorCamera->GetLookAt(), sizeof(float) * 16);
+		float proj[16] = { 0 };
+		memcpy(proj, &myEditorCamera->GetProjection(), sizeof(float) * 16);
+		auto entity = mySceneHierarchyPanel->GetSelectedEntity();
+		auto& tf = entity.GetComponent<TransformComponent>();
+		auto matrix = tf.transform.GetMatrix();
+		float trans[16] = { 0 };
+		memcpy(trans, &matrix, sizeof(float) * 16);
+		ImGuizmo::Manipulate(&view[0], &proj[0], ImGuizmo::TRANSLATE, ImGuizmo::WORLD, &trans[0]);
+
+		if (ImGuizmo::IsUsing())
+		{
+			Matrix4x4f matData;
+			memcpy(&matData, &trans[0], sizeof(float) * 16);
+			Vector3f pos;
+			Vector3f rot;
+			Vector3f scale;
+			matData.Deconstruct(pos, rot, scale);
+
+			mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetPosition(pos);
+			mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetRotation(rot);
+			mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetScale(scale);
+		}
+	}
+
+	DrawPanels();
+
 	ImGui::End();
 	ImGui::PopStyleVar();
-	mySceneHierarchyPanel->OnImGuiRender();
-	ImGui::Begin("hi3");
-	ImGui::End();
 	ImGui::End();
 	myEditorCamera->Update(ToolBox::Chrono::Timestep());
 	myScene->OnEditorUpdate();
@@ -147,4 +187,11 @@ void Engine::EditorLayer::OnDetach()
 
 void Engine::EditorLayer::OnEvent(Event& e)
 {
+}
+
+void Engine::EditorLayer::DrawPanels()
+{
+	mySceneHierarchyPanel->OnImGuiRender();
+	myContentBrowserPanel->ImGuiRender();
+	myThemeEditorPanel->OnImGuiRender();
 }

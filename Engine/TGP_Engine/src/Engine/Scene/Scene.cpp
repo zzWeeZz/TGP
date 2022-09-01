@@ -23,6 +23,14 @@ namespace Engine
 				mdl.modelHandle->GetTransform().SetScale(tf.transform.GetScale());
 				Renderer::SubmitMesh(mdl.modelHandle.get());
 			});
+		m_Registry.Execute<PointLightComponent, TransformComponent>([&](auto& entity, PointLightComponent& pl, TransformComponent& tf)
+			{
+				PointLightData plData;
+				plData.colorAndIntensity = { pl.color.x, pl.color.y , pl.color.z, pl.intensity };
+				plData.position = tf.transform.GetPosition();
+				plData.radius = pl.radius;
+				Renderer::SubmitPointLight(plData);
+			});
 	}
 
 	void Scene::OnEditorRender()

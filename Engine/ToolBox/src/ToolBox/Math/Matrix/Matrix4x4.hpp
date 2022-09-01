@@ -189,8 +189,8 @@ namespace ToolBox
 		template <class T>
 		void Matrix4x4<T>::Deconstruct(Vector3<T>& position, Vector3<T>& rotation, Vector3<T>& scale)
 		{
-			static const float ZPI = 3.1415f;
-			static const float RAD2DEG = (180.f / ZPI);
+			constexpr float ZPI = 3.1415f;
+			constexpr float RAD2DEG = (180.f / ZPI);
 			const Matrix4x4<T>& mat = *this;
 			Vector4f scaleX = { mat(1,1),mat(1,2) ,mat(1,3) ,mat(1,4) };
 			Vector4f scaleY = { mat(2,1),mat(2,2) ,mat(2,3) ,mat(2,4) };
@@ -402,11 +402,10 @@ namespace ToolBox
 		template<class T>
 		inline Matrix4x4<T> Matrix4x4<T>::CreateRollPitchYaw(Vector3<T> rotation)
 		{
-			auto MatRoll = CreateRotationAroundZ(rotation.z);
 			auto MatPitch = CreateRotationAroundX(rotation.x);
 			auto MatYaw = CreateRotationAroundY(rotation.y);
-			auto finalMat = MatRoll * MatYaw;
-			finalMat = finalMat * MatPitch;
+			auto MatRoll = CreateRotationAroundZ(rotation.z);
+			auto finalMat = MatPitch * MatYaw * MatRoll;
 			return finalMat;
 		}
 

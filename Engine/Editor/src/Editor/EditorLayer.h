@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/Core/Layer/Layer.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
+#include "Panels/ThemeEditorPanel.h"
 #include "Engine/Renderer/Camera/Camera.h"
 namespace Engine
 {
@@ -12,8 +14,11 @@ namespace Engine
 		void OnDetach() override;
 		void OnEvent(Event& e) override;
 	private:
+		void DrawPanels();
 		Ref<Camera> myEditorCamera;
 		Ref<Scene> myScene;
+		Ref<ThemeEditorPanel> myThemeEditorPanel;
 		Ref<SceneHierarchyPanel> mySceneHierarchyPanel;
+		Ref<ContentBrowserPanel> myContentBrowserPanel;
 	};
 }

@@ -18,3 +18,13 @@ cbuffer DirectionalLightBuffer : register(b2)
     float3 DirLightDirection;
     float padding;
 };
+
+cbuffer PointLightBuffer : register(b3)
+{
+    struct Data
+    {
+        float4 colorAndInstensity;
+        float3 position;
+        float radius;
+    } data[2000];
+}

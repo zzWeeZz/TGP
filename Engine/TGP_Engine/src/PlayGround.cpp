@@ -54,7 +54,7 @@ void Engine::PlayGround::Init()
 	myDirLight = DirectionalLight::Create();
 	myDirLight->SetColor({ 1,1,1 });
 	myDirLight->SetDirection({ 0, -1,-1 });
-	myDirLight->SetIntensity(2);
+	myDirLight->SetIntensity(1);
 
 	myIBL = Texture2D::Create("Textures/skansen_cubemap.dds");
 	myParticleSystem = ParticleSystem::Create("agja");

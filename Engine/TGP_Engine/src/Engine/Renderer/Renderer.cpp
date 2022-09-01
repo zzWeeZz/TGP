@@ -89,7 +89,8 @@ namespace Engine
 		ShaderLibrary::Bind("DefferedPBR");
 		s_Data->CameraBuffer.Create();
 		s_Data->ModelBuffer.Create();
-		s_Data->DirectionalLightBuffer.Create();
+		s_Data->pointLightBuffer.Create();
+		s_Data->directionalLightBuffer.Create();
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Clamp, ShaderType::Pixel);
 	}
@@ -107,6 +108,12 @@ namespace Engine
 	void Renderer::SubmitDirectionalLight(Ref<DirectionalLight> light)
 	{
 		s_Data->DirectionalLight = light.get();
+	}
+
+	void Renderer::SubmitPointLight(const PointLightData& light)
+	{
+		s_Data->PointLightBufferObject.pointLightData[s_Data->pointLightIterator] = light;
+		s_Data->pointLightIterator++;
 	}
 
 	void Renderer::SetIBL(Ref<Texture2D> map)
@@ -146,20 +153,23 @@ namespace Engine
 			s_Data->CameraBuffer.SetData(&s_Data->CameraBufferObject);
 			s_Data->CameraBuffer.Bind(0);
 		}
-		if(s_Data->DirectionalLight)
+		if (s_Data->DirectionalLight)
 		{
 			s_Data->DirectionalLightBufferObject.direction = s_Data->DirectionalLight->myDirection;
 			s_Data->DirectionalLightBufferObject.colorAndIntensity = s_Data->DirectionalLight->myColor;
-			s_Data->DirectionalLightBuffer.SetData(&s_Data->DirectionalLightBufferObject);
-			s_Data->DirectionalLightBuffer.Bind(2);
+			s_Data->directionalLightBuffer.SetData(&s_Data->DirectionalLightBufferObject);
+			s_Data->directionalLightBuffer.Bind(2);
 		}
+
+		s_Data->pointLightBuffer.SetData(&s_Data->PointLightBufferObject);
+		s_Data->pointLightBuffer.Bind(3);
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		s_Data->defferedGBuffer->Bind();
 		ShaderLibrary::Bind("DefferedPBR");
 		for (auto mesh : s_Data->Meshes)
 		{
-			s_Data->ModelBufferObject.modelSpace = Matrix4x4f::GetFastInverse(mesh->GetTransform().GetMatrix());
+			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
 			s_Data->ModelBuffer.SetData(&s_Data->ModelBufferObject);
 			s_Data->ModelBuffer.Bind(1);
 			mesh->Draw();
@@ -168,7 +178,7 @@ namespace Engine
 
 		for (auto mesh : s_Data->AnimatedMeshes)
 		{
-			s_Data->ModelBufferObject.modelSpace = Matrix4x4f::GetFastInverse(mesh->GetTransform().GetMatrix());
+			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
 			memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
 			s_Data->ModelBuffer.SetData(&s_Data->ModelBufferObject);
 			s_Data->ModelBuffer.Bind(1);
@@ -181,6 +191,7 @@ namespace Engine
 		s_Data->defferedGBuffer->BindToShader(2, 2);
 		s_Data->defferedGBuffer->BindToShader(3, 3);
 		s_Data->defferedGBuffer->BindToShader(4, 4);
+		s_Data->defferedGBuffer->BindToShader(5, 5);
 		ShaderLibrary::Bind("DeferredLightCalc");
 		//s_Data->defferedGBuffer->BindToShader();
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::None);
@@ -202,6 +213,8 @@ namespace Engine
 
 
 		s_Data->Meshes.clear();
+		s_Data->pointLightIterator = 0;
+		memset(&s_Data->PointLightBufferObject, 0, sizeof(PointLightBuffer));
 		s_Data->AnimatedMeshes.clear();
 		s_Data->ParticleSystem.clear();
 	}

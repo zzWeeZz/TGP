@@ -15,7 +15,7 @@ namespace Engine
 
 		Matrix4x4f& GetLookAt() { return myLookat; }
 		Vector3f GetPos() { return m_Position; }
-		Matrix4x4f GetProjection() { return myProjection; }
+		Matrix4x4f& GetProjection() { return myProjection; }
 		static Ref<Camera> Create(float fov, Vector2i size, float zNear, float zFar);
 	private:
 		void CalcMouseMovement();

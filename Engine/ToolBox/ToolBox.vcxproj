@@ -102,6 +102,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ToolBox\File\FileDialogs.h" />
     <ClInclude Include="src\ToolBox\Input\Input.h" />
     <ClInclude Include="src\ToolBox\Input\InputHandler.h" />
     <ClInclude Include="src\ToolBox\Math\Matrix\Matrix.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="src\ToolBox\Utility\UtilityFunctions.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ToolBox\File\FileDialogs.cpp" />
     <ClCompile Include="src\ToolBox\Input\Input.cpp" />
     <ClCompile Include="src\ToolBox\Input\InputHandler.cpp" />
     <ClCompile Include="src\ToolBox\Math\Transform.cpp" />

@@ -5,6 +5,7 @@
 #include "Engine/Renderer/Renderer.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+#include <ImGuizmo.h>
 
 Engine::Application::Application()
 {
@@ -35,6 +36,7 @@ void Engine::Application::Run()
 			ImGui_ImplDX11_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
+			ImGuizmo::BeginFrame();
 			for (const auto& layer : myLayerStack)
 			{
 				layer->OnUpdate();

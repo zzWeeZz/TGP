@@ -30,14 +30,20 @@ namespace Engine
 		ConstantBuffer<ModelBuffer> ModelBuffer;
 
 		DirectionalLightBuffer DirectionalLightBufferObject;
-		ConstantBuffer<DirectionalLightBuffer> DirectionalLightBuffer;
+		ConstantBuffer<DirectionalLightBuffer> directionalLightBuffer;
+
+		PointLightBuffer PointLightBufferObject;
+		ConstantBuffer<PointLightBuffer> pointLightBuffer;
+		uint32_t pointLightIterator = 0;
 	};
+
 	class Renderer
 	{
 	public:
 		static void Initialize();
 		static void SetActiveCamera(Ref<Camera> camera);
 		static void SubmitDirectionalLight(Ref<DirectionalLight> light);
+		static void SubmitPointLight(const PointLightData& light);
 		static void SetIBL(Ref<Texture2D> map);
 		static void SubmitMesh(Model* mesh);
 		static void SubmitAnimatedMesh(AnimatedModel* mesh);

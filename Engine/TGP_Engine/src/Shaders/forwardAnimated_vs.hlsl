@@ -43,8 +43,10 @@ PixelInput main(VertexInput vInput)
     skinnedPosition += mul(vInput.BoneWeight.w, BoneData[vInput.BoneIndex.w]);
 
     float4x4 mvp = mul(toProjection, mul(toView, toWorld));
+    float4 vertexWorldPosition = mul(toWorld, mul(pInput.position, skinnedPosition));
+ 
     pInput.position = mul(mvp, mul(vInput.position, skinnedPosition));
-    pInput.worldPosition = mul(vInput.position, skinnedPosition);
+    pInput.worldPosition = mul(toWorld, mul(vInput.position, skinnedPosition));
     pInput.color0 = vInput.color0;
     pInput.color1 = vInput.color1;
     pInput.color2 = vInput.color2;
@@ -55,7 +57,6 @@ PixelInput main(VertexInput vInput)
     pInput.texcoord3 = vInput.texcoord3;
     pInput.normal = vInput.normal;
 
-    float4 vertexWorldPosition = mul(toWorld, mul(pInput.position, skinnedPosition));
 
     float3 newTangent = mul((float3x3) toWorld, mul(vInput.tangent, (float3x3)skinnedPosition));
     float3 newBiTangent = mul((float3x3) toWorld, mul(vInput.biTangent, (float3x3) skinnedPosition));

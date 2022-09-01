@@ -20,6 +20,7 @@
     <ClInclude Include="misc\cpp\imgui_stdlib.h">
       <Filter>misc\cpp</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui.cpp" />
@@ -32,5 +33,6 @@
     <ClCompile Include="misc\cpp\imgui_stdlib.cpp">
       <Filter>misc\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp" />
   </ItemGroup>
 </Project>

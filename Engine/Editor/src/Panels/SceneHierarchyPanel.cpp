@@ -206,5 +206,48 @@ namespace Engine
 				entity.RemoveComponent<ModelComponent>();
 			}
 		}
+		if (entity.HasComponent<PointLightComponent>())
+		{
+			auto& pl = entity.GetComponent<PointLightComponent>();
+			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Pointlight Component");
+			ImGui::SameLine();
+
+			if (ImGui::Button("..."))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					removeComponent = true;
+				}
+				ImGui::EndPopup();
+			}
+			if (open)
+			{
+				float imColor[3] = { 0 };
+				memcpy(imColor, &pl.color, sizeof(Vector3f));
+				if (ImGui::ColorEdit3("Color", imColor, 0.1f))
+				{
+					memcpy(&pl.color, imColor, sizeof(Vector3f));
+				}
+				
+				if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
+				{
+				}
+				if (ImGui::DragFloat("Radius", &pl.radius, 0.1f))
+				{
+				}
+				ImGui::TreePop();
+			}
+			if (removeComponent)
+			{
+				entity.RemoveComponent<TransformComponent>();
+			}
+			
+		}
 	}
 }

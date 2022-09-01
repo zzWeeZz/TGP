@@ -23,4 +23,14 @@ namespace Engine
 		Vector3f direction;
 		float padding;
 	};
+	struct PointLightData
+	{
+		Vector4f colorAndIntensity = {0,0,0,0};
+		Vector3f position = {0,0,0};
+		float radius = 0;
+	};
+	struct PointLightBuffer
+	{
+		PointLightData  pointLightData[2000];
+	};
 }
