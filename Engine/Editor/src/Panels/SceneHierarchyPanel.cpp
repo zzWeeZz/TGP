@@ -2,6 +2,7 @@
 #include "Imgui.h"
 #include "Engine/Scene/Components.h"
 #include <imgui_internal.h>
+#include "Engine/Scripting/ScriptRegistry.h"
 namespace Engine
 {
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -267,10 +268,11 @@ namespace Engine
 			}
 			if (open)
 			{
-
+				ImGui::Separator();
 				for (auto& script : sc.scripts)
 				if (script)
 				{
+					ImGui::Text(script->GetName().c_str());
 					for (auto& prop : script->myProperties.properties)
 					{
 						switch (prop.type)
@@ -294,11 +296,46 @@ namespace Engine
 						}
 					}
 				}
-				if(ImGui::BeginCombo("add Script", "yea"))
-				{
+				auto scriptlist = ScriptRegistry<ScriptBase>::GetNameList();
 
-					ImGui::EndCombo();
+				if (ImGui::Button("Add Script"))
+				{
+					ImGui::OpenPopup("adsf");
 				}
+
+				if (ImGui::BeginPopup("adsf"))
+				{
+					bool mouseClicked = ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
+					ImGui::Columns(100 / (100, 100), "akdfjladk", true);
+					for (int n = 0; n < scriptlist.size(); n++)
+					{
+						(ImGui::Button("##", { 100,100 }) && mouseClicked);
+						if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+						{
+							auto s = ScriptRegistry<ScriptBase>::Create(scriptlist[n].c_str());
+							s->Create(entity);
+							sc.scripts.push_back(s);
+						}
+						ImGui::Text(scriptlist[n].c_str());
+						ImGui::NextColumn();
+					}
+
+
+					ImGui::EndPopup();
+				}
+
+				/*if(ImGui::BeginCombo("add Script", "current"))
+				{
+					for (int n = 0; n < scriptlist.size(); n++)
+					{
+						bool is_selected = (currentValue == scriptlist[n]);
+						if (ImGui::Selectable(scriptlist[n].c_str(), is_selected))
+							currentValue = scriptlist[n];
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}*/
 				ImGui::TreePop();
 			}
 			if (removeComponent)

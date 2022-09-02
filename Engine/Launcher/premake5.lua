@@ -37,6 +37,11 @@ project "Launcher"
 		"Editor"
 	}
 
+	linkoptions 
+	{
+		"/WHOLEARCHIVE:TGP_Engine"
+	}
+
 	defines {"_WINDOWS"}
 	
 	filter "configurations:Debug"

@@ -144,6 +144,7 @@
     <ClInclude Include="src\Engine\Scripting\ScriptBase.h" />
     <ClInclude Include="src\Engine\Scripting\ScriptRegistry.h" />
     <ClInclude Include="src\Engine\Scripting\TestScript.h" />
+    <ClInclude Include="src\Engine\Scripting\WobblerScript.h" />
     <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h" />
     <ClInclude Include="src\Engine\ShaderClasses\GeometryShader.h" />
     <ClInclude Include="src\Engine\ShaderClasses\PixelShader.h" />
@@ -188,7 +189,9 @@
     <ClCompile Include="src\Engine\Scene\Entity.cpp" />
     <ClCompile Include="src\Engine\Scene\Scene.cpp" />
     <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp" />
+    <ClCompile Include="src\Engine\Scripting\ScriptRegistry.cpp" />
     <ClCompile Include="src\Engine\Scripting\TestScript.cpp" />
+    <ClCompile Include="src\Engine\Scripting\WobblerScript.cpp" />
     <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp" />
     <ClCompile Include="src\Engine\ShaderClasses\GeometryShader.cpp" />
     <ClCompile Include="src\Engine\ShaderClasses\PixelShader.cpp" />

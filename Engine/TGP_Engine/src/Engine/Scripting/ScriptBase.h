@@ -28,10 +28,12 @@ namespace Engine
 		{
 			return myEntity.HasComponent<T>();
 		}
+		
 		virtual Properties SetProperties() = 0;
 		virtual void Start() = 0;
 		virtual void Update() = 0;
 		virtual void OnDestroy() = 0;
+		virtual std::string GetName() = 0;
 	protected:
 	private:
 		Properties myProperties;

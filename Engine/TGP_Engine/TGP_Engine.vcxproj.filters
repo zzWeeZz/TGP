@@ -187,7 +187,16 @@
     <ClInclude Include="src\Engine\Scene\Scene.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h">
+      <Filter>Engine\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Scripting\ScriptBase.h">
+      <Filter>Engine\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scripting\ScriptRegistry.h">
+      <Filter>Engine\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scripting\TestScript.h">
       <Filter>Engine\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h">
@@ -225,9 +234,7 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h" />
-    <ClInclude Include="src\Engine\Scripting\TestScript.h" />
-    <ClInclude Include="src\Engine\Scripting\ScriptRegistry.h" />
+    <ClInclude Include="src\Engine\Scripting\WobblerScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -317,6 +324,12 @@
     <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp">
       <Filter>Engine\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Scripting\ScriptRegistry.cpp">
+      <Filter>Engine\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Scripting\TestScript.cpp">
+      <Filter>Engine\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp">
       <Filter>Engine\ShaderClasses</Filter>
     </ClCompile>
@@ -336,7 +349,7 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
-    <ClCompile Include="src\Engine\Scripting\TestScript.cpp" />
+    <ClCompile Include="src\Engine\Scripting\WobblerScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">

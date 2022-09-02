@@ -5,13 +5,15 @@
 #include "Engine/ImGui/ImGuiLayer.h"
 #include "Engine/Core/Layer/LayerStack.h"
 #include "Editor/EditorLayer.h"
-
+#include "Engine/Scripting/ScriptBase.h"
+#include <Engine/Scripting/ScriptRegistry.h>
 
 class SandBox : public Engine::Application
 {
 public:
 	SandBox()
 	{
+		auto o = Engine::ScriptRegistry<Engine::ScriptBase>::Create("TestScript");
 		myLayerStack.Push(new Engine::ImGuiLayer());
 		myLayerStack.Push(new Engine::EditorLayer());
 	}

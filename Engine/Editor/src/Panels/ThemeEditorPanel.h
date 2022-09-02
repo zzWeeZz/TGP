@@ -13,4 +13,3 @@ namespace Engine
 		Vector3f mySavedColor;
 	};
 }
-
