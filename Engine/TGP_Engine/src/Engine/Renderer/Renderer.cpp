@@ -73,11 +73,28 @@ namespace Engine
 			ShaderLibrary::AddToLibrary("DeferredLightCalc", { PixelShader::Create("Shaders/DefferedLightCalc_ps.cso"), VertexShader::Create("Shaders/DefferedLightCalc_vs.cso", newLayout) });
 		}
 		{
+			InputLayout newLayout
+			{
+				{"NEARPOINT", 0, Value::Float3},
+				{"FARPOINT", 0, Value::Float3},
+				{"FRAGVIEW", 0, Value::Float4X4},
+				{"FRAGPROJ", 0, Value::Float4X4},
+			};
+			ShaderLibrary::AddToLibrary("Grid", { PixelShader::Create("Shaders/Grid_ps.cso"), VertexShader::Create("Shaders/Grid_vs.cso", newLayout) });
+		}
+		{
 			FrameBufferSpecs specs{};
 			specs.height = 720;
 			specs.width = 1280;
 			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
-			s_Data->frameBuffer = FrameBuffer::Create(specs);
+			s_Data->RendererFinalframeBuffer = FrameBuffer::Create(specs);
+		}
+		{
+			FrameBufferSpecs specs{};
+			specs.height = 720;
+			specs.width = 1280;
+			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
+			s_Data->particleGBuffer = FrameBuffer::Create(specs);
 		}
 		{
 			FrameBufferSpecs specs{};
@@ -134,16 +151,21 @@ namespace Engine
 
 	Ref<FrameBuffer> Renderer::GetMainFramebuffer()
 	{
-		return s_Data->frameBuffer;
+		return s_Data->RendererFinalframeBuffer;
+	}
+
+	Ref<FrameBuffer> Renderer::GetPaticleFramebuffer()
+	{
+		return s_Data->particleGBuffer;
 	}
 
 	void Renderer::Begin()
 	{
-		s_Data->frameBuffer->Clear();
+		s_Data->RendererFinalframeBuffer->Clear();
 		s_Data->defferedGBuffer->Clear({0,0,0,0});
-		if (s_Data->frameBuffer->GetSpecs().width != s_Data->defferedGBuffer->GetSpecs().width || s_Data->frameBuffer->GetSpecs().height != s_Data->defferedGBuffer->GetSpecs().height)
+		if (s_Data->RendererFinalframeBuffer->GetSpecs().width != s_Data->defferedGBuffer->GetSpecs().width || s_Data->RendererFinalframeBuffer->GetSpecs().height != s_Data->defferedGBuffer->GetSpecs().height)
 		{
-			s_Data->defferedGBuffer->Resize({ (float)s_Data->frameBuffer->GetSpecs().width , (float)s_Data->frameBuffer->GetSpecs().height });
+			s_Data->defferedGBuffer->Resize({ (float)s_Data->RendererFinalframeBuffer->GetSpecs().width , (float)s_Data->RendererFinalframeBuffer->GetSpecs().height });
 		}
 		if (s_Data->ActiveCamera)
 		{
@@ -165,6 +187,9 @@ namespace Engine
 		s_Data->pointLightBuffer.Bind(3);
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		// ----------------------------------------------------------------------- //
+		// ----------------------- DEFERRED RENDERING ---------------------------- //
+		// ----------------------------------------------------------------------- //
 		s_Data->defferedGBuffer->Bind();
 		ShaderLibrary::Bind("DefferedPBR");
 		for (auto mesh : s_Data->Meshes)
@@ -185,7 +210,7 @@ namespace Engine
 			mesh->Draw();
 		}
 		s_Data->defferedGBuffer->UnBind();
-		s_Data->frameBuffer->Bind();
+		s_Data->RendererFinalframeBuffer->Bind();
 		s_Data->defferedGBuffer->BindToShader(0, 0);
 		s_Data->defferedGBuffer->BindToShader(1, 1);
 		s_Data->defferedGBuffer->BindToShader(2, 2);
@@ -196,21 +221,51 @@ namespace Engine
 		//s_Data->defferedGBuffer->BindToShader();
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::None);
 		DX11::Context()->Draw(3, 0);
-		s_Data->frameBuffer->TransferDepth(s_Data->defferedGBuffer);
-		ShaderLibrary::Bind("Particle");
+		s_Data->RendererFinalframeBuffer->TransferDepth(s_Data->defferedGBuffer);
+		// ----------------------------------------------------------------------- //
+		// ----------------------- FORWARD RENDERING ----------------------------- //
+		// ----------------------------------------------------------------------- //
 		DX11::GetRenderStateManager().PopDepthStencilState();
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::ReadOnly);
 		DX11::GetRenderStateManager().PushBlendState(BlendMode::AlphaBlend);
+		ShaderLibrary::Bind("Grid");
+		DX11::Context()->Draw(6, 0);
+		ShaderLibrary::UnBind("Grid");
+		ShaderLibrary::Bind("Particle");
 		for (auto sys : s_Data->ParticleSystem)
 		{
 			sys->Bind();
 			sys->Draw();
 		}
 		ShaderLibrary::UnBind("Particle");
+		
 		DX11::GetRenderStateManager().PopDepthStencilState();
-		DX11::GetRenderStateManager().PopBlendState();
-		s_Data->frameBuffer->UnBind();
 
+		DX11::GetRenderStateManager().PopBlendState();
+
+		s_Data->RendererFinalframeBuffer->UnBind();
+		// ----------------------------------------------------------------------- //
+		// ------------------------ DONE RENDERING ------------------------------- //
+		// ----------------------------------------------------------------------- //
+
+		s_Data->particleGBuffer->Bind();
+		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::ReadOnly);
+		DX11::GetRenderStateManager().PushBlendState(BlendMode::AlphaBlend);
+		ShaderLibrary::Bind("Grid");
+		DX11::Context()->Draw(6, 0);
+		ShaderLibrary::UnBind("Grid");
+		ShaderLibrary::Bind("Particle");
+		for (auto sys : s_Data->ParticleSystem)
+		{
+			sys->Bind();
+			sys->Draw();
+		}
+		ShaderLibrary::UnBind("Particle");
+
+		DX11::GetRenderStateManager().PopDepthStencilState();
+
+		DX11::GetRenderStateManager().PopBlendState();
+		s_Data->particleGBuffer->UnBind();
 
 		s_Data->Meshes.clear();
 		s_Data->pointLightIterator = 0;

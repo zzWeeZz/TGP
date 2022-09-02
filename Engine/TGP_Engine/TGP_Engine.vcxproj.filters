@@ -187,6 +187,9 @@
     <ClInclude Include="src\Engine\Scene\Scene.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Scene\SceneSerializer.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h">
       <Filter>Engine\Scripting</Filter>
     </ClInclude>
@@ -197,6 +200,9 @@
       <Filter>Engine\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Scripting\TestScript.h">
+      <Filter>Engine\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Scripting\WobblerScript.h">
       <Filter>Engine\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\ShaderClasses\ComputeShader.h">
@@ -234,7 +240,6 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Scripting\WobblerScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -321,6 +326,9 @@
     <ClCompile Include="src\Engine\Scene\Scene.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Scene\SceneSerializer.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp">
       <Filter>Engine\Scripting</Filter>
     </ClCompile>
@@ -328,6 +336,9 @@
       <Filter>Engine\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Scripting\TestScript.cpp">
+      <Filter>Engine\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Scripting\WobblerScript.cpp">
       <Filter>Engine\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\ShaderClasses\ComputeShader.cpp">
@@ -349,7 +360,6 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
-    <ClCompile Include="src\Engine\Scripting\WobblerScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">
@@ -359,6 +369,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\GenerateDefferedImages_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Grid_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Grid_vs.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\ParticleSystem_ps.hlsl">

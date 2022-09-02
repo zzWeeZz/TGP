@@ -140,6 +140,7 @@
     <ClInclude Include="src\Engine\Scene\Components.h" />
     <ClInclude Include="src\Engine\Scene\Entity.h" />
     <ClInclude Include="src\Engine\Scene\Scene.h" />
+    <ClInclude Include="src\Engine\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h" />
     <ClInclude Include="src\Engine\Scripting\ScriptBase.h" />
     <ClInclude Include="src\Engine\Scripting\ScriptRegistry.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="src\Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine\Scene\Entity.cpp" />
     <ClCompile Include="src\Engine\Scene\Scene.cpp" />
+    <ClCompile Include="src\Engine\Scene\SceneSerializer.cpp" />
     <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp" />
     <ClCompile Include="src\Engine\Scripting\ScriptRegistry.cpp" />
     <ClCompile Include="src\Engine\Scripting\TestScript.cpp" />
@@ -215,6 +217,16 @@
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>../AssetData/Shaders/GenerateDefferedImages_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Grid_ps.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/Grid_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Grid_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/Grid_vs.cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="src\Shaders\ParticleSystem_ps.hlsl">
       <ShaderType>Pixel</ShaderType>

@@ -19,6 +19,10 @@ namespace Engine
 
 		Float = 41,
 		UInt = 42,
+		Float4X4 = Float4,
+		UInt4X4 = UInt4,
+		Float3X3 = Float3,
+		UInt3X3 = UInt3,
 	};
 
 	struct InputLayoutDefine

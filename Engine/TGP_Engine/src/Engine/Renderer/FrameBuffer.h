@@ -20,7 +20,7 @@ namespace Engine
 		void BindDepthToShader(uint32_t slot);
 		void TransferDepth(Ref<FrameBuffer> fb);
 		void UnBind();
-		void Clear(const Vector4f& color =  { 0.3, 0.3,0.3, 1});
+		void Clear(const Vector4f& color =  { 0.1, 0.1,0.1, 1});
 		ComPtr<ID3D11ShaderResourceView> GetColorAttachment(uint32_t index) { return m_ShaderResourceViews[index].Get(); };
 		inline FrameBufferSpecs& GetSpecs() { return m_Data; }
 

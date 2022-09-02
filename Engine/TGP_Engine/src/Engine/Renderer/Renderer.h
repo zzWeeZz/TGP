@@ -21,8 +21,9 @@ namespace Engine
 		Texture2D* map;
 
 		Ref<Camera> ActiveCamera;
-		Ref<FrameBuffer> frameBuffer;
+		Ref<FrameBuffer> RendererFinalframeBuffer;
 		Ref<FrameBuffer> defferedGBuffer;
+		Ref<FrameBuffer> particleGBuffer;
 		CameraBuffer CameraBufferObject;
 		ConstantBuffer<CameraBuffer> CameraBuffer;
 
@@ -49,6 +50,7 @@ namespace Engine
 		static void SubmitAnimatedMesh(AnimatedModel* mesh);
 		static void SubmitParticleSystem(Ref<ParticleSystem> sys);
 		static Ref<FrameBuffer> GetMainFramebuffer();
+		static Ref<FrameBuffer> GetPaticleFramebuffer();
 		static void Begin();
 		static void Shutdown();
 	};

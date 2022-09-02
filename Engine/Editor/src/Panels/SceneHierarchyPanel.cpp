@@ -112,235 +112,271 @@ namespace Engine
 			{
 				TagComp.tag = buffer;
 			}
-			
-		}
-		const ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
-
-		if (entity.HasComponent<TransformComponent>())
-		{
-			auto& tf = entity.GetComponent<TransformComponent>();
-			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Transform Component");
 			ImGui::SameLine();
-			
-			if (ImGui::Button("..."))
+			if (ImGui::Button("Add Comp"))
 			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
+				ImGui::OpenPopup("dasda");
 
-			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
+			}
+			if (ImGui::BeginPopup("dasda"))
 			{
-				if (ImGui::MenuItem("Remove Component"))
+
+				ImGui::Columns(100 / (100, 100), "akdfjladdddk", true);
+				std::vector<std::string> listofComps
 				{
-					removeComponent = true;
+					"Model Component",
+					"Pointlight Component",
+					"Script Component"
+				};
+				for (int n = 0; n < listofComps.size(); n++)
+				{
+					if ((ImGui::Button(listofComps[n].c_str())))
+					{
+						if (listofComps[n] == "Model Component")
+						{
+							entity.AddComponent<ModelComponent>();
+						}
+						else if (listofComps[n] == "Pointlight Component")
+						{
+							entity.AddComponent<PointLightComponent>();
+						}
+						else if (listofComps[n] == "Script Component")
+						{
+							entity.AddComponent<ScriptComponent>();
+						}
+					}
+					ImGui::NextColumn();
 				}
+
+
 				ImGui::EndPopup();
 			}
-			if (open)
-			{
-				float imPos[3] = { 0 };
-				memcpy(imPos, &tf.transform.GetPosition(), sizeof(Vector3f));
-				if (ImGui::DragFloat3("Position", imPos, 0.1f))
-				{
-					tf.transform.SetPosition({ imPos[0], imPos[1], imPos[2] });
-				}
-				float imRot[3] = { 0 };
-				memcpy(imRot, &tf.transform.GetRotation(), sizeof(Vector3f));
-				if (ImGui::DragFloat3("Rotation", imRot, 0.1f))
-				{
-					tf.transform.SetRotation({ imRot[0], imRot[1], imRot[2] });
-				}
-				float imScale[3] = { 0 };
-				memcpy(imScale, &tf.transform.GetScale(), sizeof(Vector3f));
-				if (ImGui::DragFloat3("Scale", imScale, 0.1f))
-				{
-					tf.transform.SetScale({imScale[0], imScale[1], imScale[2]});
-				}
-				ImGui::TreePop();
-			}
-		}
-		if (entity.HasComponent<ModelComponent>())
-		{
-			auto& tf = entity.GetComponent<ModelComponent>();
-			bool open = ImGui::TreeNodeEx((void*)typeid(ModelComponent).hash_code(), flags, "Model Component");
-			ImGui::SameLine();
+			const ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
 
-			if (ImGui::Button("..."))
+			if (entity.HasComponent<TransformComponent>())
 			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
-
-			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
-			{
-				if (ImGui::MenuItem("Remove Component"))
-				{
-					removeComponent = true;
-				}
-				ImGui::EndPopup();
-			}
-			if (open)
-			{
-				char buffer[256];
-				memset(buffer, 0, sizeof(buffer));
-				strcpy(buffer, tf.filePath);
-				ImGui::Text("Filepath: ");
+				auto& tf = entity.GetComponent<TransformComponent>();
+				bool open = ImGui::CollapsingHeader("Transform component");
 				ImGui::SameLine();
-				if (ImGui::InputText("##", buffer, sizeof(buffer)))
-				{
-					static std::string strTransfer(buffer);
-					strTransfer = buffer;
-					tf.filePath = strTransfer.c_str();
-				}
-				if (ImGui::Button("Load"))
-				{
-					tf.modelHandle = Model::Create(tf.filePath);
-				}
-				ImGui::TreePop();
-			}
-			if (removeComponent)
-			{
-				entity.RemoveComponent<ModelComponent>();
-			}
-		}
-		if (entity.HasComponent<PointLightComponent>())
-		{
-			auto& pl = entity.GetComponent<PointLightComponent>();
-			bool open = ImGui::TreeNodeEx((void*)typeid(PointLightComponent).hash_code(), flags, "Pointlight Component");
-			ImGui::SameLine();
 
-			if (ImGui::Button("..."))
-			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("ComponentSettings");
+				}
 
-			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
-			{
-				if (ImGui::MenuItem("Remove Component"))
+				bool removeComponent = false;
+				if (ImGui::BeginPopup("ComponentSettings"))
 				{
-					removeComponent = true;
-				}
-				ImGui::EndPopup();
-			}
-			if (open)
-			{
-				float imColor[3] = { 0 };
-				memcpy(imColor, &pl.color, sizeof(Vector3f));
-				if (ImGui::ColorEdit3("Color", imColor, 0.1f))
-				{
-					memcpy(&pl.color, imColor, sizeof(Vector3f));
-				}
-				
-				if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
-				{
-				}
-				if (ImGui::DragFloat("Radius", &pl.radius, 0.1f))
-				{
-				}
-				ImGui::TreePop();
-			}
-			if (removeComponent)
-			{
-				entity.RemoveComponent<PointLightComponent>();
-			}
-			
-		}
-		if (entity.HasComponent<ScriptComponent>())
-		{
-			auto& sc = entity.GetComponent<ScriptComponent>();
-			bool open = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), flags, "Script Component");
-			ImGui::SameLine();
-
-			if (ImGui::Button("..."))
-			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
-
-			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
-			{
-				if (ImGui::MenuItem("Remove Component"))
-				{
-					removeComponent = true;
-				}
-				ImGui::EndPopup();
-			}
-			if (open)
-			{
-				ImGui::Separator();
-				for (auto& script : sc.scripts)
-				if (script)
-				{
-					ImGui::Text(script->GetName().c_str());
-					for (auto& prop : script->myProperties.properties)
+					if (ImGui::MenuItem("Remove Component"))
 					{
-						switch (prop.type)
-						{
-						case PropertyType::Float:
-							ImGui::DragFloat(prop.name.c_str(), (float*)prop.varible);
-							break;
-						case PropertyType::Int:
-							ImGui::DragInt(prop.name.c_str(), (int*)prop.varible);
-							break;
-						case PropertyType::String:
-							break;
-						case PropertyType::Vector2:
-							break;
-						case PropertyType::Vector3:
-							break;
-						case PropertyType::Vector4:
-							break;
-						default:
-							break;
-						}
+						removeComponent = true;
 					}
-				}
-				auto scriptlist = ScriptRegistry<ScriptBase>::GetNameList();
-
-				if (ImGui::Button("Add Script"))
-				{
-					ImGui::OpenPopup("adsf");
-				}
-
-				if (ImGui::BeginPopup("adsf"))
-				{
-					bool mouseClicked = ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
-					ImGui::Columns(100 / (100, 100), "akdfjladk", true);
-					for (int n = 0; n < scriptlist.size(); n++)
-					{
-						(ImGui::Button("##", { 100,100 }) && mouseClicked);
-						if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-						{
-							auto s = ScriptRegistry<ScriptBase>::Create(scriptlist[n].c_str());
-							s->Create(entity);
-							sc.scripts.push_back(s);
-						}
-						ImGui::Text(scriptlist[n].c_str());
-						ImGui::NextColumn();
-					}
-
-
 					ImGui::EndPopup();
 				}
-
-				/*if(ImGui::BeginCombo("add Script", "current"))
+				if (open)
 				{
-					for (int n = 0; n < scriptlist.size(); n++)
+					float imPos[3] = { 0 };
+					memcpy(imPos, &tf.transform.GetPosition(), sizeof(Vector3f));
+					ImGui::Text("Position: ");
+					ImGui::SameLine();
+					if (ImGui::DragFloat3("##Pos", imPos, 0.1f))
 					{
-						bool is_selected = (currentValue == scriptlist[n]);
-						if (ImGui::Selectable(scriptlist[n].c_str(), is_selected))
-							currentValue = scriptlist[n];
-							if (is_selected)
-								ImGui::SetItemDefaultFocus();
+						tf.transform.SetPosition({ imPos[0], imPos[1], imPos[2] });
 					}
-					ImGui::EndCombo();
-				}*/
-				ImGui::TreePop();
+					float imRot[3] = { 0 };
+					memcpy(imRot, &tf.transform.GetRotation(), sizeof(Vector3f));
+					ImGui::Text("Rotation: ");
+					ImGui::SameLine();
+					if (ImGui::DragFloat3("##Rot", imRot, 0.1f))
+					{
+						tf.transform.SetRotation({ imRot[0], imRot[1], imRot[2] });
+					}
+					float imScale[3] = { 0 };
+					memcpy(imScale, &tf.transform.GetScale(), sizeof(Vector3f));
+					ImGui::Text("Scale: ");
+					ImGui::SameLine();
+					if (ImGui::DragFloat3("##Sc", imScale, 0.1f))
+					{
+						tf.transform.SetScale({ imScale[0], imScale[1], imScale[2] });
+					}
+				}
+				ImGui::Separator();
+
 			}
-			if (removeComponent)
+			if (entity.HasComponent<ModelComponent>())
 			{
-				entity.RemoveComponent<ScriptComponent>();
+				auto& tf = entity.GetComponent<ModelComponent>();
+				bool open = ImGui::CollapsingHeader("Model component");
+				ImGui::SameLine();
+
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("ComponentSettings");
+				}
+
+				bool removeComponent = false;
+				if (ImGui::BeginPopup("ComponentSettings"))
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						removeComponent = true;
+					}
+					ImGui::EndPopup();
+				}
+				if (open)
+				{
+					ImGui::Separator();
+
+					char buffer[256];
+					memset(buffer, 0, sizeof(buffer));
+					strcpy(buffer, tf.filePath);
+					ImGui::Text("Filepath: ");
+					ImGui::SameLine();
+					if (ImGui::InputText("##", buffer, sizeof(buffer)))
+					{
+						static std::string strTransfer(buffer);
+						strTransfer = buffer;
+						tf.filePath = strTransfer.c_str();
+					}
+					if (ImGui::Button("Load"))
+					{
+						tf.modelHandle = Model::Create(tf.filePath);
+					}
+				}
+				ImGui::Separator();
+
+				if (removeComponent)
+				{
+					entity.RemoveComponent<ModelComponent>();
+				}
+			}
+			if (entity.HasComponent<PointLightComponent>())
+			{
+				auto& pl = entity.GetComponent<PointLightComponent>();
+				bool open = ImGui::CollapsingHeader("Pointlight component");
+				ImGui::SameLine();
+
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("ComponentSettings");
+				}
+
+				bool removeComponent = false;
+				if (ImGui::BeginPopup("ComponentSettings"))
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						removeComponent = true;
+					}
+					ImGui::EndPopup();
+				}
+				if (open)
+				{
+					float imColor[3] = { 0 };
+					memcpy(imColor, &pl.color, sizeof(Vector3f));
+					if (ImGui::ColorEdit3("Color", imColor, 0.1f))
+					{
+						memcpy(&pl.color, imColor, sizeof(Vector3f));
+					}
+
+					if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
+					{
+					}
+					if (ImGui::DragFloat("Radius", &pl.radius, 0.1f))
+					{
+					}
+				}
+				if (removeComponent)
+				{
+					entity.RemoveComponent<PointLightComponent>();
+				}
+
+			}
+			if (entity.HasComponent<ScriptComponent>())
+			{
+				auto& sc = entity.GetComponent<ScriptComponent>();
+				bool open = ImGui::CollapsingHeader("Script component");
+				ImGui::SameLine();
+
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("ComponentSettings");
+				}
+
+				bool removeComponent = false;
+				if (ImGui::BeginPopup("ComponentSettings"))
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						removeComponent = true;
+					}
+					ImGui::EndPopup();
+				}
+				if (open)
+				{
+					for (auto& script : sc.scripts)
+						if (script)
+						{
+							if (ImGui::CollapsingHeader(script->GetName().c_str()))
+							{
+
+								for (auto& prop : script->myProperties.properties)
+								{
+									switch (prop.type)
+									{
+									case PropertyType::Float:
+										ImGui::DragFloat(prop.name.c_str(), (float*)prop.varible);
+										break;
+									case PropertyType::Int:
+										ImGui::DragInt(prop.name.c_str(), (int*)prop.varible);
+										break;
+									case PropertyType::String:
+										break;
+									case PropertyType::Vector2:
+										break;
+									case PropertyType::Vector3:
+										break;
+									case PropertyType::Vector4:
+										break;
+									default:
+										break;
+									}
+								}
+							}
+						}
+					auto scriptlist = ScriptRegistry<ScriptBase>::GetNameList();
+
+					if (ImGui::Button("Add Script"))
+					{
+						ImGui::OpenPopup("adsf");
+					}
+					ImGui::Separator();
+
+					if (ImGui::BeginPopup("adsf"))
+					{
+						bool mouseClicked = ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
+						ImGui::Columns(100 / (100, 100), "akdfjladk", true);
+						for (int n = 0; n < scriptlist.size(); n++)
+						{
+							(ImGui::Button("##", { 100,100 }) && mouseClicked);
+							if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+							{
+								auto s = ScriptRegistry<ScriptBase>::Create(scriptlist[n].c_str());
+								s->Create(entity);
+								sc.scripts.push_back(s);
+							}
+							ImGui::Text(scriptlist[n].c_str());
+							ImGui::NextColumn();
+						}
+
+
+						ImGui::EndPopup();
+					}
+				}
+				if (removeComponent)
+				{
+					entity.RemoveComponent<ScriptComponent>();
+				}
 			}
 		}
 	}

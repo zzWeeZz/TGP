@@ -18,10 +18,14 @@ namespace Engine
 					if (std::filesystem::exists(mdl.filePath))
 						mdl.modelHandle = Model::Create(mdl.filePath);
 				}
+				else
+				{
+
 				mdl.modelHandle->GetTransform().SetPosition(tf.transform.GetPosition());
 				mdl.modelHandle->GetTransform().SetRotation(tf.transform.GetRotation());
 				mdl.modelHandle->GetTransform().SetScale(tf.transform.GetScale());
 				Renderer::SubmitMesh(mdl.modelHandle.get());
+				}
 			});
 		m_Registry.Execute<PointLightComponent, TransformComponent>([&](auto& entity, PointLightComponent& pl, TransformComponent& tf)
 			{

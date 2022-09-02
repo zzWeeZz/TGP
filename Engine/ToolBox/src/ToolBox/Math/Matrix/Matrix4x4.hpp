@@ -204,9 +204,9 @@ namespace ToolBox
 			scaleY.Normalize();
 			scaleZ.Normalize();
 
-			rotation.x = RAD2DEG * atan2f(scaleY.z, scaleZ.z);
-			rotation.y = RAD2DEG * atan2f(-scaleX.z, sqrtf(scaleY.z * scaleY.z + scaleZ.z * scaleZ.z));
-			rotation.z = RAD2DEG * atan2f(scaleX.y, scaleX.x);
+			rotation.x = atan2f(scaleY.z, scaleZ.z);
+			rotation.y = atan2f(-scaleX.z, sqrtf(scaleY.z * scaleY.z + scaleZ.z * scaleZ.z));
+			rotation.z = atan2f(scaleX.y, scaleX.x);
 
 			position.x = mat(4, 1);
 			position.y = mat(4, 2);
