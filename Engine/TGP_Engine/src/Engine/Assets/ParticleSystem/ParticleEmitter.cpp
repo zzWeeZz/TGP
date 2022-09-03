@@ -23,7 +23,7 @@ void Engine::ParticleEmitter::LoadData()
 	{
 		InitParticle(i);
 	}
-	myTexture = Texture2D::Create("PatricleSystems/ParticleStar.dds");
+	myTexture = Texture2D::Create("Assets/PatricleSystems/ParticleStar.dds");
 	myVertexBuffer.Initialize(myParticles.data(), static_cast<UINT>(myParticles.size()));
 }
 

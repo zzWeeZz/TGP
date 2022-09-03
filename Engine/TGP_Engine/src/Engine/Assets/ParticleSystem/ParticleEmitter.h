@@ -27,6 +27,7 @@ namespace Engine
 	class ParticleEmitter
 	{
 		friend class ParticleSystem;
+		friend class AssetPacker;
 	public:
 		ParticleEmitter() = default;
 		void LoadData();

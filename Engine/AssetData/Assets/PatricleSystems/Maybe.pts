@@ -1,0 +1,10 @@
+ParticleSystem: Maybe
+Emitters:
+  - StartColor
+  - [0, 1, 1, 1]
+  - EndColor
+  - [1, 0, 0, 1]
+  - StartSize
+  - 20
+  - EndSize
+  - -1.073742e+08

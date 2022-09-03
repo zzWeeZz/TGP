@@ -1,0 +1,93 @@
+Scene: Name
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+  - Entity: 1
+    TagComponent:
+      Tag: gjdajkkkkkka
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      Mesh: Model/SM_Particle_Chest.fbx
+    ScriptComponent:
+      Scripts:
+        []
+  - Entity: 2
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0, 0, 0]
+      Intensity: 0
+      Range: 0
+  - Entity: 3
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0, 0, 0]
+      Intensity: 0
+      Range: 0
+  - Entity: 4
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0, 0, 0]
+      Intensity: 0
+      Range: 0
+  - Entity: 5
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0, 0, 0]
+      Intensity: 0
+      Range: 0
+  - Entity: 6
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+  - Entity: 7
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+  - Entity: 8
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+  - Entity: 9
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]

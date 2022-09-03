@@ -106,6 +106,7 @@
     <ClInclude Include="src\Application\Window\Window.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Engine\Assets\Asset.h" />
+    <ClInclude Include="src\Engine\Assets\AssetPacker.h" />
     <ClInclude Include="src\Engine\Assets\Lights\DirectionalLight.h" />
     <ClInclude Include="src\Engine\Assets\Material\Material.h" />
     <ClInclude Include="src\Engine\Assets\Model\AnimatedModel.h" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp" />
     <ClCompile Include="src\Application\Window\Window.cpp" />
+    <ClCompile Include="src\Engine\Assets\AssetPacker.cpp" />
     <ClCompile Include="src\Engine\Assets\Lights\DirectionalLight.cpp" />
     <ClCompile Include="src\Engine\Assets\Material\Material.cpp" />
     <ClCompile Include="src\Engine\Assets\Model\AnimatedModel.cpp" />

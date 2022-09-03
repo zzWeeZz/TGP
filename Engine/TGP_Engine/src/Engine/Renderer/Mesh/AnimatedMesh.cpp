@@ -228,7 +228,7 @@ void Engine::AnimatedMesh::ProcessMaterials(const std::filesystem::path& path, c
 	}
 	else
 	{
-		tempMaterial->AddDiffuseTexture(Texture2D::Create("Textures/T_Default_C.dds"));
+		tempMaterial->AddDiffuseTexture(Texture2D::Create("Assets/Textures/T_Default_C.dds"));
 	}
 	if (std::filesystem::exists(NormalPath))
 	{
@@ -236,7 +236,7 @@ void Engine::AnimatedMesh::ProcessMaterials(const std::filesystem::path& path, c
 	}
 	else
 	{
-		tempMaterial->AddNormalTexture(Texture2D::Create("Textures/T_Default_N.dds"));
+		tempMaterial->AddNormalTexture(Texture2D::Create("Assets/Textures/T_Default_N.dds"));
 	}
 	if (std::filesystem::exists(SpecularPath))
 	{
@@ -245,7 +245,7 @@ void Engine::AnimatedMesh::ProcessMaterials(const std::filesystem::path& path, c
 	else
 	{
 		uint32_t white = 0xffffffff;
-		tempMaterial->AddSpecularTexture(Texture2D::Create("Textures/T_Default_M.dds"));
+		tempMaterial->AddSpecularTexture(Texture2D::Create("Assets/Textures/T_Default_M.dds"));
 	}
 
 	outMaterials.push_back(tempMaterial);

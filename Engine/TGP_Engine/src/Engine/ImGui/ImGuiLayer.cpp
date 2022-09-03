@@ -19,11 +19,11 @@ void Engine::ImGuiLayer::OnAttach()
 	ImGui::StyleColorsDark();
 
 	io.Fonts->Clear();
-	io.Fonts->AddFontFromFileTTF("Fonts/open-sans/OpenSans-Bold.ttf", 16);
-	io.Fonts->AddFontFromFileTTF("Fonts/open-sans/OpenSans-Bold.ttf", 16);
-	io.Fonts->AddFontFromFileTTF("Fonts/open-sans/OpenSans-Bold.ttf", 32);
-	io.Fonts->AddFontFromFileTTF("Fonts/open-sans/OpenSans-Bold.ttf", 11);
-	io.Fonts->AddFontFromFileTTF("Fonts/open-sans/OpenSans-ExtraBold.ttf", 11);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/open-sans/OpenSans-Bold.ttf", 16);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/open-sans/OpenSans-Bold.ttf", 16);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/open-sans/OpenSans-Bold.ttf", 32);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/open-sans/OpenSans-Bold.ttf", 11);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/open-sans/OpenSans-ExtraBold.ttf", 11);
 	io.Fonts->Build();
 
 	ImGuiStyle* style = &ImGui::GetStyle();

@@ -9,5 +9,6 @@ namespace Engine
 		void ImGuiRender();
 	private:
 		Ref<Texture2D> myTexture;
+		Ref<Texture2D> myFile;
 	};
 }

@@ -106,8 +106,6 @@ namespace Engine
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
 			strcpy(buffer, TagComp.tag.c_str());
-			ImGui::Text("Tag: ");
-			ImGui::SameLine();
 			if (ImGui::InputText("##", buffer, sizeof(buffer)))
 			{
 				TagComp.tag = buffer;
@@ -226,17 +224,28 @@ namespace Engine
 				if (open)
 				{
 					ImGui::Separator();
-
+				
 					char buffer[256];
 					memset(buffer, 0, sizeof(buffer));
 					strcpy(buffer, tf.filePath);
 					ImGui::Text("Filepath: ");
 					ImGui::SameLine();
-					if (ImGui::InputText("##", buffer, sizeof(buffer)))
+					static std::string strTransfer(buffer);
+
+					if (ImGui::InputText("##sdasdas", buffer, sizeof(buffer)))
 					{
-						static std::string strTransfer(buffer);
 						strTransfer = buffer;
 						tf.filePath = strTransfer.c_str();
+					}
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							strTransfer = std::filesystem::path(path).string().c_str();
+							tf.filePath = strTransfer.c_str();
+						}
+						ImGui::EndDragDropTarget();
 					}
 					if (ImGui::Button("Load"))
 					{

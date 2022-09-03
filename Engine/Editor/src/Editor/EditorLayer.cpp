@@ -11,44 +11,6 @@ void Engine::EditorLayer::OnAttach()
 {
 	myEditorCamera = Camera::Create(90, { 100, 100 }, 0.1, 100000.f);
 	myScene = CreateRef<Scene>();
-	{
-		auto entt = myScene->CreateEntity();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-		entt.GetComponent<TagComponent>().tag = "gjdajkkkkkka";
-		ModelComponent& mdl = entt.AddComponent<ModelComponent>();
-		mdl.filePath = "Model/SM_Particle_Chest.fbx";
-		auto& sc = entt.AddComponent<ScriptComponent>();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-		auto comp = entt.AddComponent<PointLightComponent>();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-		auto comp = entt.AddComponent<PointLightComponent>();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-		auto comp = entt.AddComponent<PointLightComponent>();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-		auto comp = entt.AddComponent<PointLightComponent>();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-	}
-	{
-		auto entt = myScene->CreateEntity();
-	}
 	mySceneHierarchyPanel = CreateRef<SceneHierarchyPanel>(myScene);
 	myContentBrowserPanel = CreateRef<ContentBrowserPanel>();
 	myThemeEditorPanel = CreateRef<ThemeEditorPanel>();
@@ -207,7 +169,7 @@ void Engine::EditorLayer::OnUpdate()
 			auto matrix = tf.transform.GetMatrix();
 			float trans[16] = { 0 };
 			memcpy(trans, &matrix, sizeof(float) * 16);
-			static ImGuizmo::OPERATION ops;
+			static ImGuizmo::OPERATION ops = ImGuizmo::TRANSLATE;;
 			if (ImGui::GetIO().KeysDown[ImGuiKey_W])
 			{
 				ops = ImGuizmo::TRANSLATE;

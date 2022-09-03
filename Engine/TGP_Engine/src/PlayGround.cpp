@@ -5,12 +5,13 @@
 #include "ToolBox/Input/Input.h"
 #include "Engine/ShaderClasses/ShaderLibrary.h"
 #include "imgui.h"
+#include "Engine/Assets/AssetPacker.h"
 
 void Engine::PlayGround::Init()
 {
 
-	myInterpModel = AnimatedModel::Create("Model/Gremlin/gremlin_sk.fbx");
-	myInterpModel->AddAnimation({ "Model/Gremlin/gremlin@run.fbx", "runint", true, true });
+	myInterpModel = AnimatedModel::Create("Assets/Model/Gremlin/gremlin_sk.fbx");
+	myInterpModel->AddAnimation({ "Assets/Model/Gremlin/gremlin@run.fbx", "runint", true, true });
 
 	myInterpModel->GetTransform().SetScale(1.f, 1.f, 1.f);
 	myInterpModel->GetTransform().SetPosition(-50, 0, 0);
@@ -18,17 +19,17 @@ void Engine::PlayGround::Init()
 
 
 	{
-		myBlendedModel = AnimatedModel::Create("Model/Gremlin/gremlin_sk.fbx");
-		myBlendedModel->AddAnimation({ "Model/Gremlin/gremlin@run.fbx", "runint", true, true });
-		myBlendedModel->AddAnimation({ "Model/Gremlin/gremlin@walk.fbx", "runnorm", true, true });
+		myBlendedModel = AnimatedModel::Create("Assets/Model/Gremlin/gremlin_sk.fbx");
+		myBlendedModel->AddAnimation({ "Assets/Model/Gremlin/gremlin@run.fbx", "runint", true, true });
+		myBlendedModel->AddAnimation({ "Assets/Model/Gremlin/gremlin@walk.fbx", "runnorm", true, true });
 
 		myBlendedModel->GetTransform().SetScale(1.f, 1.f, 1.f);
 		myBlendedModel->GetTransform().SetPosition(0, 0, 0);
 	}
 
 	{
-		myKeyModel = AnimatedModel::Create("Model/Gremlin/gremlin_sk.fbx");
-		myKeyModel->AddAnimation({ "Model/Gremlin/gremlin@run.fbx", "runint", true, false });
+		myKeyModel = AnimatedModel::Create("Assets/Model/Gremlin/gremlin_sk.fbx");
+		myKeyModel->AddAnimation({ "Assets/Model/Gremlin/gremlin@run.fbx", "runint", true, false });
 
 		myKeyModel->GetTransform().SetScale(1.f, 1.f, 1.f);
 		myKeyModel->GetTransform().SetPosition(50, 0, 0);
@@ -43,7 +44,7 @@ void Engine::PlayGround::Init()
 	myPrimative->GetTransform().SetPosition(0, 2, -20);
 
 	{
-		myChest = Model::Create("Model/SM_Particle_Chest.fbx");
+		myChest = Model::Create("Assets/Model/SM_Particle_Chest.fbx");
 
 		myChest->GetTransform().SetScale(0.5f, 0.5f, 0.5f);
 		myChest->GetTransform().SetPosition(-50, 50, 50);
@@ -56,8 +57,9 @@ void Engine::PlayGround::Init()
 	myDirLight->SetDirection({ 0, -1,-1 });
 	myDirLight->SetIntensity(1);
 
-	myIBL = Texture2D::Create("Textures/skansen_cubemap.dds");
+	myIBL = Texture2D::Create("Assets/Textures/skansen_cubemap.dds");
 	myParticleSystem = ParticleSystem::Create("agja");
+	AssetPacker::Particle(myParticleSystem, "Maybe");
 	Renderer::SetIBL(myIBL);
 
 }

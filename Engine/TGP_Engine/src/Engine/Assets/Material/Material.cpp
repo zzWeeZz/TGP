@@ -5,9 +5,9 @@
 std::unordered_map<std::string, Engine::Ref<Engine::Material>> Engine::Material::m_Registry;
 Engine::Material::Material(const std::string& name)
 {
-	m_Diffuse = Texture2D::Create("Textures/T_Default_C.dds");
-	m_Normal = Texture2D::Create("Textures/T_Default_N.dds");
-	m_MaterialInfo = Texture2D::Create("Textures/T_Default_M.dds");
+	m_Diffuse = Texture2D::Create("Assets/Textures/T_Default_C.dds");
+	m_Normal = Texture2D::Create("Assets/Textures/T_Default_N.dds");
+	m_MaterialInfo = Texture2D::Create("Assets/Textures/T_Default_M.dds");
 	m_Registry[name] = std::make_shared<Material>(*this);
 	m_ShaderKey = "Forward";
 }
