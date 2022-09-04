@@ -8,3 +8,19 @@ Emitters:
   - 20
   - EndSize
   - -1.073742e+08
+  - StartVelocity
+  - [0, 1200, 0]
+  - EndVelocity
+  - [0, 5, 0]
+  - LifeTime
+  - 2
+  - LifeTimeVariance
+  - -1.073742e+08
+  - SpwanRate
+  - 0.1
+  - SpwanRateVariance
+  - 0
+  - MaxParticles
+  - 100
+  - GravityScale
+  - 981

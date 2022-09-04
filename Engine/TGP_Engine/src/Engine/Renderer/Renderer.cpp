@@ -248,24 +248,7 @@ namespace Engine
 		// ------------------------ DONE RENDERING ------------------------------- //
 		// ----------------------------------------------------------------------- //
 
-		s_Data->particleGBuffer->Bind();
-		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::ReadOnly);
-		DX11::GetRenderStateManager().PushBlendState(BlendMode::AlphaBlend);
-		ShaderLibrary::Bind("Grid");
-		DX11::Context()->Draw(6, 0);
-		ShaderLibrary::UnBind("Grid");
-		ShaderLibrary::Bind("Particle");
-		for (auto sys : s_Data->ParticleSystem)
-		{
-			sys->Bind();
-			sys->Draw();
-		}
-		ShaderLibrary::UnBind("Particle");
-
-		DX11::GetRenderStateManager().PopDepthStencilState();
-
-		DX11::GetRenderStateManager().PopBlendState();
-		s_Data->particleGBuffer->UnBind();
+		
 
 		s_Data->Meshes.clear();
 		s_Data->pointLightIterator = 0;

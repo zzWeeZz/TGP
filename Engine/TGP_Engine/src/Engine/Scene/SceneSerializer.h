@@ -1,6 +1,10 @@
 #pragma once
 #include "Scene.h"
 #include "Engine/DX11/DX11.h"
+namespace YAML
+{
+	class Emitter;
+}
 namespace Engine
 {
 	class SceneSerializer

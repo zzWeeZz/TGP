@@ -16,6 +16,7 @@ YAML::Emitter& operator<<(YAML::Emitter& out, Vector3f& vector)
 	return out;
 }
 
+
 static void SerializeEntity(Engine::Entity entity, YAML::Emitter& out)
 {
 	out << YAML::BeginMap;
@@ -180,3 +181,4 @@ bool Engine::SceneSerializer::Deserialize(const std::string& path)
 	}
 	return true;
 }
+
