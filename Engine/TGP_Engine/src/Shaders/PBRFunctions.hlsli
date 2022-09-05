@@ -201,7 +201,7 @@ float3 EvaluatePointLight(float3 albedoColor, float3 specularColor, float3 norma
     float distFromPixel = length(position.xyz - camPos);
     if (distFromPixel > radius)
     {
-        finalColor += float3(0, 0, 0);
+        finalColor = float3(0, 0, 0);
         return finalColor;
     }
     
@@ -229,6 +229,31 @@ float3 EvaluatePointLight(float3 albedoColor, float3 specularColor, float3 norma
     const float3 cSpec = Specular(specularColor, h, viewDir, a, NdL, NdV, NdH);
     finalColor = saturate(lightColor * NdL * (cDiff * (1.0 - cSpec) + cSpec) * PI) * radiance * lightIntensity;
     return finalColor;
+}
+
+float3 EvaluateSpotLight(float3 albedoColor, float3 specularColor, float3 normal, float roughness, float3 lightColor, float lightIntensity, float cutOff, float3 position, float3 lightDir, float3 camPos, float3 viewDir)
+{
+    float dirFromPixel = normalize(position.xyz - camPos);
+    
+    float theta = dot(lightDir, (-dirFromPixel));
+    
+    if (theta < cutOff)
+    {
+        return float3(0, 0, 0);
+    }
+    float3 finalColor = 0;
+    const float NdL = saturate(dot(normal, -dirFromPixel));
+    // Compute N dot V, the View Angle.
+    const float NdV = saturate(dot(normal, viewDir));
+    const float3 h = normalize(dirFromPixel + viewDir);
+    const float NdH = saturate(dot(normal, h));
+    const float a = max(0.001f, roughness * roughness);
+
+    const float3 cDiff = Diffuse(albedoColor);
+    const float3 cSpec = Specular(specularColor, h, viewDir, a, NdL, NdV, NdH);
+    finalColor = saturate(lightColor * NdL * (cDiff * (1.0 - cSpec) + cSpec) * PI) * lightIntensity;
+    return finalColor;
+
 }
 
 float3 SRGBToLinear(in float3 color)

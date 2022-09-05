@@ -164,7 +164,7 @@ void Engine::EditorLayer::OnUpdate()
 			{
 				ops = ImGuizmo::SCALE;
 			}
-			ImGuizmo::Manipulate(&view[0], &proj[0], ops, ImGuizmo::WORLD, &trans[0]);
+			ImGuizmo::Manipulate(&view[0], &proj[0], ops, ImGuizmo::LOCAL, &trans[0]);
 
 			if (ImGuizmo::IsUsing())
 			{

@@ -28,3 +28,14 @@ cbuffer PointLightBuffer : register(b3)
         float radius;
     } data[2000];
 }
+
+cbuffer SpotLightBuffer : register(b4)
+{
+    struct SpotData
+    {
+        float4 colorAndIntensity;
+        float4 position;
+        float4 direction;
+        float4 cutOff;
+    } spotData[1000];
+}

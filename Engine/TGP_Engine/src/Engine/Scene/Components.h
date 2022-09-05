@@ -33,6 +33,14 @@ COMPONENT(PointLightComponent)
 	float radius = 0;
 };
 
+COMPONENT(SpotLightComponent)
+{
+	REGISTER_COMPONENT("{9DEF3C99-74FB-457E-8376-65701E9BBF15}"_guid);
+	Vector3f color;
+	float intensity = 0;
+	float cutoff = 0;
+};
+
 COMPONENT(AnimatorComponent)
 {
 	REGISTER_COMPONENT("{481D7E20-A5F6-4AA5-8C35-AF3105265E88}"_guid);

@@ -108,6 +108,7 @@ namespace Engine
 		s_Data->ModelBuffer.Create();
 		s_Data->pointLightBuffer.Create();
 		s_Data->directionalLightBuffer.Create();
+		s_Data->spotLightBuffer.Create();
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Clamp, ShaderType::Pixel);
 	}
@@ -131,6 +132,12 @@ namespace Engine
 	{
 		s_Data->PointLightBufferObject.pointLightData[s_Data->pointLightIterator] = light;
 		s_Data->pointLightIterator++;
+	}
+
+	void Renderer::SubmitSpotLight(const SpotLightData& light)
+	{
+		s_Data->spotLightBufferObject.spotLightData[s_Data->spotLightIterator] = light;
+		s_Data->spotLightIterator++;
 	}
 
 	void Renderer::SetIBL(Ref<Texture2D> map)
@@ -185,6 +192,9 @@ namespace Engine
 
 		s_Data->pointLightBuffer.SetData(&s_Data->PointLightBufferObject);
 		s_Data->pointLightBuffer.Bind(3);
+
+		s_Data->spotLightBuffer.SetData(&s_Data->spotLightBufferObject);
+		s_Data->spotLightBuffer.Bind(4);
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		// ----------------------------------------------------------------------- //
@@ -252,7 +262,9 @@ namespace Engine
 
 		s_Data->Meshes.clear();
 		s_Data->pointLightIterator = 0;
+		s_Data->spotLightIterator = 0;
 		memset(&s_Data->PointLightBufferObject, 0, sizeof(PointLightBuffer));
+		memset(&s_Data->spotLightBufferObject, 0, sizeof(SpotLightBuffer));
 		s_Data->AnimatedMeshes.clear();
 		s_Data->ParticleSystem.clear();
 	}

@@ -124,6 +124,7 @@ namespace Engine
 				{
 					"Model Component",
 					"Pointlight Component",
+					"SpotLight Component",
 					"Script Component"
 				};
 				for (int n = 0; n < listofComps.size(); n++)
@@ -137,6 +138,10 @@ namespace Engine
 						else if (listofComps[n] == "Pointlight Component")
 						{
 							entity.AddComponent<PointLightComponent>();
+						}
+						else if (listofComps[n] == "SpotLight Component")
+						{
+							entity.AddComponent<SpotLightComponent>();
 						}
 						else if (listofComps[n] == "Script Component")
 						{
@@ -298,6 +303,48 @@ namespace Engine
 				if (removeComponent)
 				{
 					entity.RemoveComponent<PointLightComponent>();
+				}
+
+			}
+			if (entity.HasComponent<SpotLightComponent>())
+			{
+				auto& pl = entity.GetComponent<SpotLightComponent>();
+				bool open = ImGui::CollapsingHeader("Spotlight component");
+				ImGui::SameLine();
+
+				if (ImGui::Button("..."))
+				{
+					ImGui::OpenPopup("ComponentSettings");
+				}
+
+				bool removeComponent = false;
+				if (ImGui::BeginPopup("ComponentSettings"))
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						removeComponent = true;
+					}
+					ImGui::EndPopup();
+				}
+				if (open)
+				{
+					float imColor[3] = { 0 };
+					memcpy(imColor, &pl.color, sizeof(Vector3f));
+					if (ImGui::ColorEdit3("Color", imColor, 0.1f))
+					{
+						memcpy(&pl.color, imColor, sizeof(Vector3f));
+					}
+
+					if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
+					{
+					}
+					if (ImGui::DragFloat("CutOff", &pl.cutoff, 0.1f))
+					{
+					}
+				}
+				if (removeComponent)
+				{
+					entity.RemoveComponent<SpotLightComponent>();
 				}
 
 			}

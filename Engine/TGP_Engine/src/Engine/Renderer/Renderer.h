@@ -36,6 +36,10 @@ namespace Engine
 		PointLightBuffer PointLightBufferObject;
 		ConstantBuffer<PointLightBuffer> pointLightBuffer;
 		uint32_t pointLightIterator = 0;
+
+		SpotLightBuffer spotLightBufferObject;
+		ConstantBuffer<SpotLightBuffer> spotLightBuffer;
+		uint32_t spotLightIterator = 0;
 	};
 
 	class Renderer
@@ -45,6 +49,7 @@ namespace Engine
 		static void SetActiveCamera(Ref<Camera> camera);
 		static void SubmitDirectionalLight(Ref<DirectionalLight> light);
 		static void SubmitPointLight(const PointLightData& light);
+		static void SubmitSpotLight(const SpotLightData& light);
 		static void SetIBL(Ref<Texture2D> map);
 		static void SubmitMesh(Model* mesh);
 		static void SubmitAnimatedMesh(AnimatedModel* mesh);
