@@ -36,6 +36,7 @@ COMPONENT(PointLightComponent)
 COMPONENT(AnimatorComponent)
 {
 	REGISTER_COMPONENT("{481D7E20-A5F6-4AA5-8C35-AF3105265E88}"_guid);
+	std::string animatorPath = "Unknown";
 };
 
 COMPONENT(ScriptComponent)

@@ -64,7 +64,7 @@ namespace Snowflake
 		template<typename T>
 		T& GetComponent(Entity entity)
 		{
-			return *(T*)(m_ComponentMap[entity].data());
+			return *reinterpret_cast<T*>(m_ComponentMap[entity].data());
 		}
 
 		std::vector<uint8_t> GetComponentData(Entity entity)
