@@ -14,6 +14,7 @@ namespace Engine
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
 	{
 		m_Context = context;
+		m_SelectedEntity = Entity();
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
@@ -241,7 +242,7 @@ namespace Engine
 				if (ImGui::InputText("##sdasdas", buffer, sizeof(buffer)))
 				{
 					strTransfer = buffer;
-					tf.filePath = strTransfer.c_str();
+					strcpy(tf.filePath, (strTransfer.c_str()));
 				}
 				if (ImGui::BeginDragDropTarget())
 				{
@@ -249,7 +250,7 @@ namespace Engine
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						strTransfer = std::filesystem::path(path).string().c_str();
-						tf.filePath = strTransfer.c_str();
+						strcpy(tf.filePath, (strTransfer.c_str()));
 					}
 					ImGui::EndDragDropTarget();
 				}

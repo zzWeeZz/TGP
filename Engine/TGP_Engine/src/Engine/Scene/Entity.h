@@ -47,7 +47,7 @@ namespace Engine
 
 		bool operator()()
 		{
-			return m_EntityId != Snowflake::InvalidEntity && m_Scene;
+			return m_EntityId < Snowflake::InvalidEntity && m_Scene;
 		}
 
 		uint32_t GetId() const

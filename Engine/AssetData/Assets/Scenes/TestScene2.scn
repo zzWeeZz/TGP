@@ -1,0 +1,60 @@
+Scene: Name
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: PointLight1
+    TransformComponent:
+      Position: [67.07466, 123.5783, -100.5177]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0.006985617, 0.967509, 0.1456892]
+      Intensity: 6.5
+      Range: 159.9
+  - Entity: 1
+    TagComponent:
+      Tag: Chest
+    TransformComponent:
+      Position: [7.991865, 0.6456757, 0]
+      Rotation: [0, 0.3822719, 0]
+      Scale: [0.9999996, 1, 0.9999996]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 2
+    TagComponent:
+      Tag: Pointlight2
+    TransformComponent:
+      Position: [-64.7059, 136.3714, 23.44711]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0.8953069, 0.126054, 0.126054]
+      Intensity: 32.8
+      Range: 125.9
+  - Entity: 3
+    TagComponent:
+      Tag: PointLight3
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [300, 1, 300]
+    ModelComponent:
+      Mesh: Cube
+  - Entity: 4
+    TagComponent:
+      Tag: Chest2
+    TransformComponent:
+      Position: [-25.46652, 70.29742, 0]
+      Rotation: [-0.07615216, 0.2049233, 0.3917596]
+      Scale: [0.2899998, 0.29, 0.2900004]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 5
+    TagComponent:
+      Tag: Chest3
+    TransformComponent:
+      Position: [24.86607, 72.11751, -12.2587]
+      Rotation: [-2.915845, -0.6229509, 2.7599]
+      Scale: [0.4300003, 0.4300014, 0.4299997]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx

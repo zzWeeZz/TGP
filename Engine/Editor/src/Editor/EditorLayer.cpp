@@ -15,6 +15,10 @@ void Engine::EditorLayer::OnAttach()
 	myContentBrowserPanel = CreateRef<ContentBrowserPanel>();
 	myThemeEditorPanel = CreateRef<ThemeEditorPanel>();
 	myAnimatorEditorPanel = CreateRef<AnimatorEditorPanel>();
+	myScene = CreateRef<Scene>();
+	mySceneHierarchyPanel->SetContext(myScene);
+	SceneSerializer serializer(myScene);
+	serializer.Deserialize("Assets/Scenes/TestScene.scn");
 	myThemeEditorPanel->StartUp();
 }
 
@@ -135,7 +139,21 @@ void Engine::EditorLayer::OnUpdate()
 			myEditorCamera->SetAspectRatio((float)framebuff->GetSpecs().width, (float)framebuff->GetSpecs().height);
 		}
 		ImGui::Image((void*)framebuff->GetColorAttachment(0).Get(), { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
-		if (mySceneHierarchyPanel->GetSelectedEntity()())
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				auto newp = std::filesystem::path(path).string();
+				myScene = CreateRef<Scene>();
+				mySceneHierarchyPanel->SetContext(myScene);
+				SceneSerializer serializer(myScene);
+				serializer.Deserialize(newp);
+
+			}
+			ImGui::EndDragDropTarget();
+		}
+		if (mySceneHierarchyPanel->GetSelectedEntity()() && myScene)
 		{
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
@@ -149,7 +167,7 @@ void Engine::EditorLayer::OnUpdate()
 			auto entity = mySceneHierarchyPanel->GetSelectedEntity();
 			auto& tf = entity.GetComponent<TransformComponent>();
 			auto matrix = tf.transform.GetMatrix();
-			float trans[16] = { 0 };
+ 			float trans[16] = { 0 };
 			memcpy(trans, &matrix, sizeof(float) * 16);
 			static ImGuizmo::OPERATION ops = ImGuizmo::TRANSLATE;
 			if (ImGui::GetIO().KeysDown[ImGuiKey_W])
@@ -187,7 +205,15 @@ void Engine::EditorLayer::OnUpdate()
 
 	DrawPanels();
 
-
+	ImGui::Begin("Hej Lukas!");
+	ImGui::Text("Nu ar den Har!");
+	ImGui::Text("Theme editor ar dar nere med 'apply' som sparar.");
+	ImGui::Text("Scener som sparas och laddas genom file.");
+	ImGui::Text("'OBS' Scenen maste ligga i assets/scenes/*name*.scn");
+	ImGui::Text("Detta sedan laddar den in Testscene.scn pa motor start!");
+	ImGui::Text("MVH");
+	ImGui::Text("Niklas Jakobsen");
+	ImGui::End();
 	ImGui::End();
 	myEditorCamera->Update(ToolBox::Chrono::Timestep());
 	myScene->OnEditorUpdate();

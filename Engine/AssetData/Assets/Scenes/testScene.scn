@@ -2,92 +2,59 @@ Scene: Name
 Entities:
   - Entity: 0
     TagComponent:
-      Tag: Unknown
+      Tag: PointLight1
     TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
+      Position: [67.07466, 123.5783, -100.5177]
+      Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0.006985617, 0.967509, 0.1456892]
+      Intensity: 6.5
+      Range: 159.9
   - Entity: 1
     TagComponent:
-      Tag: gjdajkkkkkka
+      Tag: Chest
     TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Position: [7.991865, 0.6456757, 0]
+      Rotation: [-3.141593, 0.008620721, -3.141593]
+      Scale: [0.9999962, 1, 0.9999962]
     ModelComponent:
-      Mesh: Model/SM_Particle_Chest.fbx
-    ScriptComponent:
-      Scripts:
-        []
+      Mesh: assets\Model\SM_Particle_Chest.fbx
   - Entity: 2
     TagComponent:
-      Tag: Unknown
+      Tag: Pointlight2
     TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
+      Position: [-64.7059, 136.3714, 23.44711]
+      Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     PointLightComponent:
-      Color: [0, 0, 0]
-      Intensity: 0
-      Range: 0
+      Color: [0.3482206, 0.126054, 0.8953069]
+      Intensity: 32.8
+      Range: 147.2
   - Entity: 3
     TagComponent:
-      Tag: Unknown
+      Tag: PointLight3
     TransformComponent:
       Position: [0, 0, 0]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    PointLightComponent:
-      Color: [0, 0, 0]
-      Intensity: 0
-      Range: 0
+      Scale: [300, 1, 300]
+    ModelComponent:
+      Mesh: Cube
   - Entity: 4
     TagComponent:
-      Tag: Unknown
+      Tag: Chest2
     TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    PointLightComponent:
-      Color: [0, 0, 0]
-      Intensity: 0
-      Range: 0
+      Position: [-25.46652, 70.29742, 0]
+      Rotation: [-0.07615216, 0.2049233, 0.3917596]
+      Scale: [0.2899998, 0.29, 0.2900004]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
   - Entity: 5
     TagComponent:
-      Tag: Unknown
+      Tag: Chest3
     TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    PointLightComponent:
-      Color: [0, 0, 0]
-      Intensity: 0
-      Range: 0
-  - Entity: 6
-    TagComponent:
-      Tag: Unknown
-    TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-  - Entity: 7
-    TagComponent:
-      Tag: Unknown
-    TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-  - Entity: 8
-    TagComponent:
-      Tag: Unknown
-    TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-  - Entity: 9
-    TagComponent:
-      Tag: Unknown
-    TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Position: [24.86607, 72.11751, -12.2587]
+      Rotation: [-2.915845, -0.6229509, 2.7599]
+      Scale: [0.4300003, 0.4300014, 0.4299997]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
