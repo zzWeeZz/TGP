@@ -85,6 +85,9 @@
     <ClInclude Include="src\Engine\Assets\Asset.h">
       <Filter>Engine\Assets</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Assets\AssetPacker.h">
+      <Filter>Engine\Assets</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Assets\Lights\DirectionalLight.h">
       <Filter>Engine\Assets\Lights</Filter>
     </ClInclude>
@@ -240,7 +243,7 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Assets\AssetPacker.h" />
+    <ClInclude Include="src\SnowFlake\String.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -248,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="src\Application\Window\Window.cpp">
       <Filter>Application\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Assets\AssetPacker.cpp">
+      <Filter>Engine\Assets</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Assets\Lights\DirectionalLight.cpp">
       <Filter>Engine\Assets\Lights</Filter>
@@ -361,7 +367,6 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
-    <ClCompile Include="src\Engine\Assets\AssetPacker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">

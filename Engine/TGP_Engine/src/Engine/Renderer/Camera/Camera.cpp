@@ -63,6 +63,7 @@ void Engine::Camera::Update(float aDeltaTime)
 void Engine::Camera::SetAspectRatio(float x, float y)
 {
 	myProjection = Matrix4x4f::CreateLeftHandPerspectiveMatrix(myFov, { (int)x, (int)y }, myZNear, myZFar);
+	myAspect = x / y;
 }
 
 Engine::Ref<Engine::Camera> Engine::Camera::Create(float fov, Vector2i size, float zNear, float zFar)

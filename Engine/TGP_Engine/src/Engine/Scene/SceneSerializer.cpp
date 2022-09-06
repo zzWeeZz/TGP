@@ -52,7 +52,7 @@ static void SerializeEntity(Engine::Entity entity, YAML::Emitter& out)
 		out << YAML::BeginMap;
 
 		auto& mesh = entity.GetComponent<ModelComponent>();
-		out << YAML::Key << "Mesh" << YAML::Value << mesh.filePath;
+		out << YAML::Key << "Mesh" << YAML::Value << mesh.filePath.c_str();
 
 		out << YAML::EndMap;
 	}
@@ -158,7 +158,7 @@ bool Engine::SceneSerializer::Deserialize(const std::string& path)
 			{
 				auto& mc = DeserializedEntity.AddComponent<ModelComponent>();
 				auto str = meshComponent["Mesh"].as<std::string>();
-				strcpy(mc.filePath,  str.c_str());
+				mc.filePath = str.c_str();
 			}
 
 			auto pointlightComponent = entityData["PointLightComponent"];

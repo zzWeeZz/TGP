@@ -18,7 +18,7 @@ DeferredVertextoPixel main(DeferredVertexInput input)
 		float4(3.0f, -1.0f, 0.0f, 1.0f),
 	};
 
-	float2 uvValue[3] =
+	float2 uvValue[3] = 
 	{
 		float2(0.0f, 1.0f),
 		float2(0.0f, -1.0f),

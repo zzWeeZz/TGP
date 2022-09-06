@@ -15,10 +15,10 @@ void Engine::EditorLayer::OnAttach()
 	myContentBrowserPanel = CreateRef<ContentBrowserPanel>();
 	myThemeEditorPanel = CreateRef<ThemeEditorPanel>();
 	myAnimatorEditorPanel = CreateRef<AnimatorEditorPanel>();
-	myScene = CreateRef<Scene>();
+	/*myScene = CreateRef<Scene>();
 	mySceneHierarchyPanel->SetContext(myScene);
 	SceneSerializer serializer(myScene);
-	serializer.Deserialize("Assets/Scenes/TestScene.scn");
+	serializer.Deserialize("Assets/Scenes/TestScene.scn");*/
 	myThemeEditorPanel->StartUp();
 }
 

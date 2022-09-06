@@ -239,7 +239,7 @@ namespace Engine
 
 				char buffer[256];
 				memset(buffer, 0, sizeof(buffer));
-				strcpy(buffer, tf.filePath);
+				strcpy(buffer, tf.filePath.c_str());
 				ImGui::Text("Filepath: ");
 				ImGui::SameLine();
 				static std::string strTransfer(buffer);
@@ -247,7 +247,7 @@ namespace Engine
 				if (ImGui::InputText("##sdasdas", buffer, sizeof(buffer)))
 				{
 					strTransfer = buffer;
-					strcpy(tf.filePath, (strTransfer.c_str()));
+					tf.filePath = strTransfer;
 				}
 				if (ImGui::BeginDragDropTarget())
 				{
@@ -255,13 +255,13 @@ namespace Engine
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						strTransfer = std::filesystem::path(path).string().c_str();
-						strcpy(tf.filePath, (strTransfer.c_str()));
+						tf.filePath = strTransfer;
 					}
 					ImGui::EndDragDropTarget();
 				}
 				if (ImGui::Button("Load"))
 				{
-					tf.modelHandle = Model::Create(tf.filePath);
+					tf.modelHandle = Model::Create(tf.filePath.c_str());
 				}
 			}
 			ImGui::Separator();
@@ -308,7 +308,7 @@ namespace Engine
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						auto newp = std::filesystem::path(path).string().size();
-						memcpy(tf.animatorPath.data(), std::filesystem::path(path).string().data(), std::filesystem::path(path).string().size() * sizeof(char));
+						tf.animatorPath = std::filesystem::path(path).string();
 						
 					}
 					ImGui::EndDragDropTarget();

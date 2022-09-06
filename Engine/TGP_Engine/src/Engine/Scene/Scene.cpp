@@ -15,8 +15,8 @@ namespace Engine
 			{
 				if (!mdl.modelHandle)
 				{
-					if (std::filesystem::exists(mdl.filePath))
-						mdl.modelHandle = Model::Create(mdl.filePath);
+					if (std::filesystem::exists(mdl.filePath.c_str()))
+						mdl.modelHandle = Model::Create(mdl.filePath.c_str());
 				}
 				else
 				{

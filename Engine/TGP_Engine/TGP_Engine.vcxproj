@@ -160,6 +160,7 @@
     <ClInclude Include="src\SnowFlake\Serializer.hpp" />
     <ClInclude Include="src\SnowFlake\SnowID.h" />
     <ClInclude Include="src\SnowFlake\Snowflake.hpp" />
+    <ClInclude Include="src\SnowFlake\String.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp" />

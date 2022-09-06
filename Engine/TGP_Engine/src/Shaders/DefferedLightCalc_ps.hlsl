@@ -83,6 +83,9 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         defaultSampler
     );
     float3 final = directColor + ambientLighting + albedo * emissive * emissiveStr;
-    final = LinearToGamma(final);
-    return float4(final, 1);
+    float3 mapped = float3(1.0, 1, 1) - exp(-final * 5);
+    // gamma correction 
+    mapped = pow(mapped, (1.0 / 2.2));
+   
+    return float4(mapped, 1);
 }
