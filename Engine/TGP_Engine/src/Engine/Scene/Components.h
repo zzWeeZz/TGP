@@ -22,7 +22,7 @@ COMPONENT(ModelComponent)
 {
 	REGISTER_COMPONENT("{EC4E0F57-123F-4EEF-BF9E-DA7A05E0052A}"_guid);
 	Engine::Ref<Engine::Model> modelHandle = nullptr;
-	const char* filePath = "";
+	char filePath[256] = "";
 };
 
 COMPONENT(PointLightComponent)
@@ -44,6 +44,7 @@ COMPONENT(SpotLightComponent)
 COMPONENT(AnimatorComponent)
 {
 	REGISTER_COMPONENT("{481D7E20-A5F6-4AA5-8C35-AF3105265E88}"_guid);
+	std::string animatorPath = "Unknown";
 };
 
 COMPONENT(ScriptComponent)

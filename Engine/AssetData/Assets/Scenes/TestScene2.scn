@@ -16,8 +16,8 @@ Entities:
       Tag: Chest
     TransformComponent:
       Position: [7.991865, 0.6456757, 0]
-      Rotation: [-3.141593, 0.008620721, -3.141593]
-      Scale: [0.9999962, 1, 0.9999962]
+      Rotation: [0, 0.3822719, 0]
+      Scale: [0.9999996, 1, 0.9999996]
     ModelComponent:
       Mesh: assets\Model\SM_Particle_Chest.fbx
   - Entity: 2
@@ -28,9 +28,9 @@ Entities:
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     PointLightComponent:
-      Color: [0.3482206, 0.126054, 0.8953069]
+      Color: [0.8953069, 0.126054, 0.126054]
       Intensity: 32.8
-      Range: 147.2
+      Range: 125.9
   - Entity: 3
     TagComponent:
       Tag: PointLight3

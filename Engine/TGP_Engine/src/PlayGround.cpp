@@ -90,13 +90,13 @@ void Engine::PlayGround::Update()
 
 void Engine::PlayGround::Render()
 {
-	//Renderer::SetActiveCamera(myCamera);
-	Renderer::SubmitMesh(myPrimative.get());
-	Renderer::SubmitMesh(myChest.get());
-	Renderer::SubmitAnimatedMesh(myBlendedModel.get());
-	Renderer::SubmitAnimatedMesh(myInterpModel.get());
-	Renderer::SubmitAnimatedMesh(myKeyModel.get());
+	Renderer::SetActiveCamera(myCamera);
+	//Renderer::SubmitMesh(myPrimative.get());
+	//Renderer::SubmitMesh(myChest.get());
+	//Renderer::SubmitAnimatedMesh(myBlendedModel.get());
+	//Renderer::SubmitAnimatedMesh(myInterpModel.get());
+	//Renderer::SubmitAnimatedMesh(myKeyModel.get());
 	Renderer::SubmitDirectionalLight(myDirLight);
-	Renderer::SubmitParticleSystem(myParticleSystem);
+	//Renderer::SubmitParticleSystem(myParticleSystem);
 
 }

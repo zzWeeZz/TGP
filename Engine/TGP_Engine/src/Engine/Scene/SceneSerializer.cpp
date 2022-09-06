@@ -144,16 +144,21 @@ bool Engine::SceneSerializer::Deserialize(const std::string& path)
 			if (transformComponent)
 			{
 				auto& tf = DeserializedEntity.GetComponent<TransformComponent>();
-				memcpy(&tf.transform.GetPosition(), transformComponent["Position"].as<std::vector<float>>().data(), sizeof(Vector3f));
-				memcpy(&tf.transform.GetRotation(), transformComponent["Rotation"].as<std::vector<float>>().data(), sizeof(Vector3f));
-				memcpy(&tf.transform.GetScale(), transformComponent["Scale"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				Vector3f vec3;
+				memcpy(&vec3, transformComponent["Position"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				tf.transform.SetPosition(vec3);
+				memcpy(&vec3, transformComponent["Rotation"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				tf.transform.SetRotation(vec3);
+				memcpy(&vec3, transformComponent["Scale"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				tf.transform.SetScale(vec3);
 			}
 
 			auto meshComponent = entityData["ModelComponent"];
 			if (meshComponent)
 			{
 				auto& mc = DeserializedEntity.AddComponent<ModelComponent>();
-				mc.filePath = meshComponent["Mesh"].as<std::string>().c_str();
+				auto str = meshComponent["Mesh"].as<std::string>();
+				strcpy(mc.filePath,  str.c_str());
 			}
 
 			auto pointlightComponent = entityData["PointLightComponent"];
