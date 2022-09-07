@@ -231,29 +231,39 @@ float3 EvaluatePointLight(float3 albedoColor, float3 specularColor, float3 norma
     return finalColor;
 }
 
-float3 EvaluateSpotLight(float3 albedoColor, float3 specularColor, float3 normal, float roughness, float3 lightColor, float lightIntensity, float cutOff, float3 position, float3 lightDir, float3 camPos, float3 viewDir)
+float3 EvaluateSpotLight(float3 albedoColor, float3 specularColor, float3 normal,
+    float roughness, float3 lightColor, float lightIntensity, float lightRange,
+    float3 lightPos, float3 lightDir, float outerAngle, float innerAngle, float3 viewDir, float3 pixelPos)
 {
-    float dirFromPixel = normalize(position.xyz - camPos);
-    
-    float theta = dot(lightDir, (-dirFromPixel));
-    
-    if (theta < cutOff)
-    {
-        return float3(0, 0, 0);
-    }
-    float3 finalColor = 0;
-    const float NdL = saturate(dot(normal, -dirFromPixel));
-    // Compute N dot V, the View Angle.
-    const float NdV = saturate(dot(normal, viewDir));
-    const float3 h = normalize(dirFromPixel + viewDir);
-    const float NdH = saturate(dot(normal, h));
-    const float a = max(0.001f, roughness * roughness);
+    float3 toLight = lightPos.xyz - pixelPos.xyz;
+    float lightDistance = length(toLight);
+    toLight = normalize(toLight);
 
-    const float3 cDiff = Diffuse(albedoColor);
-    const float3 cSpec = Specular(specularColor, h, viewDir, a, NdL, NdV, NdH);
-    finalColor = saturate(lightColor * NdL * (cDiff * (1.0 - cSpec) + cSpec) * PI) * lightIntensity;
-    return finalColor;
+    float NdL = saturate(dot(normal, toLight));
+    float lambert = NdL; // Angle attenuation
+    float NdV = saturate(dot(normal, viewDir));
+    float3 h = normalize(toLight + viewDir);
+    float NdH = saturate(dot(normal, h));
+    float a = max(0.001f, roughness * roughness);
 
+    float3 cDiff = Diffuse(albedoColor);
+    float3 cSpec = Specular(specularColor, h, viewDir, a, NdL, NdV, NdH);
+
+    float cosOuterAngle = cos(outerAngle);
+    float cosInnerAngle = cos(innerAngle);
+    float3 lightDirection = lightDir;
+
+    // Determine if pixel is within cone.
+    float theta = dot(toLight, normalize(-lightDirection));
+	// And if we're in the inner or outer radius.
+    float epsilon = cosInnerAngle - cosOuterAngle;
+    float intensity = clamp((theta - cosOuterAngle) / epsilon, 0.0f, 1.0f);
+    intensity *= intensity;
+	
+    float ue4Attenuation = ((pow(saturate(1 - pow(lightDistance / lightRange, 4.0f)), 2.0f)) / (pow(lightDistance, 2.0f) + 1)); // Unreal Engine 4 attenuation
+    float finalAttenuation = lambert * intensity * ue4Attenuation;
+
+    return saturate(lightColor * lightIntensity * lambert * finalAttenuation * ((cDiff * (1.0 - cSpec) + cSpec) * PI));
 }
 
 float3 SRGBToLinear(in float3 color)

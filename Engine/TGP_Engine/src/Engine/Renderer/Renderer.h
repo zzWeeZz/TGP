@@ -20,7 +20,7 @@ namespace Engine
 		DirectionalLight* DirectionalLight;
 		Texture2D* map;
 
-		Ref<Camera> ActiveCamera;
+		Camera* ActiveCamera;
 		Ref<FrameBuffer> RendererFinalframeBuffer;
 		Ref<FrameBuffer> defferedGBuffer;
 		Ref<FrameBuffer> particleGBuffer;
@@ -46,7 +46,7 @@ namespace Engine
 	{
 	public:
 		static void Initialize();
-		static void SetActiveCamera(Ref<Camera> camera);
+		static void SetActiveCamera(Ref<Camera>& camera);
 		static void SubmitDirectionalLight(Ref<DirectionalLight> light);
 		static void SubmitPointLight(const PointLightData& light);
 		static void SubmitSpotLight(const SpotLightData& light);
@@ -58,5 +58,9 @@ namespace Engine
 		static Ref<FrameBuffer> GetPaticleFramebuffer();
 		static void Begin();
 		static void Shutdown();
+	private:
+		static void DefineShaders();
+		static void DefineFrameBuffers();
+		static void DefineBuffers();
 	};
 }

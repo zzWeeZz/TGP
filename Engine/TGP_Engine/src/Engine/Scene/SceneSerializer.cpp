@@ -145,11 +145,14 @@ bool Engine::SceneSerializer::Deserialize(const std::string& path)
 			{
 				auto& tf = DeserializedEntity.GetComponent<TransformComponent>();
 				Vector3f vec3;
-				memcpy(&vec3, transformComponent["Position"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				auto pos = transformComponent["Position"].as<std::vector<float>>();
+				auto rot = transformComponent["Rotation"].as<std::vector<float>>();
+				auto scl = transformComponent["Scale"].as<std::vector<float>>();
+				memcpy(&vec3, pos.data(), sizeof(Vector3f));
 				tf.transform.SetPosition(vec3);
-				memcpy(&vec3, transformComponent["Rotation"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				memcpy(&vec3, rot.data(), sizeof(Vector3f));
 				tf.transform.SetRotation(vec3);
-				memcpy(&vec3, transformComponent["Scale"].as<std::vector<float>>().data(), sizeof(Vector3f));
+				memcpy(&vec3,scl.data(), sizeof(Vector3f));
 				tf.transform.SetScale(vec3);
 			}
 

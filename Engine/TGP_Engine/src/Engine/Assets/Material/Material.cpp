@@ -34,7 +34,7 @@ void Engine::Material::AddSpecularTexture(Ref<Texture2D> texture)
 
 void Engine::Material::Bind()
 {
-	ShaderLibrary::Bind(m_ShaderKey);
+	/*ShaderLibrary::Bind(m_ShaderKey);*/
 	m_Diffuse->Bind(0, ShaderType::Pixel);
 	m_Normal->Bind(1, ShaderType::Pixel);
 	m_MaterialInfo->Bind(2, ShaderType::Pixel);

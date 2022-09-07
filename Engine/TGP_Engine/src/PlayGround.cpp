@@ -90,7 +90,7 @@ void Engine::PlayGround::Update()
 
 void Engine::PlayGround::Render()
 {
-	Renderer::SetActiveCamera(myCamera);
+	//Renderer::SetActiveCamera(myCamera);
 	//Renderer::SubmitMesh(myPrimative.get());
 	//Renderer::SubmitMesh(myChest.get());
 	//Renderer::SubmitAnimatedMesh(myBlendedModel.get());

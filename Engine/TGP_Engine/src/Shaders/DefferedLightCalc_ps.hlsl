@@ -16,6 +16,16 @@ Texture2D WorldPositionTexture : register(t4);
 Texture2D AOTexture : register(t5);
 TextureCube env : register(t30);
 
+
+float exposureSettings(float aperture, float shutterSpeed, float sensitivity)
+{
+    return log2((aperture * aperture) / shutterSpeed * 100.0 / sensitivity);
+}
+
+float exposure(float ev100) {
+    return 1.0 / (pow(2.0, ev100) * 1.2);
+}
+
 float4 main(DeferredVertextoPixel input) : SV_TARGET
 {
     float4 albedo = AlbedoTexture.Sample(defaultSampler, input.uv);
@@ -52,7 +62,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         NewDir,
         toEye);
 
-    for (unsigned int i = 0; i < 2000; ++i)
+    for (unsigned int i = 0; i < 64; ++i)
     {
         directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye);
     }
@@ -68,7 +78,8 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         spotData[i].cutOff.x,
         spotData[i].position.xyz,
         spotData[i].direction.xyz,
-        worldPosition.xyz, toEye);
+        0.1, 1.6,
+        toEye, worldPosition.xyz);
     }
     
     float3 ambientLighting = EvaluateAmbience(
@@ -82,7 +93,10 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         specularColor,
         defaultSampler
     );
-    float3 final = directColor + ambientLighting + albedo * emissive * emissiveStr;
+    float ev100 = exposureSettings(10, 10, 10);
+    float4 emissiveCol = albedo * emissive * emissiveStr;
+    emissiveCol.xyz = emissiveCol.rgb * pow(2.0, ev100 + emissiveCol.w - 3.0);
+    float3 final = directColor + ambientLighting + emissiveCol.xyz;
     float3 mapped = float3(1.0, 1, 1) - exp(-final * 5);
     // gamma correction 
     mapped = pow(mapped, (1.0 / 2.2));

@@ -11,105 +11,9 @@ namespace Engine
 	static Scope<Data> s_Data = CreateScope<Data>();
 	void Renderer::Initialize()
 	{
-		{
-			InputLayout newLayout
-			{
-				{"POSITION", 0, Value::Float4},
-				{"COLOR", 0, Value::Float4},
-				{"COLOR", 1, Value::Float4},
-				{"COLOR", 2, Value::Float4},
-				{"COLOR", 3, Value::Float4},
-				{"UV", 0, Value::Float2},
-				{"UV", 1, Value::Float2},
-				{"UV", 2, Value::Float2},
-				{"UV", 3, Value::Float2},
-				{"NORMAL", 0, Value::Float3},
-				{"TANGENT", 0, Value::Float3},
-				{"BITANGENT", 0, Value::Float3},
-				{"BONEIDS", 0, Value::UInt4},
-				{"BONEWEIGHTS", 0, Value::Float4}
-			};
-
-			ShaderLibrary::AddToLibrary("AnimatedForwardPBR", { PixelShader::Create("Shaders/forward_ps.cso"), VertexShader::Create("Shaders/forwardAnimated_vs.cso", newLayout) });
-			ShaderLibrary::AddToLibrary("AnimatedDefferedPBR", { PixelShader::Create("Shaders/GenerateDefferedImages_ps.cso"), VertexShader::Create("Shaders/forwardAnimated_vs.cso", newLayout) });
-		}
-		{
-			InputLayout newLayout
-			{
-				{"POSITION", 0, Value::Float4},
-				{"COLOR", 0, Value::Float4},
-				{"COLOR", 1, Value::Float4},
-				{"COLOR", 2, Value::Float4},
-				{"COLOR", 3, Value::Float4},
-				{"UV", 0, Value::Float2},
-				{"UV", 1, Value::Float2},
-				{"UV", 2, Value::Float2},
-				{"UV", 3, Value::Float2},
-				{"NORMAL", 0, Value::Float3},
-				{"TANGENT", 0, Value::Float3},
-				{"BITANGENT", 0, Value::Float3},
-			};
-			ShaderLibrary::AddToLibrary("ForwardPBR", { PixelShader::Create("Shaders/forward_ps.cso"), VertexShader::Create("Shaders/forward_vs.cso", newLayout) });
-			ShaderLibrary::AddToLibrary("DefferedPBR", { PixelShader::Create("Shaders/GenerateDefferedImages_ps.cso"), VertexShader::Create("Shaders/forward_vs.cso", newLayout) });
-		}
-		{
-			InputLayout newLayout
-			{
-				{"POSITION", 0, Value::Float4},
-				{"COLOR", 0, Value::Float4},
-
-				{"VELOCITY", 0, Value::Float3},
-				{"SCALE", 0, Value::Float3},
-				{"LIFETIME", 0, Value::Float},
-			};
-			ShaderLibrary::AddToLibrary("Particle", { PixelShader::Create("Shaders/ParticleSystem_ps.cso"), GeometryShader::Create("Shaders/QuadGenerator_gs.cso"),VertexShader::Create("Shaders/ParticleSystem_vs.cso", newLayout)});
-		}
-		{
-			InputLayout newLayout
-			{
-				{"POSITION", 0, Value::Float4},
-				{"UV", 0, Value::Float2},
-			};
-			ShaderLibrary::AddToLibrary("DeferredLightCalc", { PixelShader::Create("Shaders/DefferedLightCalc_ps.cso"), VertexShader::Create("Shaders/DefferedLightCalc_vs.cso", newLayout) });
-		}
-		{
-			InputLayout newLayout
-			{
-				{"NEARPOINT", 0, Value::Float3},
-				{"FARPOINT", 0, Value::Float3},
-				{"FRAGVIEW", 0, Value::Float4X4},
-				{"FRAGPROJ", 0, Value::Float4X4},
-			};
-			ShaderLibrary::AddToLibrary("Grid", { PixelShader::Create("Shaders/Grid_ps.cso"), VertexShader::Create("Shaders/Grid_vs.cso", newLayout) });
-		}
-		{
-			FrameBufferSpecs specs{};
-			specs.height = 720;
-			specs.width = 1280;
-			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
-			s_Data->RendererFinalframeBuffer = FrameBuffer::Create(specs);
-		}
-		{
-			FrameBufferSpecs specs{};
-			specs.height = 720;
-			specs.width = 1280;
-			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
-			s_Data->particleGBuffer = FrameBuffer::Create(specs);
-		}
-		{
-			FrameBufferSpecs specs{};
-			specs.height = 720;
-			specs.width = 1280;
-			specs.formats = { ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::RGBA32F, ImageFormat::R8UN, ImageFormat::Depth32 };
-			s_Data->defferedGBuffer = FrameBuffer::Create(specs);
-		}
-		ShaderLibrary::Bind("DefferedPBR");
-		s_Data->CameraBuffer.Create();
-		s_Data->ModelBuffer.Create();
-		s_Data->pointLightBuffer.Create();
-		s_Data->directionalLightBuffer.Create();
-		s_Data->spotLightBuffer.Create();
-		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		DefineShaders();
+		DefineFrameBuffers();
+		DefineBuffers();
 		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Clamp, ShaderType::Pixel);
 	}
 
@@ -118,9 +22,9 @@ namespace Engine
 		s_Data->Meshes.emplace_back(mesh);
 	}
 
-	void Renderer::SetActiveCamera(Ref<Camera> camera)
+	void Renderer::SetActiveCamera(Ref<Camera>& camera)
 	{
-		s_Data->ActiveCamera = camera;
+		s_Data->ActiveCamera = camera.get();
 	}
 
 	void Renderer::SubmitDirectionalLight(Ref<DirectionalLight> light)
@@ -169,7 +73,7 @@ namespace Engine
 	void Renderer::Begin()
 	{
 		s_Data->RendererFinalframeBuffer->Clear();
-		s_Data->defferedGBuffer->Clear({0,0,0,0});
+		s_Data->defferedGBuffer->Clear({ 0,0,0,0 });
 		if (s_Data->RendererFinalframeBuffer->GetSpecs().width != s_Data->defferedGBuffer->GetSpecs().width || s_Data->RendererFinalframeBuffer->GetSpecs().height != s_Data->defferedGBuffer->GetSpecs().height)
 		{
 			s_Data->defferedGBuffer->Resize({ (float)s_Data->RendererFinalframeBuffer->GetSpecs().width , (float)s_Data->RendererFinalframeBuffer->GetSpecs().height });
@@ -177,7 +81,7 @@ namespace Engine
 		if (s_Data->ActiveCamera)
 		{
 			s_Data->CameraBufferObject.cameraSpace = s_Data->ActiveCamera->GetLookAt();
-			s_Data->CameraBufferObject.toProjectionSpace =(s_Data->ActiveCamera->GetProjection());
+			s_Data->CameraBufferObject.toProjectionSpace = s_Data->ActiveCamera->GetProjection();
 			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
 			s_Data->CameraBuffer.SetData(&s_Data->CameraBufferObject);
 			s_Data->CameraBuffer.Bind(0);
@@ -193,8 +97,8 @@ namespace Engine
 		s_Data->pointLightBuffer.SetData(&s_Data->PointLightBufferObject);
 		s_Data->pointLightBuffer.Bind(3);
 
-		s_Data->spotLightBuffer.SetData(&s_Data->spotLightBufferObject);
-		s_Data->spotLightBuffer.Bind(4);
+			s_Data->spotLightBuffer.SetData(&s_Data->spotLightBufferObject);
+			s_Data->spotLightBuffer.Bind(4);
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		// ----------------------------------------------------------------------- //
@@ -248,7 +152,7 @@ namespace Engine
 			sys->Draw();
 		}
 		ShaderLibrary::UnBind("Particle");
-		
+
 		DX11::GetRenderStateManager().PopDepthStencilState();
 
 		DX11::GetRenderStateManager().PopBlendState();
@@ -258,7 +162,7 @@ namespace Engine
 		// ------------------------ DONE RENDERING ------------------------------- //
 		// ----------------------------------------------------------------------- //
 
-		
+
 
 		s_Data->Meshes.clear();
 		s_Data->pointLightIterator = 0;
@@ -271,5 +175,143 @@ namespace Engine
 
 	void Renderer::Shutdown()
 	{
+	}
+
+	void Renderer::DefineShaders()
+	{
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+				{"COLOR", 0, Value::Float4},
+				{"COLOR", 1, Value::Float4},
+				{"COLOR", 2, Value::Float4},
+				{"COLOR", 3, Value::Float4},
+				{"UV", 0, Value::Float2},
+				{"UV", 1, Value::Float2},
+				{"UV", 2, Value::Float2},
+				{"UV", 3, Value::Float2},
+				{"NORMAL", 0, Value::Float3},
+				{"TANGENT", 0, Value::Float3},
+				{"BITANGENT", 0, Value::Float3},
+				{"BONEIDS", 0, Value::UInt4},
+				{"BONEWEIGHTS", 0, Value::Float4}
+			};
+
+			ShaderLibrary::AddToLibrary("AnimatedForwardPBR",
+				{
+					PixelShader::Create("Shaders/forward_ps.cso"),
+					VertexShader::Create("Shaders/forwardAnimated_vs.cso", newLayout)
+				});
+			ShaderLibrary::AddToLibrary("AnimatedDefferedPBR",
+				{
+					PixelShader::Create("Shaders/GenerateDefferedImages_ps.cso"),
+					VertexShader::Create("Shaders/forwardAnimated_vs.cso", newLayout)
+				});
+		}
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+				{"COLOR", 0, Value::Float4},
+				{"COLOR", 1, Value::Float4},
+				{"COLOR", 2, Value::Float4},
+				{"COLOR", 3, Value::Float4},
+				{"UV", 0, Value::Float2},
+				{"UV", 1, Value::Float2},
+				{"UV", 2, Value::Float2},
+				{"UV", 3, Value::Float2},
+				{"NORMAL", 0, Value::Float3},
+				{"TANGENT", 0, Value::Float3},
+				{"BITANGENT", 0, Value::Float3},
+			};
+			ShaderLibrary::AddToLibrary("ForwardPBR",
+				{
+					PixelShader::Create("Shaders/forward_ps.cso"),
+					VertexShader::Create("Shaders/forward_vs.cso", newLayout)
+				});
+			ShaderLibrary::AddToLibrary("DefferedPBR",
+				{
+					PixelShader::Create("Shaders/GenerateDefferedImages_ps.cso"),
+					VertexShader::Create("Shaders/forward_vs.cso", newLayout)
+				});
+		}
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+				{"COLOR", 0, Value::Float4},
+
+				{"VELOCITY", 0, Value::Float3},
+				{"SCALE", 0, Value::Float3},
+				{"LIFETIME", 0, Value::Float},
+			};
+			ShaderLibrary::AddToLibrary("Particle",
+				{
+					PixelShader::Create("Shaders/ParticleSystem_ps.cso"),
+					GeometryShader::Create("Shaders/QuadGenerator_gs.cso"),
+					VertexShader::Create("Shaders/ParticleSystem_vs.cso", newLayout)
+				});
+		}
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+				{"UV", 0, Value::Float2},
+			};
+			ShaderLibrary::AddToLibrary("DeferredLightCalc",
+				{
+					PixelShader::Create("Shaders/DefferedLightCalc_ps.cso"),
+					VertexShader::Create("Shaders/DefferedLightCalc_vs.cso", newLayout)
+				});
+		}
+		{
+			InputLayout newLayout
+			{
+				{"NEARPOINT", 0, Value::Float3},
+				{"FARPOINT", 0, Value::Float3},
+				{"FRAGVIEW", 0, Value::Float4X4},
+				{"FRAGPROJ", 0, Value::Float4X4},
+			};
+			ShaderLibrary::AddToLibrary("Grid",
+				{
+					PixelShader::Create("Shaders/Grid_ps.cso"),
+					VertexShader::Create("Shaders/Grid_vs.cso", newLayout)
+				});
+		}
+	}
+
+	void Renderer::DefineFrameBuffers()
+	{
+		{
+			FrameBufferSpecs specs{};
+			specs.height = 720;
+			specs.width = 1280;
+			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
+			s_Data->RendererFinalframeBuffer = FrameBuffer::Create(specs);
+		}
+		{
+			FrameBufferSpecs specs{};
+			specs.height = 720;
+			specs.width = 1280;
+			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
+			s_Data->particleGBuffer = FrameBuffer::Create(specs);
+		}
+		{
+			FrameBufferSpecs specs{};
+			specs.height = 720;
+			specs.width = 1280;
+			specs.formats = { ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::RGBA32F, ImageFormat::R8UN, ImageFormat::Depth32 };
+			s_Data->defferedGBuffer = FrameBuffer::Create(specs);
+		}
+	}
+
+	void Engine::Renderer::DefineBuffers()
+	{
+		s_Data->CameraBuffer.Create();
+		s_Data->ModelBuffer.Create();
+		s_Data->pointLightBuffer.Create();
+		s_Data->directionalLightBuffer.Create();
+		s_Data->spotLightBuffer.Create();
 	}
 }
