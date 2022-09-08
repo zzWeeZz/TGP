@@ -7,6 +7,7 @@ cbuffer CameraBuffer : register(b0)
 
 cbuffer ObjectBuffer : register(b1)
 {
+    int4 entityId;
     float4x4 toWorld;
     float4x4 BoneData[128];
 

@@ -22,6 +22,23 @@ namespace Engine
 		s_Data->Meshes.emplace_back(mesh);
 	}
 
+	void Renderer::SubmitLine(const Line& line)
+	{
+		{
+			auto& start = s_Data->lineVertices[s_Data->lineIterator];
+			start.position = line.startPos;
+			start.color = line.color;
+			s_Data->lineIterator++;
+		}
+		{
+			auto& start = s_Data->lineVertices[s_Data->lineIterator];
+			start.position = line.endPos;
+			start.color = line.color;
+			s_Data->lineIterator++;
+		}
+		
+	}
+
 	void Renderer::SetActiveCamera(Ref<Camera>& camera)
 	{
 		s_Data->ActiveCamera = camera.get();
@@ -55,6 +72,11 @@ namespace Engine
 		s_Data->AnimatedMeshes.emplace_back(mesh);
 	}
 
+	int Renderer::GetClickedEntityId(uint32_t x, uint32_t y)
+	{
+		return s_Data->defferedGBuffer->ReadPixel<int>(6, x, y);
+	}
+
 	void Renderer::SubmitParticleSystem(Ref<ParticleSystem> sys)
 	{
 		s_Data->ParticleSystem.emplace_back(sys.get());
@@ -67,11 +89,12 @@ namespace Engine
 
 	Ref<FrameBuffer> Renderer::GetPaticleFramebuffer()
 	{
-		return s_Data->particleGBuffer;
+		return nullptr;
 	}
 
 	void Renderer::Begin()
 	{
+		
 		s_Data->RendererFinalframeBuffer->Clear();
 		s_Data->defferedGBuffer->Clear({ 0,0,0,0 });
 		if (s_Data->RendererFinalframeBuffer->GetSpecs().width != s_Data->defferedGBuffer->GetSpecs().width || s_Data->RendererFinalframeBuffer->GetSpecs().height != s_Data->defferedGBuffer->GetSpecs().height)
@@ -83,8 +106,8 @@ namespace Engine
 			s_Data->CameraBufferObject.cameraSpace = s_Data->ActiveCamera->GetLookAt();
 			s_Data->CameraBufferObject.toProjectionSpace = s_Data->ActiveCamera->GetProjection();
 			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
-			s_Data->CameraBuffer.SetData(&s_Data->CameraBufferObject);
-			s_Data->CameraBuffer.Bind(0);
+			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
+			s_Data->cameraBuffer.Bind(0);
 		}
 		if (s_Data->DirectionalLight)
 		{
@@ -108,9 +131,10 @@ namespace Engine
 		ShaderLibrary::Bind("DefferedPBR");
 		for (auto mesh : s_Data->Meshes)
 		{
+			s_Data->ModelBufferObject.entityId = {(int)mesh->GetEntity(), 0, 0, 0};
 			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
-			s_Data->ModelBuffer.SetData(&s_Data->ModelBufferObject);
-			s_Data->ModelBuffer.Bind(1);
+			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+			s_Data->modelBuffer.Bind(1);
 			mesh->Draw();
 		}
 		ShaderLibrary::Bind("AnimatedDefferedPBR");
@@ -119,8 +143,8 @@ namespace Engine
 		{
 			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
 			memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
-			s_Data->ModelBuffer.SetData(&s_Data->ModelBufferObject);
-			s_Data->ModelBuffer.Bind(1);
+			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+			s_Data->modelBuffer.Bind(1);
 			mesh->Draw();
 		}
 		s_Data->defferedGBuffer->UnBind();
@@ -157,13 +181,15 @@ namespace Engine
 
 		DX11::GetRenderStateManager().PopBlendState();
 
+		BeginLineDraw();
+
 		s_Data->RendererFinalframeBuffer->UnBind();
 		// ----------------------------------------------------------------------- //
 		// ------------------------ DONE RENDERING ------------------------------- //
 		// ----------------------------------------------------------------------- //
 
 
-
+		FlushLineBatch();
 		s_Data->Meshes.clear();
 		s_Data->pointLightIterator = 0;
 		s_Data->spotLightIterator = 0;
@@ -175,6 +201,22 @@ namespace Engine
 
 	void Renderer::Shutdown()
 	{
+	}
+
+	void Renderer::FlushLineBatch()
+	{
+		memset(s_Data->lineVertices.data(), 0, s_Data->lineVertices.size() * sizeof(LineVertex));
+		s_Data->lineIterator = 0;
+	}
+
+	void Renderer::BeginLineDraw()
+	{
+		ShaderLibrary::Bind("Line");
+		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		s_Data->lineVertexBuffer.SetData(s_Data->lineVertices.data(), s_Data->lineVertices.size());
+		s_Data->lineVertexBuffer.Bind();
+		DX11::Context()->DrawInstanced(2, s_Data->lineIterator / 2, 0, 0);
+		ShaderLibrary::UnBind("Line");
 	}
 
 	void Renderer::DefineShaders()
@@ -195,7 +237,8 @@ namespace Engine
 				{"TANGENT", 0, Value::Float3},
 				{"BITANGENT", 0, Value::Float3},
 				{"BONEIDS", 0, Value::UInt4},
-				{"BONEWEIGHTS", 0, Value::Float4}
+				{"BONEWEIGHTS", 0, Value::Float4},
+				{"ENTITYID", 0, Value::UInt},
 			};
 
 			ShaderLibrary::AddToLibrary("AnimatedForwardPBR",
@@ -224,6 +267,7 @@ namespace Engine
 				{"NORMAL", 0, Value::Float3},
 				{"TANGENT", 0, Value::Float3},
 				{"BITANGENT", 0, Value::Float3},
+				{"ENTITYID", 0, Value::UInt},
 			};
 			ShaderLibrary::AddToLibrary("ForwardPBR",
 				{
@@ -279,6 +323,20 @@ namespace Engine
 					VertexShader::Create("Shaders/Grid_vs.cso", newLayout)
 				});
 		}
+
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+				{"COLOR", 0, Value::Float4},
+				{"INSTANCE", 0, Value::Float3, PerData::Instance}
+			};
+			ShaderLibrary::AddToLibrary("Line",
+				{
+					PixelShader::Create("Shaders/Line_ps.cso"),
+					VertexShader::Create("Shaders/Line_vs.cso", newLayout)
+				});
+		}
 	}
 
 	void Renderer::DefineFrameBuffers()
@@ -290,26 +348,22 @@ namespace Engine
 			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
 			s_Data->RendererFinalframeBuffer = FrameBuffer::Create(specs);
 		}
+		
 		{
 			FrameBufferSpecs specs{};
 			specs.height = 720;
 			specs.width = 1280;
-			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
-			s_Data->particleGBuffer = FrameBuffer::Create(specs);
-		}
-		{
-			FrameBufferSpecs specs{};
-			specs.height = 720;
-			specs.width = 1280;
-			specs.formats = { ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::RGBA32F, ImageFormat::R8UN, ImageFormat::Depth32 };
+			specs.formats = { ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::RGBA32F, ImageFormat::R8UN, ImageFormat::R32UI, ImageFormat::Depth32 };
 			s_Data->defferedGBuffer = FrameBuffer::Create(specs);
 		}
 	}
 
 	void Engine::Renderer::DefineBuffers()
 	{
-		s_Data->CameraBuffer.Create();
-		s_Data->ModelBuffer.Create();
+		s_Data->lineVertexBuffer.Initialize(s_Data->lineVertices.data(), s_Data->lineVertices.size());
+
+		s_Data->cameraBuffer.Create();
+		s_Data->modelBuffer.Create();
 		s_Data->pointLightBuffer.Create();
 		s_Data->directionalLightBuffer.Create();
 		s_Data->spotLightBuffer.Create();

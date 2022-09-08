@@ -11,6 +11,7 @@ namespace Engine
 
 		void SetContext(const Ref<Scene>& context);
 		Entity GetSelectedEntity() const { return m_SelectedEntity; }
+		void SetEntity(Entity entt) { m_SelectedEntity = entt; }
 		void OnImGuiRender();
 	private:
 		void DrawEntityNode(Entity entity);

@@ -24,7 +24,31 @@ namespace Engine
 				mdl.modelHandle->GetTransform().SetPosition(tf.transform.GetPosition());
 				mdl.modelHandle->GetTransform().SetRotation(tf.transform.GetRotation());
 				mdl.modelHandle->GetTransform().SetScale(tf.transform.GetScale());
+				mdl.modelHandle->SetEntity(entity);
 				Renderer::SubmitMesh(mdl.modelHandle.get());
+				}
+			});
+
+		m_Registry.Execute<AnimatorComponent, TransformComponent>([&](auto& entity, AnimatorComponent& mdl, TransformComponent& tf)
+			{
+				if (!mdl.modelHandle)
+				{
+					if (std::filesystem::exists(mdl.skPath.c_str()))
+					{
+						mdl.modelHandle = AnimatedModel::Create(mdl.skPath.c_str());
+						for (size_t i = 0; i < mdl.specs.size(); ++i)
+						{
+							mdl.modelHandle->AddAnimation(mdl.specs[i]);
+						}
+					}
+				}
+				else
+				{
+					mdl.modelHandle->GetTransform().SetPosition(tf.transform.GetPosition());
+					mdl.modelHandle->GetTransform().SetRotation(tf.transform.GetRotation());
+					mdl.modelHandle->GetTransform().SetScale(tf.transform.GetScale());
+					mdl.modelHandle->RunAnimation();
+					Renderer::SubmitAnimatedMesh(mdl.modelHandle.get());
 				}
 			});
 		m_Registry.Execute<PointLightComponent, TransformComponent>([&](auto& entity, PointLightComponent& pl, TransformComponent& tf)

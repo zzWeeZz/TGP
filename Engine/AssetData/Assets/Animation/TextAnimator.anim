@@ -1,7 +1,7 @@
 SkPath: assets\Model\Gremlin\gremlin_sk.fbx
 AnimSpecs:
-  - Name: Walk
-    skPath: assets\Model\Gremlin\gremlin@walk.fbx
+  - Name: Run
+    skPath: assets\Model\Gremlin\gremlin@run.fbx
     Interp: true
     Loop: true
-    Speed: 1
+    Speed: 0.3

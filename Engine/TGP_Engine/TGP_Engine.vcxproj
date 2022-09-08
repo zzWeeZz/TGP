@@ -231,6 +231,16 @@
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>../AssetData/Shaders/Grid_vs.cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="src\Shaders\Line_ps.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/Line_ps.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Line_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/Line_vs.cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="src\Shaders\ParticleSystem_ps.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>

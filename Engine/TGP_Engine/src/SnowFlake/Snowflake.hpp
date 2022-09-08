@@ -21,6 +21,19 @@ namespace Snowflake
 	using Entity = uint32_t;
 	using ByteSet = std::vector<uint8_t>;
 
+	class DestructorBase
+	{
+	public:
+		virtual void Destory(void* ptr) = 0;
+	};
+
+	template<class T>
+	class Destuctor : public DestructorBase
+	{
+	public:
+		void Destory(void* ptr) override;
+	};
+
 	class ComponentPool
 	{
 		friend class Registry;
@@ -28,10 +41,15 @@ namespace Snowflake
 		ComponentPool() = default;
 		ComponentPool(SnowID id) : m_Id(id)
 		{
+			
 		}
 		template<class T>
 		void RegisterEntity(Entity entity)
 		{
+			if (!m_Desctructor)
+			{
+				m_Desctructor = std::make_shared<Destuctor<T>>();
+			}
 			if (m_ComponentMap.find(entity) == m_ComponentMap.end())
 			{
 				m_ComponentMap[entity] = ByteSet();
@@ -52,6 +70,7 @@ namespace Snowflake
 
 		void DeRegisterEntity(Entity entity)
 		{
+			m_Desctructor->Destory(m_ComponentMap[entity].data());
 			m_ComponentMap.erase(entity);
 		}
 
@@ -75,8 +94,12 @@ namespace Snowflake
 		}
 	private:
 		SnowID m_Id;
+		std::shared_ptr<DestructorBase> m_Desctructor;
 		std::unordered_map<Entity, ByteSet> m_ComponentMap;
 	};
+
+
+	
 
 	class Registry
 	{
@@ -256,4 +279,9 @@ namespace Snowflake
 		std::unordered_map<SnowID, ComponentPool> m_ComponentPools;
 
 	};
+	template<class T>
+	inline void Destuctor<T>::Destory(void* ptr)
+	{
+		((T*)ptr)->~T();
+	}
 }

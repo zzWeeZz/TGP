@@ -12,6 +12,24 @@
 
 namespace Engine
 {
+	struct Line
+	{
+		Vector3f startPos;
+		Vector3f endPos;
+		Vector4f color;
+		Line()
+		{
+			startPos = {};
+			endPos = { 0, 1, 0 };
+			color = { 1,1,1,1 };
+		}
+		Line(const Vector3f& start, const Vector3f& end, const Vector4f& col)
+		{
+			startPos = start;
+			endPos = end;
+			color = col;
+		}
+	};
 	struct Data
 	{
 		std::vector<Model*> Meshes;
@@ -23,15 +41,21 @@ namespace Engine
 		Camera* ActiveCamera;
 		Ref<FrameBuffer> RendererFinalframeBuffer;
 		Ref<FrameBuffer> defferedGBuffer;
-		Ref<FrameBuffer> particleGBuffer;
+		Ref<FrameBuffer> colorPickingBuffer;
+		
+		
 		CameraBuffer CameraBufferObject;
-		ConstantBuffer<CameraBuffer> CameraBuffer;
+		ConstantBuffer<CameraBuffer> cameraBuffer;
 
 		ModelBuffer ModelBufferObject;
-		ConstantBuffer<ModelBuffer> ModelBuffer;
+		ConstantBuffer<ModelBuffer> modelBuffer;
 
 		DirectionalLightBuffer DirectionalLightBufferObject;
 		ConstantBuffer<DirectionalLightBuffer> directionalLightBuffer;
+
+		VertexBuffer<LineVertex> lineVertexBuffer;
+		std::array<LineVertex, 512> lineVertices;
+		uint32_t lineIterator;
 
 		PointLightBuffer PointLightBufferObject;
 		ConstantBuffer<PointLightBuffer> pointLightBuffer;
@@ -52,13 +76,17 @@ namespace Engine
 		static void SubmitSpotLight(const SpotLightData& light);
 		static void SetIBL(Ref<Texture2D> map);
 		static void SubmitMesh(Model* mesh);
+		static void SubmitLine(const Line& line);
 		static void SubmitAnimatedMesh(AnimatedModel* mesh);
+		static int GetClickedEntityId(uint32_t x, uint32_t y);
 		static void SubmitParticleSystem(Ref<ParticleSystem> sys);
 		static Ref<FrameBuffer> GetMainFramebuffer();
 		static Ref<FrameBuffer> GetPaticleFramebuffer();
 		static void Begin();
 		static void Shutdown();
 	private:
+		static void FlushLineBatch();
+		static void BeginLineDraw();
 		static void DefineShaders();
 		static void DefineFrameBuffers();
 		static void DefineBuffers();

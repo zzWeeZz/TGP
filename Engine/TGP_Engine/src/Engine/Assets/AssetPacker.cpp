@@ -41,3 +41,44 @@ void Engine::AssetPacker::Particle(Ref<ParticleSystem> ps, const std::string& na
 	std::ofstream fout(path);
 	fout << out.c_str();
 }
+
+void Engine::AssetPacker::ReadAnimator(const std::string& path, std::string& skPath, std::vector<AnimationSpecs>& outSpecs)
+{
+	std::ifstream fin(path);
+	std::stringstream buffer;
+	buffer << fin.rdbuf();
+	YAML::Node node = YAML::Load(buffer.str());
+	skPath = node["SkPath"].as<std::string>();
+	std::vector<YAML::Node> specs = node["AnimSpecs"].as<std::vector<YAML::Node>>();
+	for (auto& spec : specs)
+	{
+		AnimationSpecs& s = outSpecs.emplace_back();
+		s.Name = spec["Name"].as<std::string>();
+		s.FilePath = spec["skPath"].as<std::string>();
+		s.Interpolate = spec["Interp"].as<bool>();
+		s.Loop = spec["Loop"].as<bool>();
+		s.Speed = spec["Speed"].as<float>();
+	}
+}
+
+void Engine::AssetPacker::WriteAnimator(const std::string& path, const std::string& skPath, std::vector<AnimationSpecs>& writeData)
+{
+	YAML::Emitter out;
+	out << YAML::BeginMap;
+	out << YAML::Key << "SkPath" << YAML::Value << skPath;
+	out << YAML::Key << "AnimSpecs" << YAML::Value << YAML::BeginSeq;
+	for (auto& spec : writeData)
+	{
+		out << YAML::BeginMap;
+		out << YAML::Key << "Name" << YAML::Value << spec.Name;
+		out << YAML::Key << "skPath" << YAML::Value << spec.FilePath.string();
+		out << YAML::Key << "Interp" << YAML::Value << spec.Interpolate;
+		out << YAML::Key << "Loop" << YAML::Value << spec.Loop;
+		out << YAML::Key << "Speed" << YAML::Value << spec.Speed;
+		out << YAML::EndMap;
+	}
+	out << YAML::EndSeq;
+	out << YAML::EndMap;
+	std::ofstream fout(path);
+	fout << out.c_str();
+}

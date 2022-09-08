@@ -96,6 +96,10 @@ void Engine::PlayGround::Render()
 	//Renderer::SubmitAnimatedMesh(myBlendedModel.get());
 	//Renderer::SubmitAnimatedMesh(myInterpModel.get());
 	//Renderer::SubmitAnimatedMesh(myKeyModel.get());
+	Renderer::SubmitLine({ {50,50,50}, {-50, 50, 50}, {1,1,1,1} });
+	Renderer::SubmitLine({ {-50,50,50}, {-50, -50, 50}, {1,1,1,1} });
+	Renderer::SubmitLine({ {-50,-50,50}, {50, -50, 50}, {1,1,1,1} });
+	Renderer::SubmitLine({ {50,-50,50}, {50, 50, 50}, {1,1,1,1} });
 	Renderer::SubmitDirectionalLight(myDirLight);
 	//Renderer::SubmitParticleSystem(myParticleSystem);
 

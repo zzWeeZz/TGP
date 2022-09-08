@@ -23,6 +23,23 @@ struct Vertex
 	Vector4f BoneWeights = { 0,0,0,0 };
 };
 
+struct LineVertex
+{
+	Vector3f position;
+
+	Vector4f color;
+	LineVertex()
+	{
+		position = {};
+		color = { 1,1,1,1 };
+	}
+	LineVertex(const Vector3f& start, const Vector4f& col)
+	{
+		position = start;
+		color = col;
+	}
+};
+
 struct ParticleVertex
 {
 	Vector4f pos;

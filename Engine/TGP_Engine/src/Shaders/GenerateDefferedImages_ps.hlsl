@@ -8,6 +8,7 @@ struct DefferedOutput
 	float4 WorldPosition : SV_TARGET4;
 
 	float AmbientOcclusion : SV_TARGET5;
+    uint EntityId : SV_TARGET6;
 };
 
 struct PixelInput
@@ -24,6 +25,7 @@ struct PixelInput
     float2 texcoord3 : UV3;
     float3 normal : NORMAL;
     float3x3 tangentBias : TBASIS;
+    unsigned int entityId : ENTITYID;
 };
 
 sampler defaultSampler : register(s0);
@@ -67,6 +69,7 @@ DefferedOutput main(PixelInput input)
     result.VertexNormal = float4(normalize(input.normal), 1.0f);
     result.WorldPosition = input.worldPosition;
     result.AmbientOcclusion = AO;
+    result.EntityId = input.entityId + 1;
 
     return result;
 }

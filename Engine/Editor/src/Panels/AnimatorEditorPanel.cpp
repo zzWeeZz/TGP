@@ -27,7 +27,7 @@ void Engine::AnimatorEditorPanel::OnImGuiRender()
 		if (!path.empty())
 		{
 			m_AnimationSpecs.clear();
-			ReadFromFile(path);
+			AssetPacker::ReadAnimator(path, m_SkPath, m_AnimationSpecs);
 		}
 	}
 	ImGui::SameLine();
@@ -36,7 +36,7 @@ void Engine::AnimatorEditorPanel::OnImGuiRender()
 		std::string path = ToolBox::SaveFile("Animator (*.anim)\0*.anim\0", Application::GetWindow()->GetHwnd());
 		if (!path.empty())
 		{
-			WriteToFile(path);
+			AssetPacker::WriteAnimator(path, m_SkPath, m_AnimationSpecs);
 		}
 
 	}
@@ -114,48 +114,4 @@ void Engine::AnimatorEditorPanel::OnImGuiRender()
 		spec.Name = "New Animation";
 	}
 	ImGui::End();
-}
-
-
-
-
-void Engine::AnimatorEditorPanel::WriteToFile(const std::string& path)
-{
-	YAML::Emitter out;
-	out << YAML::BeginMap;
-	out << YAML::Key << "SkPath" << YAML::Value << m_SkPath;
-	out << YAML::Key << "AnimSpecs" << YAML::Value << YAML::BeginSeq;
-	for (auto& spec : m_AnimationSpecs)
-	{
-		out << YAML::BeginMap;
-		out << YAML::Key << "Name" << YAML::Value << spec.Name;
-		out << YAML::Key << "skPath" << YAML::Value << spec.FilePath.string();
-		out << YAML::Key << "Interp" << YAML::Value << spec.Interpolate;
-		out << YAML::Key << "Loop" << YAML::Value << spec.Loop;
-		out << YAML::Key << "Speed" << YAML::Value << spec.Speed;
-		out << YAML::EndMap;
-	}
-	out << YAML::EndSeq;
-	out << YAML::EndMap;
-	std::ofstream fout(path);
-	fout << out.c_str();
-}
-
-void Engine::AnimatorEditorPanel::ReadFromFile(const std::string& path)
-{
-	std::ifstream fin(path);
-	std::stringstream buffer;
-	buffer << fin.rdbuf();
-	YAML::Node node = YAML::Load(buffer.str());
-	m_SkPath = node["SkPath"].as<std::string>();
-	std::vector<YAML::Node> specs = node["AnimSpecs"].as<std::vector<YAML::Node>>();
-	for (auto& spec : specs)
-	{
-		AnimationSpecs& s = m_AnimationSpecs.emplace_back();
-		s.Name = spec["Name"].as<std::string>();
-		s.FilePath = spec["skPath"].as<std::string>();
-		s.Interpolate = spec["Interp"].as<bool>();
-		s.Loop = spec["Loop"].as<bool>();
-		s.Speed = spec["Speed"].as<float>();
-	}
 }

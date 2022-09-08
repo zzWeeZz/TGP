@@ -25,11 +25,18 @@ namespace Engine
 		UInt3X3 = UInt3,
 	};
 
+	enum class PerData
+	{
+		Vertex = D3D11_INPUT_PER_VERTEX_DATA,
+		Instance = D3D11_INPUT_PER_INSTANCE_DATA,
+	};
+
 	struct InputLayoutDefine
 	{
 		LPCSTR name;
 		uint32_t semanticIndex;
 		Value value;
+		PerData perData = PerData::Vertex;
 	};
 
 	struct InputLayout
@@ -38,7 +45,7 @@ namespace Engine
 		{
 			for(auto& define : defines)
 			{
-				elements.emplace_back(define.name, define.semanticIndex, (DXGI_FORMAT)define.value, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0);
+				elements.emplace_back(define.name, define.semanticIndex, (DXGI_FORMAT)define.value, (bool)define.perData ? 1 : 0, (bool)define.perData ? 0 : D3D11_APPEND_ALIGNED_ELEMENT, (D3D11_INPUT_CLASSIFICATION)define.perData, (bool)define.perData ? 1 : 0);
 			}
 		}
 		std::vector<D3D11_INPUT_ELEMENT_DESC> elements;

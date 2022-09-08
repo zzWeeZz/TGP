@@ -34,6 +34,8 @@ namespace Engine
 			DX11::Context()->Unmap(myBuffer.Get(), 0);
 		}
 
+		void Bind();
+
 	private:
 		ComPtr<ID3D11Buffer> myBuffer;
 		std::shared_ptr<UINT> myStride;
@@ -75,4 +77,11 @@ inline HRESULT Engine::VertexBuffer<T>::Initialize(T* aData, UINT aVertexCount)
 	vertexBufferData.pSysMem = aData;
 	auto hr = DX11::Device()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, myBuffer.GetAddressOf());
 	return hr;
+}
+
+template<class T>
+inline void Engine::VertexBuffer<T>::Bind()
+{
+	UINT offset = 0;
+	DX11::Context()->IASetVertexBuffers(0, 1, myBuffer.GetAddressOf(), StridePtr(), &offset);
 }

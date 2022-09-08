@@ -31,6 +31,7 @@ struct PixelInput
     float2 texcoord3 : UV3;
     float3 normal : NORMAL;
     float3x3 tangentBias : TBASIS;
+    int entiityId : ENTITYID;
 };
 PixelInput main(VertexInput vInput)
 {
@@ -56,6 +57,7 @@ PixelInput main(VertexInput vInput)
     pInput.texcoord2 = vInput.texcoord2;
     pInput.texcoord3 = vInput.texcoord3;
     pInput.normal = vInput.normal;
+    pInput.entiityId = entityId;
 
 
     float3 newTangent = mul((float3x3) toWorld, mul(vInput.tangent, (float3x3)skinnedPosition));

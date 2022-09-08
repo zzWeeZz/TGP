@@ -13,6 +13,7 @@ namespace Engine
 
 	struct ModelBuffer
 	{
+		Vector4i entityId;
 		Matrix4x4f modelSpace;
 		Matrix4x4f bones[128];
 	};

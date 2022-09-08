@@ -67,7 +67,7 @@ void Engine::AnimatedMesh::Update(float aDeltaTime)
 	}
 	
 	auto timestep = 1.0f / mySkeleton.animations[myCurrentAnimation->Name].fps;
-	myTime += ToolBox::Chrono::Timestep();
+	myTime += ToolBox::Chrono::Timestep() * myCurrentAnimation->Speed;
 	if (myCurrentAnimation->Interpolate)
 	{
 		Matrix4x4f identity{};

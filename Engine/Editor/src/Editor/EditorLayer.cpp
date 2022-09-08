@@ -7,6 +7,7 @@
 #include "ToolBox/File/FileDialogs.h"
 #include "Engine/Scene/SceneSerializer.h"
 #include "Application/Application.h"
+#include "ToolBox/Input/Input.h"
 void Engine::EditorLayer::OnAttach()
 {
 	myEditorCamera = Camera::Create(90, { 100, 100 }, 0.1, 100000.f);
@@ -153,6 +154,27 @@ void Engine::EditorLayer::OnUpdate()
 			}
 			ImGui::EndDragDropTarget();
 		}
+
+		ImVec2 mouse_pos = ImGui::GetMousePos();
+		ImVec2 screen_pos = ImGui::GetWindowPos();
+		ImVec2 final_pos;
+		final_pos.x = mouse_pos.x - screen_pos.x;
+		final_pos.y = mouse_pos.y - screen_pos.y;
+		int clickedIentity = -1;
+		bool hasSelected = false;
+		if (ToolBox::Input::IsMousePressed(MouseButton::Left) && ImGui::IsWindowFocused())
+		{
+			clickedIentity = Renderer::GetClickedEntityId(final_pos.x, final_pos.y) - 1;
+			hasSelected = true;
+		}
+
+			
+		if (clickedIentity > -1 && hasSelected)
+		{
+			mySceneHierarchyPanel->SetEntity({ (uint32_t)clickedIentity, myScene.get() });
+		}
+			
+
 		if (mySceneHierarchyPanel->GetSelectedEntity()() && myScene)
 		{
 			ImGuizmo::SetOrthographic(false);
@@ -167,9 +189,10 @@ void Engine::EditorLayer::OnUpdate()
 			auto entity = mySceneHierarchyPanel->GetSelectedEntity();
 			auto& tf = entity.GetComponent<TransformComponent>();
 			auto matrix = tf.transform.GetMatrix();
- 			float trans[16] = { 0 };
+			float trans[16] = { 0 };
 			memcpy(trans, &matrix, sizeof(float) * 16);
 			static ImGuizmo::OPERATION ops = ImGuizmo::TRANSLATE;
+			static ImGuizmo::MODE mode = ImGuizmo::WORLD;
 			if (ImGui::GetIO().KeysDown[ImGuiKey_W])
 			{
 				ops = ImGuizmo::TRANSLATE;
@@ -182,7 +205,13 @@ void Engine::EditorLayer::OnUpdate()
 			{
 				ops = ImGuizmo::SCALE;
 			}
-			ImGuizmo::Manipulate(&view[0], &proj[0], ops, ImGuizmo::LOCAL, &trans[0]);
+			static bool swapper = 0;
+			if (ToolBox::Input::IsKeyPressed(Keys::Q))
+			{
+				swapper = !swapper;
+			}
+			mode = swapper ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
+			ImGuizmo::Manipulate(&view[0], &proj[0], ops, mode, &trans[0]);
 
 			if (ImGuizmo::IsUsing())
 			{
@@ -205,7 +234,7 @@ void Engine::EditorLayer::OnUpdate()
 
 	DrawPanels();
 
-	ImGui::Begin("Hej Lukas!");
+	/*ImGui::Begin("Hej Lukas!");
 	ImGui::Text("Nu ar den Har!");
 	ImGui::Text("Theme editor ar dar nere med 'apply' som sparar.");
 	ImGui::Text("Scener som sparas och laddas genom file.");
@@ -213,7 +242,7 @@ void Engine::EditorLayer::OnUpdate()
 	ImGui::Text("Detta sedan laddar den in Testscene.scn pa motor start!");
 	ImGui::Text("MVH");
 	ImGui::Text("Niklas Jakobsen");
-	ImGui::End();
+	ImGui::End();*/
 	ImGui::End();
 	myEditorCamera->Update(ToolBox::Chrono::Timestep());
 	myScene->OnEditorUpdate();

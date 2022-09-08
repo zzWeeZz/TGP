@@ -13,11 +13,9 @@ class SandBox : public Engine::Application
 public:
 	SandBox()
 	{
-		auto o = Engine::ScriptRegistry<Engine::ScriptBase>::Create("TestScript");
 		myLayerStack.Push(new Engine::ImGuiLayer());
 		myLayerStack.Push(new Engine::EditorLayer());
 	}
-
 };
 
 Engine::Application* Engine::CreateApplication()

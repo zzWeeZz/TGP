@@ -243,7 +243,9 @@
     <ClInclude Include="src\SnowFlake\Snowflake.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="src\SnowFlake\String.hpp" />
+    <ClInclude Include="src\SnowFlake\String.hpp">
+      <Filter>SnowFlake</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -382,6 +384,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\Grid_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Line_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\Line_vs.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\ParticleSystem_ps.hlsl">

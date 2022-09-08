@@ -23,6 +23,7 @@ namespace Engine
 		RG32S = 18,
 		R8G8B8A8UN = 28,
 		Depth32 = 39,
+		R32UI = DXGI_FORMAT_R32_UINT,
 		Depth24 = 45,
 		R8UN = 61,
 

@@ -5,11 +5,13 @@
 #include "Engine/Assets/Model/Model.h"
 #include <Engine/Scripting/ScriptBase.h>
 #include "SnowFlake/String.hpp"
+#include "Engine/Renderer/Mesh/AnimatedMesh.h"
+#include "Engine/Assets/Model/AnimatedModel.h"
 
 COMPONENT(TagComponent)
 {
 	REGISTER_COMPONENT("{0A07B7F9-8312-40B1-81AA-773BE3B295B9}"_guid);
-	String tag = "Unknown";
+	std::string tag = "Unknown";
 };
 
 COMPONENT(TransformComponent)
@@ -22,7 +24,7 @@ COMPONENT(ModelComponent)
 {
 	REGISTER_COMPONENT("{EC4E0F57-123F-4EEF-BF9E-DA7A05E0052A}"_guid);
 	Engine::Ref<Engine::Model> modelHandle = nullptr;
-	String filePath = "";
+	std::string filePath = "";
 };
 
 COMPONENT(PointLightComponent)
@@ -44,7 +46,10 @@ COMPONENT(SpotLightComponent)
 COMPONENT(AnimatorComponent)
 {
 	REGISTER_COMPONENT("{481D7E20-A5F6-4AA5-8C35-AF3105265E88}"_guid);
-	String animatorPath = "";
+	std::string animatorPath = "";
+	std::string skPath = "";
+	std::vector<Engine::AnimationSpecs> specs;
+	Engine::Ref<Engine::AnimatedModel> modelHandle;
 };
 
 COMPONENT(ScriptComponent)

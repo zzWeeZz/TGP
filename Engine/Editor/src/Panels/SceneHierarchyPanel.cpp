@@ -4,6 +4,7 @@
 #include <imgui_internal.h>
 #include "misc/cpp/imgui_stdlib.h"
 #include "Engine/Scripting/ScriptRegistry.h"
+#include "Engine/Assets/AssetPacker.h"
 namespace Engine
 {
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -256,6 +257,7 @@ namespace Engine
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						strTransfer = std::filesystem::path(path).string().c_str();
 						tf.filePath = strTransfer;
+						
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -298,9 +300,9 @@ namespace Engine
 				char tagbuffer[128];
 				memset(tagbuffer, 0, sizeof(tagbuffer));
 				strcpy(tagbuffer, tf.animatorPath.c_str());
-				if (ImGui::InputText("##3", tagbuffer, sizeof(tagbuffer)))
+				if (ImGui::InputText("##3", tagbuffer, sizeof(tagbuffer)), ImGuiInputTextFlags_ReadOnly)
 				{
-					tf.animatorPath = tagbuffer;
+					/*tf.animatorPath = tagbuffer;*/
 				}
 				if (ImGui::BeginDragDropTarget())
 				{
@@ -309,9 +311,39 @@ namespace Engine
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						auto newp = std::filesystem::path(path).string().size();
 						tf.animatorPath = std::filesystem::path(path).string();
+						AssetPacker::ReadAnimator(tf.animatorPath, tf.skPath, tf.specs);
 						
 					}
 					ImGui::EndDragDropTarget();
+				}
+				if (!tf.specs.empty())
+				{
+					std::vector<std::string> animNames;
+					for (size_t i = 0; i < tf.specs.size(); i++)
+					{
+						animNames.emplace_back(tf.specs[i].Name);
+					}
+					static std::string selectedName = "unknown";
+					if (ImGui::BeginCombo("Choose animation", selectedName.c_str()))
+					{
+						for (auto& str : animNames)
+						{
+							bool isSelected = selectedName == str;
+							if (ImGui::Selectable(str.c_str(), isSelected))
+							{
+								selectedName = str;
+							}
+							if (isSelected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+					if (ImGui::Button("Test run"))
+					{
+						tf.modelHandle->PlayAnimation(selectedName);
+					}
 				}
 			}
 			ImGui::Separator();
