@@ -50,12 +50,13 @@ namespace Engine
 		ModelBuffer ModelBufferObject;
 		ConstantBuffer<ModelBuffer> modelBuffer;
 
-		DirectionalLightBuffer DirectionalLightBufferObject;
-		ConstantBuffer<DirectionalLightBuffer> directionalLightBuffer;
-
 		VertexBuffer<LineVertex> lineVertexBuffer;
 		std::array<LineVertex, 512> lineVertices;
 		uint32_t lineIterator;
+
+		DirLightBuffer DirectionalLightBufferObject;
+		ConstantBuffer<DirLightBuffer> directionalLightBuffer;
+		uint32_t dirLightIterator = 0;
 
 		PointLightBuffer PointLightBufferObject;
 		ConstantBuffer<PointLightBuffer> pointLightBuffer;
@@ -71,7 +72,7 @@ namespace Engine
 	public:
 		static void Initialize();
 		static void SetActiveCamera(Ref<Camera>& camera);
-		static void SubmitDirectionalLight(Ref<DirectionalLight> light);
+		static void SubmitDirectionalLight(const DirLightData& light);
 		static void SubmitPointLight(const PointLightData& light);
 		static void SubmitSpotLight(const SpotLightData& light);
 		static void SetIBL(Ref<Texture2D> map);
@@ -85,6 +86,7 @@ namespace Engine
 		static void Begin();
 		static void Shutdown();
 	private:
+		static void Flush();
 		static void FlushLineBatch();
 		static void BeginLineDraw();
 		static void DefineShaders();

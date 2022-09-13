@@ -14,7 +14,7 @@ namespace Engine
 		DefineShaders();
 		DefineFrameBuffers();
 		DefineBuffers();
-		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Clamp, ShaderType::Pixel);
+		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Wrap, ShaderType::Pixel);
 	}
 
 	void Renderer::SubmitMesh(Model* mesh)
@@ -36,7 +36,7 @@ namespace Engine
 			start.color = line.color;
 			s_Data->lineIterator++;
 		}
-		
+
 	}
 
 	void Renderer::SetActiveCamera(Ref<Camera>& camera)
@@ -44,9 +44,10 @@ namespace Engine
 		s_Data->ActiveCamera = camera.get();
 	}
 
-	void Renderer::SubmitDirectionalLight(Ref<DirectionalLight> light)
+	void Renderer::SubmitDirectionalLight(const DirLightData& light)
 	{
-		s_Data->DirectionalLight = light.get();
+		s_Data->DirectionalLightBufferObject.dirLightData[s_Data->dirLightIterator] = light;
+		s_Data->dirLightIterator++;
 	}
 
 	void Renderer::SubmitPointLight(const PointLightData& light)
@@ -94,7 +95,6 @@ namespace Engine
 
 	void Renderer::Begin()
 	{
-		
 		s_Data->RendererFinalframeBuffer->Clear();
 		s_Data->defferedGBuffer->Clear({ 0,0,0,0 });
 		if (s_Data->RendererFinalframeBuffer->GetSpecs().width != s_Data->defferedGBuffer->GetSpecs().width || s_Data->RendererFinalframeBuffer->GetSpecs().height != s_Data->defferedGBuffer->GetSpecs().height)
@@ -109,19 +109,15 @@ namespace Engine
 			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
 			s_Data->cameraBuffer.Bind(0);
 		}
-		if (s_Data->DirectionalLight)
-		{
-			s_Data->DirectionalLightBufferObject.direction = s_Data->DirectionalLight->myDirection;
-			s_Data->DirectionalLightBufferObject.colorAndIntensity = s_Data->DirectionalLight->myColor;
-			s_Data->directionalLightBuffer.SetData(&s_Data->DirectionalLightBufferObject);
-			s_Data->directionalLightBuffer.Bind(2);
-		}
+
+		s_Data->directionalLightBuffer.SetData(&s_Data->DirectionalLightBufferObject);
+		s_Data->directionalLightBuffer.Bind(2);
 
 		s_Data->pointLightBuffer.SetData(&s_Data->PointLightBufferObject);
 		s_Data->pointLightBuffer.Bind(3);
 
-			s_Data->spotLightBuffer.SetData(&s_Data->spotLightBufferObject);
-			s_Data->spotLightBuffer.Bind(4);
+		s_Data->spotLightBuffer.SetData(&s_Data->spotLightBufferObject);
+		s_Data->spotLightBuffer.Bind(4);
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		// ----------------------------------------------------------------------- //
@@ -131,7 +127,7 @@ namespace Engine
 		ShaderLibrary::Bind("DefferedPBR");
 		for (auto mesh : s_Data->Meshes)
 		{
-			s_Data->ModelBufferObject.entityId = {(int)mesh->GetEntity(), 0, 0, 0};
+			s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
 			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
 			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
 			s_Data->modelBuffer.Bind(1);
@@ -156,7 +152,7 @@ namespace Engine
 		s_Data->defferedGBuffer->BindToShader(4, 4);
 		s_Data->defferedGBuffer->BindToShader(5, 5);
 		ShaderLibrary::Bind("DeferredLightCalc");
-		//s_Data->defferedGBuffer->BindToShader();
+		
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::None);
 		DX11::Context()->Draw(3, 0);
 		s_Data->RendererFinalframeBuffer->TransferDepth(s_Data->defferedGBuffer);
@@ -190,17 +186,24 @@ namespace Engine
 
 
 		FlushLineBatch();
-		s_Data->Meshes.clear();
-		s_Data->pointLightIterator = 0;
-		s_Data->spotLightIterator = 0;
-		memset(&s_Data->PointLightBufferObject, 0, sizeof(PointLightBuffer));
-		memset(&s_Data->spotLightBufferObject, 0, sizeof(SpotLightBuffer));
-		s_Data->AnimatedMeshes.clear();
-		s_Data->ParticleSystem.clear();
+		Flush();
 	}
 
 	void Renderer::Shutdown()
 	{
+	}
+
+	void Renderer::Flush()
+	{
+		s_Data->Meshes.clear();
+		s_Data->pointLightIterator = 0;
+		s_Data->spotLightIterator = 0;
+		s_Data->dirLightIterator = 0;
+		memset(&s_Data->PointLightBufferObject, 0, sizeof(PointLightBuffer));
+		memset(&s_Data->spotLightBufferObject, 0, sizeof(SpotLightBuffer));
+		memset(&s_Data->DirectionalLightBufferObject, 0, sizeof(DirLightBuffer));
+		s_Data->AnimatedMeshes.clear();
+		s_Data->ParticleSystem.clear();
 	}
 
 	void Renderer::FlushLineBatch()
@@ -348,7 +351,7 @@ namespace Engine
 			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
 			s_Data->RendererFinalframeBuffer = FrameBuffer::Create(specs);
 		}
-		
+
 		{
 			FrameBufferSpecs specs{};
 			specs.height = 720;

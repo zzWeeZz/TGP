@@ -102,6 +102,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Panels\PresetLerperPanel.h" />
     <ClInclude Include="src\Editor\EditorLayer.h" />
     <ClInclude Include="src\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="src\Panels\ConsolePanel.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="src\Panels\ThemeEditorPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Panels\PresetLerperPanel.cpp" />
     <ClCompile Include="src\Editor\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="src\Panels\ConsolePanel.cpp" />

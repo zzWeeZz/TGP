@@ -41,6 +41,15 @@ COMPONENT(SpotLightComponent)
 	Vector3f color;
 	float intensity = 0;
 	float cutoff = 0;
+	float nearRadius = 0;
+	float farRadius = 0;
+};
+
+COMPONENT(DirectionalLightComponent)
+{
+	REGISTER_COMPONENT("{1C956EE5-3222-4172-A088-836BADD13CB8}"_guid);
+	Vector3f color;
+	float intensity = 0;
 };
 
 COMPONENT(AnimatorComponent)

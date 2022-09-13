@@ -66,7 +66,7 @@ void Engine::PlayGround::Init()
 
 void Engine::PlayGround::Update()
 {
-	static float angle = 0;
+	/*static float angle = 0;
 	angle += ToolBox::Chrono::Timestep();
 	static float blend = 0.5f;
 	if (ToolBox::Input::IsKeyDown(Keys::Left))
@@ -85,22 +85,9 @@ void Engine::PlayGround::Update()
 	myCamera->Update(ToolBox::Chrono::Timestep());
 	myPrimative->GetTransform().SetRotation(0, angle, 0);
 	myBlendedModel->GetTransform().SetRotation(0, angle, 0);
-	myParticleSystem->Run();
+	myParticleSystem->Run();*/
 }
 
 void Engine::PlayGround::Render()
-{
-	//Renderer::SetActiveCamera(myCamera);
-	//Renderer::SubmitMesh(myPrimative.get());
-	//Renderer::SubmitMesh(myChest.get());
-	//Renderer::SubmitAnimatedMesh(myBlendedModel.get());
-	//Renderer::SubmitAnimatedMesh(myInterpModel.get());
-	//Renderer::SubmitAnimatedMesh(myKeyModel.get());
-	Renderer::SubmitLine({ {50,50,50}, {-50, 50, 50}, {1,1,1,1} });
-	Renderer::SubmitLine({ {-50,50,50}, {-50, -50, 50}, {1,1,1,1} });
-	Renderer::SubmitLine({ {-50,-50,50}, {50, -50, 50}, {1,1,1,1} });
-	Renderer::SubmitLine({ {50,-50,50}, {50, 50, 50}, {1,1,1,1} });
-	Renderer::SubmitDirectionalLight(myDirLight);
-	//Renderer::SubmitParticleSystem(myParticleSystem);
-
+{ 
 }

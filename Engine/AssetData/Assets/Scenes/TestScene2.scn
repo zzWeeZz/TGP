@@ -15,7 +15,7 @@ Entities:
     TagComponent:
       Tag: Chest
     TransformComponent:
-      Position: [7.991865, 0.6456757, 0]
+      Position: [35.29954, 108.0841, 119.1585]
       Rotation: [0, 0.3822719, 0]
       Scale: [0.9999996, 1, 0.9999996]
     ModelComponent:
@@ -44,8 +44,8 @@ Entities:
     TagComponent:
       Tag: Chest2
     TransformComponent:
-      Position: [-25.46652, 70.29742, 0]
-      Rotation: [-0.07615216, 0.2049233, 0.3917596]
+      Position: [-239.7314, 79.29377, 27.5195]
+      Rotation: [-0.07615217, 0.2049233, 0.3917596]
       Scale: [0.2899998, 0.29, 0.2900004]
     ModelComponent:
       Mesh: assets\Model\SM_Particle_Chest.fbx
@@ -53,7 +53,7 @@ Entities:
     TagComponent:
       Tag: Chest3
     TransformComponent:
-      Position: [24.86607, 72.11751, -12.2587]
+      Position: [175.7574, 122.8643, -64.70091]
       Rotation: [-2.915845, -0.6229509, 2.7599]
       Scale: [0.4300003, 0.4300014, 0.4299997]
     ModelComponent:

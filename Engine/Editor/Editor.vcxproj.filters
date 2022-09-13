@@ -27,6 +27,7 @@
     <ClInclude Include="src\Panels\ThemeEditorPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="src\Panels\PresetLerperPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Editor\EditorLayer.cpp">
@@ -47,5 +48,6 @@
     <ClCompile Include="src\Panels\ThemeEditorPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="src\Panels\PresetLerperPanel.cpp" />
   </ItemGroup>
 </Project>

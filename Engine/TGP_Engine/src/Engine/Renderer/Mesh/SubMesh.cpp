@@ -18,7 +18,10 @@ Engine::SubMesh::SubMesh(const SubMesh& aMesh) : myIndexBuffer(aMesh.myIndexBuff
 void Engine::SubMesh::Draw()
 {
 	UINT offset = 0;
-	if(m_Material) m_Material->Bind();
+	if (m_Material)
+	{
+		m_Material->Bind();
+	}
 	DX11::Context()->IASetVertexBuffers(0, 1, myVertexBuffer.GetAddressOf(), myVertexBuffer.StridePtr(), &offset);
 	DX11::Context()->IASetIndexBuffer(myIndexBuffer.Get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 	DX11::Context()->DrawIndexed(myIndexBuffer.BufferSize(), 0, 0);

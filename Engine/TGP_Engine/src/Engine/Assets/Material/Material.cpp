@@ -19,17 +19,17 @@ void Engine::Material::SetShader(const std::string& shaderKey)
 
 void Engine::Material::AddDiffuseTexture(Ref<Texture2D> texture)
 {
-	m_Diffuse = std::move(texture);
+	m_Diffuse = texture;
 }
 
 void Engine::Material::AddNormalTexture(Ref<Texture2D> texture)
 {
-	m_Normal = std::move(texture);
+	m_Normal = texture;
 }
 
 void Engine::Material::AddSpecularTexture(Ref<Texture2D> texture)
 {
-	m_MaterialInfo = std::move(texture);
+	m_MaterialInfo = texture;
 }
 
 void Engine::Material::Bind()

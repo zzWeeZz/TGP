@@ -15,9 +15,12 @@ cbuffer ObjectBuffer : register(b1)
 
 cbuffer DirectionalLightBuffer : register(b2)
 {
-    float4 colorAndInstensity;
-    float3 DirLightDirection;
-    float padding;
+    struct DirData
+    {
+        float4 colorAndInstensity;
+        float4 DirLightDirection;
+    } dirData[8];
+   
 };
 
 cbuffer PointLightBuffer : register(b3)
@@ -37,6 +40,6 @@ cbuffer SpotLightBuffer : register(b4)
         float4 colorAndIntensity;
         float4 position;
         float4 direction;
-        float4 cutOff;
+        float4 spotInfo;
     } spotData[1000];
 }

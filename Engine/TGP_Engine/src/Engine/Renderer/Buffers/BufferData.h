@@ -18,12 +18,17 @@ namespace Engine
 		Matrix4x4f bones[128];
 	};
 
-	struct DirectionalLightBuffer
+
+	struct DirLightData
 	{
-		Vector4f colorAndIntensity;
-		Vector3f direction;
-		float padding;
+		Vector4f colorAndIntensity = { 0,0,0,0 };
+		Vector4f direction;
 	};
+	struct DirLightBuffer
+	{
+		DirLightData dirLightData[8];
+	};
+
 	struct PointLightData
 	{
 		Vector4f colorAndIntensity = { 0,0,0,0 };
@@ -39,7 +44,7 @@ namespace Engine
 		Vector4f colorAndIntensity = { 0,0,0,0 };
 		Vector4f position = { 0,0,0, 0 };
 		Vector4f direction = { 0,0,0,0 };
-		Vector4f cutoff = { 0, 0, 0, 0 };
+		Vector4f spotInfo = { 0, 0, 0, 0 };
 	};
 	struct SpotLightBuffer
 	{

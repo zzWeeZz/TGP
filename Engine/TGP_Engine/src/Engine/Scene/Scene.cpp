@@ -59,15 +59,25 @@ namespace Engine
 				plData.radius = pl.radius;
 				Renderer::SubmitPointLight(plData);
 			});
+
 		m_Registry.Execute<SpotLightComponent, TransformComponent>([&](auto& entity, SpotLightComponent& pl, TransformComponent& tf)
 			{
 				SpotLightData plData;
 				plData.colorAndIntensity = { pl.color.x, pl.color.y , pl.color.z, pl.intensity };
 				plData.position = { tf.transform.GetPosition().x,tf.transform.GetPosition().y, tf.transform.GetPosition().z, 0 };
 				plData.direction = { tf.transform.GetForward().x,tf.transform.GetForward().y, tf.transform.GetForward().z, 0 };
-				plData.cutoff = { pl.cutoff, 0, 0, 0 };
+				plData.spotInfo = { pl.cutoff, pl.nearRadius, pl.farRadius, 0 };
 				Renderer::SubmitSpotLight(plData);
 			});
+
+		m_Registry.Execute<DirectionalLightComponent, TransformComponent>([&](auto& entity, DirectionalLightComponent& pl, TransformComponent& tf)
+			{
+				DirLightData plData;
+				plData.colorAndIntensity = { pl.color.x, pl.color.y , pl.color.z, pl.intensity };
+				plData.direction = { tf.transform.GetForward().x,tf.transform.GetForward().y, tf.transform.GetForward().z, 0 };
+				Renderer::SubmitDirectionalLight(plData);
+			});
+
 		m_Registry.Execute<ScriptComponent>([&](auto&, ScriptComponent& sc)
 			{
 				for (auto& script : sc.scripts)

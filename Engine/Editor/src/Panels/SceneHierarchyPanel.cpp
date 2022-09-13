@@ -5,6 +5,9 @@
 #include "misc/cpp/imgui_stdlib.h"
 #include "Engine/Scripting/ScriptRegistry.h"
 #include "Engine/Assets/AssetPacker.h"
+#include "Engine/Scene/Prefab/Prefab.h"
+#include <ToolBox/File/FileDialogs.h>
+#include "Application/Application.h"
 namespace Engine
 {
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -67,6 +70,11 @@ namespace Engine
 		if (ImGui::Selectable(buf, entity.GetId() == m_SelectedEntity.GetId(), 0, ImVec2(ImGui::GetWindowSize().x, 20))) {
 			m_SelectedEntity = entity;
 		}
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("ENTITY_ID", &entity, sizeof(Entity));
+			ImGui::EndDragDropSource();
+		}
 		ImGui::SetItemAllowOverlap();
 
 		ImGui::SetCursorPos(ImVec2(pos.x, pos.y + 2));
@@ -103,6 +111,13 @@ namespace Engine
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
+		if (ImGui::Button("Save as Preset..."))
+		{
+			std::string path = ToolBox::SaveFile("Preset (*.pfb)\0*.pfb\0", Application::GetWindow()->GetHwnd());
+			if (!std::filesystem::path(path).has_extension())
+				path += ".pfb";
+			Prefab::SavePrefab(entity, path);
+		}
 		if (entity.HasComponent<TagComponent>())
 		{
 			auto& TagComp = entity.GetComponent<TagComponent>();
@@ -128,6 +143,7 @@ namespace Engine
 					"Model Component",
 					"Pointlight Component",
 					"SpotLight Component",
+					"DirLight Component",
 					"Script Component",
 					"Animator Component"
 				};
@@ -146,6 +162,10 @@ namespace Engine
 						else if (listofComps[n] == "SpotLight Component")
 						{
 							entity.AddComponent<SpotLightComponent>();
+						}
+						else if (listofComps[n] == "DirLight Component")
+						{
+							entity.AddComponent<DirectionalLightComponent>();
 						}
 						else if (listofComps[n] == "Script Component")
 						{
@@ -257,7 +277,7 @@ namespace Engine
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						strTransfer = std::filesystem::path(path).string().c_str();
 						tf.filePath = strTransfer;
-						
+
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -276,7 +296,7 @@ namespace Engine
 		if (entity.HasComponent<AnimatorComponent>())
 		{
 			auto& tf = entity.GetComponent<AnimatorComponent>();
-		
+
 			bool open = ImGui::CollapsingHeader("Animator component");
 			ImGui::SameLine();
 
@@ -312,7 +332,7 @@ namespace Engine
 						auto newp = std::filesystem::path(path).string().size();
 						tf.animatorPath = std::filesystem::path(path).string();
 						AssetPacker::ReadAnimator(tf.animatorPath, tf.skPath, tf.specs);
-						
+
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -354,48 +374,90 @@ namespace Engine
 			}
 
 		}
-			if (entity.HasComponent<SpotLightComponent>())
+		if (entity.HasComponent<DirectionalLightComponent>())
+		{
+			auto& pl = entity.GetComponent<DirectionalLightComponent>();
+			bool open = ImGui::CollapsingHeader("DirLight component");
+			ImGui::SameLine();
+
+			if (ImGui::Button("..."))
 			{
-				auto& pl = entity.GetComponent<SpotLightComponent>();
-				bool open = ImGui::CollapsingHeader("Spotlight component");
-				ImGui::SameLine();
-
-				if (ImGui::Button("..."))
-				{
-					ImGui::OpenPopup("ComponentSettings");
-				}
-
-				bool removeComponent = false;
-				if (ImGui::BeginPopup("ComponentSettings"))
-				{
-					if (ImGui::MenuItem("Remove Component"))
-					{
-						removeComponent = true;
-					}
-					ImGui::EndPopup();
-				}
-				if (open)
-				{
-					float imColor[3] = { 0 };
-					memcpy(imColor, &pl.color, sizeof(Vector3f));
-					if (ImGui::ColorEdit3("Color", imColor, 0.1f))
-					{
-						memcpy(&pl.color, imColor, sizeof(Vector3f));
-					}
-
-					if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
-					{
-					}
-					if (ImGui::DragFloat("CutOff", &pl.cutoff, 0.1f))
-					{
-					}
-				}
-				if (removeComponent)
-				{
-					entity.RemoveComponent<SpotLightComponent>();
-				}
-
+				ImGui::OpenPopup("ComponentSettings");
 			}
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					removeComponent = true;
+				}
+				ImGui::EndPopup();
+			}
+			if (open)
+			{
+				float imColor[3] = { 0 };
+				memcpy(imColor, &pl.color, sizeof(Vector3f));
+				if (ImGui::ColorEdit3("Color", imColor, 0.1f))
+				{
+					memcpy(&pl.color, imColor, sizeof(Vector3f));
+				}
+
+				if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
+				{
+				}
+			}
+			if (removeComponent)
+			{
+				entity.RemoveComponent<DirectionalLightComponent>();
+			}
+
+		}
+
+		if (entity.HasComponent<SpotLightComponent>())
+		{
+			auto& pl = entity.GetComponent<SpotLightComponent>();
+			bool open = ImGui::CollapsingHeader("Spotlight component");
+			ImGui::SameLine();
+
+			if (ImGui::Button("..."))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+				{
+					removeComponent = true;
+				}
+				ImGui::EndPopup();
+			}
+			if (open)
+			{
+				float imColor[3] = { 0 };
+				memcpy(imColor, &pl.color, sizeof(Vector3f));
+				if (ImGui::ColorEdit3("Color", imColor, 0.1f))
+				{
+					memcpy(&pl.color, imColor, sizeof(Vector3f));
+				}
+
+				if (ImGui::DragFloat("Intensity", &pl.intensity, 0.1f))
+				{
+				}
+				if (ImGui::DragFloat("Range", &pl.cutoff, 0.1f))
+				{
+				}
+				ImGui::DragFloat("Near radius", &pl.nearRadius, 0.1f);
+				ImGui::DragFloat("Far radius", &pl.farRadius, 0.1f);
+			}
+			if (removeComponent)
+			{
+				entity.RemoveComponent<SpotLightComponent>();
+			}
+
+		}
 
 		if (entity.HasComponent<PointLightComponent>())
 		{

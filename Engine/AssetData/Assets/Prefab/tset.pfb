@@ -1,0 +1,9 @@
+Entity: 0
+TagComponent:
+  Tag: Unknown
+TransformComponent:
+  Position: [0, 0, -83.1096]
+  Rotation: [0, -0, 0]
+  Scale: [0.2634358, 0.6295218, 0.2139497]
+ModelComponent:
+  Mesh: assets\Model\SM_Particle_Chest.fbx

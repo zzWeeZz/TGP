@@ -39,7 +39,7 @@ DefferedOutput main(PixelInput input)
     DefferedOutput result;
 
     float4 albedoSample = tex.Sample(defaultSampler, input.texcoord0).rgba;
-    if (albedoSample.a <= 0.05f)
+    if (albedoSample.a <= 0.5f)
     {
         discard;
         result.Albedo = 0;

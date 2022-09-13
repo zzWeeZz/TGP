@@ -14,10 +14,10 @@ namespace Engine
 		void AddSpecularTexture(Ref<Texture2D> texture);
 
 		void Bind();
+		std::string m_ShaderKey;
 
 		static Ref<Material> Create(const std::string& name);
 	private:
-		std::string m_ShaderKey;
 		Ref<Texture2D> m_Diffuse;
 		Ref<Texture2D> m_Normal;
 		Ref<Texture2D> m_MaterialInfo;

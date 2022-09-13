@@ -17,7 +17,7 @@ YAML::Emitter& operator<<(YAML::Emitter& out, Vector3f& vector)
 }
 
 
-static void SerializeEntity(Engine::Entity entity, YAML::Emitter& out)
+void Engine::SceneSerializer::SerializeEntity(Engine::Entity entity, YAML::Emitter& out)
 {
 	out << YAML::BeginMap;
 	out << YAML::Key << "Entity" << YAML::Value << entity.GetId();
@@ -70,6 +70,33 @@ static void SerializeEntity(Engine::Entity entity, YAML::Emitter& out)
 		out << YAML::EndMap;
 	}
 
+	if (entity.HasComponent<DirectionalLightComponent>())
+	{
+		out << YAML::Key << "DirLightComponent";
+		out << YAML::BeginMap;
+
+		auto& light = entity.GetComponent<DirectionalLightComponent>();
+		out << YAML::Key << "Color" << YAML::Value << light.color;
+		out << YAML::Key << "Intensity" << YAML::Value << light.intensity;
+
+		out << YAML::EndMap;
+	}
+
+	if (entity.HasComponent<SpotLightComponent>())
+	{
+		out << YAML::Key << "SpotLightComponent";
+		out << YAML::BeginMap;
+
+		auto& light = entity.GetComponent<SpotLightComponent>();
+		out << YAML::Key << "Color" << YAML::Value << light.color;
+		out << YAML::Key << "Intensity" << YAML::Value << light.intensity;
+		out << YAML::Key << "Range" << YAML::Value << light.cutoff;
+		out << YAML::Key << "near" << YAML::Value << light.nearRadius;
+		out << YAML::Key << "far" << YAML::Value << light.farRadius;
+
+		out << YAML::EndMap;
+	}
+
 	if (entity.HasComponent<ScriptComponent>())
 	{
 		out << YAML::Key << "ScriptComponent";
@@ -86,6 +113,84 @@ static void SerializeEntity(Engine::Entity entity, YAML::Emitter& out)
 		out << YAML::EndMap;
 	}
 	out << YAML::EndMap;
+}
+
+void Engine::SceneSerializer::DeserializeEntity(Engine::Entity& entity, YAML::Node& node)
+{
+	std::string name;
+	auto tagComponent = node["TagComponent"];
+	if (tagComponent)
+	{
+		name = tagComponent["Tag"].as<std::string>();
+	}
+
+	;
+	Entity& DeserializedEntity = entity;
+	DeserializedEntity.GetComponent<TagComponent>().tag = name;
+	auto transformComponent = node["TransformComponent"];
+	if (transformComponent)
+	{
+		auto& tf = DeserializedEntity.GetComponent<TransformComponent>();
+		Vector3f vec3;
+		auto pos = transformComponent["Position"].as<std::vector<float>>();
+		auto rot = transformComponent["Rotation"].as<std::vector<float>>();
+		auto scl = transformComponent["Scale"].as<std::vector<float>>();
+		memcpy(&vec3, pos.data(), sizeof(Vector3f));
+		tf.transform.SetPosition(vec3);
+		memcpy(&vec3, rot.data(), sizeof(Vector3f));
+		tf.transform.SetRotation(vec3);
+		memcpy(&vec3, scl.data(), sizeof(Vector3f));
+		tf.transform.SetScale(vec3);
+	}
+
+	auto meshComponent = node["ModelComponent"];
+	if (meshComponent)
+	{
+		auto& mc = DeserializedEntity.AddComponent<ModelComponent>();
+		auto str = meshComponent["Mesh"].as<std::string>();
+		mc.filePath = str.c_str();
+	}
+
+	auto pointlightComponent = node["PointLightComponent"];
+	if (pointlightComponent)
+	{
+		auto& pc = DeserializedEntity.AddComponent<PointLightComponent>();
+		memcpy(&pc.color, pointlightComponent["Color"].as<std::vector<float>>().data(), sizeof(Vector3f));
+		pc.intensity = pointlightComponent["Intensity"].as<float>();
+		pc.radius = pointlightComponent["Range"].as<float>();
+	}
+
+	auto dirlightComponent = node["DirLightComponent"];
+	if (dirlightComponent)
+	{
+		auto& pc = DeserializedEntity.AddComponent<DirectionalLightComponent>();
+		memcpy(&pc.color, dirlightComponent["Color"].as<std::vector<float>>().data(), sizeof(Vector3f));
+		pc.intensity = dirlightComponent["Intensity"].as<float>();
+	}
+
+	auto spotlightComponent = node["SpotLightComponent"];
+	if (spotlightComponent)
+	{
+		auto& pc = DeserializedEntity.AddComponent<SpotLightComponent>();
+		memcpy(&pc.color, spotlightComponent["Color"].as<std::vector<float>>().data(), sizeof(Vector3f));
+		pc.intensity = spotlightComponent["Intensity"].as<float>();
+		pc.cutoff = spotlightComponent["Range"].as<float>();
+		pc.nearRadius = spotlightComponent["near"].as<float>();
+		pc.farRadius = spotlightComponent["far"].as<float>();
+	}
+
+	auto Script = node["ScriptComponent"];
+	if (Script)
+	{
+		auto& dlc = DeserializedEntity.AddComponent<ScriptComponent>();
+		auto scriptNames = Script["Scripts"].as<std::vector<std::string>>();
+		for (auto& sn : scriptNames)
+		{
+			auto s = ScriptRegistry<ScriptBase>::Create(sn.c_str());
+			s->Create(DeserializedEntity);
+			dlc.scripts.push_back(s);
+		}
+	}
 }
 
 bool Engine::SceneSerializer::Serialize(const std::string& path)
@@ -130,61 +235,8 @@ bool Engine::SceneSerializer::Deserialize(const std::string& path)
 		for (auto entityData : entities)
 		{
 			//uint64_t entityID = entityData["Entity"].as<uint64_t>();
-			std::string name;
-			auto tagComponent = entityData["TagComponent"];
-			if (tagComponent)
-			{
-				name = tagComponent["Tag"].as<std::string>();
-			}
-	
-			;
-			Entity DeserializedEntity = myScene->CreateEntity();
-			DeserializedEntity.GetComponent<TagComponent>().tag = name;
-			auto transformComponent = entityData["TransformComponent"];
-			if (transformComponent)
-			{
-				auto& tf = DeserializedEntity.GetComponent<TransformComponent>();
-				Vector3f vec3;
-				auto pos = transformComponent["Position"].as<std::vector<float>>();
-				auto rot = transformComponent["Rotation"].as<std::vector<float>>();
-				auto scl = transformComponent["Scale"].as<std::vector<float>>();
-				memcpy(&vec3, pos.data(), sizeof(Vector3f));
-				tf.transform.SetPosition(vec3);
-				memcpy(&vec3, rot.data(), sizeof(Vector3f));
-				tf.transform.SetRotation(vec3);
-				memcpy(&vec3,scl.data(), sizeof(Vector3f));
-				tf.transform.SetScale(vec3);
-			}
-
-			auto meshComponent = entityData["ModelComponent"];
-			if (meshComponent)
-			{
-				auto& mc = DeserializedEntity.AddComponent<ModelComponent>();
-				auto str = meshComponent["Mesh"].as<std::string>();
-				mc.filePath = str.c_str();
-			}
-
-			auto pointlightComponent = entityData["PointLightComponent"];
-			if (pointlightComponent)
-			{
-				auto& pc = DeserializedEntity.AddComponent<PointLightComponent>();
-				memcpy(&pc.color, pointlightComponent["Color"].as<std::vector<float>>().data(), sizeof(Vector3f));
-				pc.intensity = pointlightComponent["Intensity"].as<float>();
-				pc.radius = pointlightComponent["Range"].as<float>();
-			}
-
-			auto Script = entityData["ScriptComponent"];
-			if (Script)
-			{
-				auto& dlc = DeserializedEntity.AddComponent<ScriptComponent>();
-				auto scriptNames = Script["Scripts"].as<std::vector<std::string>>();
-				for (auto& sn : scriptNames)
-				{
-					auto s = ScriptRegistry<ScriptBase>::Create(sn.c_str());
-					s->Create(DeserializedEntity);
-					dlc.scripts.push_back(s);
-				}
-			}
+			Entity entity = myScene->CreateEntity();
+			DeserializeEntity(entity, entityData);
 		}
 	}
 	return true;

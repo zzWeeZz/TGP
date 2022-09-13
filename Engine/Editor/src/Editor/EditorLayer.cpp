@@ -7,6 +7,7 @@
 #include "ToolBox/File/FileDialogs.h"
 #include "Engine/Scene/SceneSerializer.h"
 #include "Application/Application.h"
+#include "Engine/Scene/Prefab/Prefab.h"
 #include "ToolBox/Input/Input.h"
 void Engine::EditorLayer::OnAttach()
 {
@@ -16,10 +17,11 @@ void Engine::EditorLayer::OnAttach()
 	myContentBrowserPanel = CreateRef<ContentBrowserPanel>();
 	myThemeEditorPanel = CreateRef<ThemeEditorPanel>();
 	myAnimatorEditorPanel = CreateRef<AnimatorEditorPanel>();
-	/*myScene = CreateRef<Scene>();
+	myPresetLerperPanel = CreateRef<PresetLerperPanel>();
+	myScene = CreateRef<Scene>();
 	mySceneHierarchyPanel->SetContext(myScene);
 	SceneSerializer serializer(myScene);
-	serializer.Deserialize("Assets/Scenes/TestScene.scn");*/
+	serializer.Deserialize("Assets/Scenes/TestScene2.scn");
 	myThemeEditorPanel->StartUp();
 }
 
@@ -145,11 +147,23 @@ void Engine::EditorLayer::OnUpdate()
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 			{
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				auto newp = std::filesystem::path(path).string();
-				myScene = CreateRef<Scene>();
-				mySceneHierarchyPanel->SetContext(myScene);
-				SceneSerializer serializer(myScene);
-				serializer.Deserialize(newp);
+				auto thePath = std::filesystem::path(path);
+				if (thePath.extension() == ".scn")
+				{
+					auto newp = std::filesystem::path(path).string();
+					myScene = CreateRef<Scene>();
+					mySceneHierarchyPanel->SetContext(myScene);
+					SceneSerializer serializer(myScene);
+					serializer.Deserialize(newp);
+				}
+				else if(thePath.extension() == ".pfb")
+				{ 
+					Prefab::LoadPrefab(myScene.get(), path);
+				}
+				else
+				{
+					std::cout << "ERROR\n";
+				}
 
 			}
 			ImGui::EndDragDropTarget();
@@ -162,18 +176,19 @@ void Engine::EditorLayer::OnUpdate()
 		final_pos.y = mouse_pos.y - screen_pos.y;
 		int clickedIentity = -1;
 		bool hasSelected = false;
-		if (ToolBox::Input::IsMousePressed(MouseButton::Left) && ImGui::IsWindowFocused())
-		{
-			clickedIentity = Renderer::GetClickedEntityId(final_pos.x, final_pos.y) - 1;
-			hasSelected = true;
-		}
+		if (!ImGuizmo::IsUsing())
+			if (ToolBox::Input::IsMousePressed(MouseButton::Left) && ImGui::IsWindowFocused())
+			{
+				clickedIentity = Renderer::GetClickedEntityId(final_pos.x, final_pos.y) - 1;
+				hasSelected = true;
+			}
 
-			
+
 		if (clickedIentity > -1 && hasSelected)
 		{
 			mySceneHierarchyPanel->SetEntity({ (uint32_t)clickedIentity, myScene.get() });
 		}
-			
+
 
 		if (mySceneHierarchyPanel->GetSelectedEntity()() && myScene)
 		{
@@ -235,11 +250,12 @@ void Engine::EditorLayer::OnUpdate()
 	DrawPanels();
 
 	/*ImGui::Begin("Hej Lukas!");
-	ImGui::Text("Nu ar den Har!");
-	ImGui::Text("Theme editor ar dar nere med 'apply' som sparar.");
-	ImGui::Text("Scener som sparas och laddas genom file.");
-	ImGui::Text("'OBS' Scenen maste ligga i assets/scenes/*name*.scn");
-	ImGui::Text("Detta sedan laddar den in Testscene.scn pa motor start!");
+	ImGui::Text("Uppgift 2 kom lite sent...");
+	ImGui::Text("Men! den som vantar far det dem vill.");
+	ImGui::Text("Jag kan ju inte gora nagot simpelt sa...");
+	ImGui::Text("Nu finns det prefab system och Entity lerping (ja... entity lerping)");
+	ImGui::Text("du kan spara dina settings i PresetLerper™");
+	ImGui::Text("Den funkar med drag and drop in engine. saklart!");
 	ImGui::Text("MVH");
 	ImGui::Text("Niklas Jakobsen");
 	ImGui::End();*/
@@ -262,4 +278,5 @@ void Engine::EditorLayer::DrawPanels()
 	mySceneHierarchyPanel->OnImGuiRender();
 	myContentBrowserPanel->ImGuiRender();
 	myThemeEditorPanel->OnImGuiRender();
+	//myPresetLerperPanel->OnImGuiRender(myScene.get());
 }

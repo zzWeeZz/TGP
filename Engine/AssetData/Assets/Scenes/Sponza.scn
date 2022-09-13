@@ -1,0 +1,54 @@
+Scene: Name
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: Sponza
+    TransformComponent:
+      Position: [0, 5.767673, 0]
+      Rotation: [0, -0, 0]
+      Scale: [69.9833, 69.9833, 69.9833]
+    ModelComponent:
+      Mesh: assets\Model\Sponza\sponzaForTGE.fbx
+  - Entity: 1
+    TagComponent:
+      Tag: Dirlight
+    TransformComponent:
+      Position: [0, 54.07911, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    DirLightComponent:
+      Color: [0.9891697, 0.6665412, 0.0678492]
+      Intensity: 1
+  - Entity: 2
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [3.463205, 63.13151, -129.0169]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 3.1
+      Range: 111.2
+  - Entity: 3
+    TagComponent:
+      Tag: SpotLight
+    TransformComponent:
+      Position: [170.8215, 208.0048, -61.77795]
+      Rotation: [-1.544609, -0.4271509, -3.125972]
+      Scale: [1, 1, 1]
+    SpotLightComponent:
+      Color: [1, 0, 0.9314079]
+      Intensity: 1000000
+      Range: 1000
+      near: 0.5
+      far: 0.1
+  - Entity: 4
+    TagComponent:
+      Tag: Chest
+    TransformComponent:
+      Position: [163.6292, 8.703844, -47.5419]
+      Rotation: [0, -1.318556, 0]
+      Scale: [0.5099997, 0.51, 0.5099997]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx

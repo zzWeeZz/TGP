@@ -24,6 +24,8 @@ namespace ToolBox
 		Vector3f GetScale() const { return myScale; }
 		Vector3f& GetScale() { return myScale; }
 
+		void SetMatrix(Matrix4x4f& mat);
+
 		Vector3f GetForward() { return myMatrix.GetForward(); }
 		Vector3f GetUp() { return myMatrix.GetUp(); }
 		Vector3f GetRight() { return myMatrix.GetRight(); }

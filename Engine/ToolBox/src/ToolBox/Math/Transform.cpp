@@ -43,6 +43,12 @@ void ToolBox::Transform::SetScale(float x, float y, float z)
 	CalculateTransfrom();
 }
 
+void ToolBox::Transform::SetMatrix(Matrix4x4f& mat)
+{
+	mat.Deconstruct(myPosition, myRotation, myScale);
+	CalculateTransfrom();
+}
+
 void ToolBox::Transform::CalculateTransfrom(bool localRot)
 {
 	Matrix4x4f transform;

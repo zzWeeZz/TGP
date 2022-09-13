@@ -13,7 +13,6 @@ namespace Engine
 		void OnEditorStart();
 		void OnEditorUpdate();
 		void OnEditorRender();
-
 		Entity CreateEntity();
 		void DestroyEntity(Entity entity);
 

@@ -1,3 +1,4 @@
+
 #include "ConstBuffers.hlsli"
 #include "PBRFunctions.hlsli"
 
@@ -22,7 +23,8 @@ float exposureSettings(float aperture, float shutterSpeed, float sensitivity)
     return log2((aperture * aperture) / shutterSpeed * 100.0 / sensitivity);
 }
 
-float exposure(float ev100) {
+float exposure(float ev100)
+{
     return 1.0 / (pow(2.0, ev100) * 1.2);
 }
 
@@ -40,7 +42,6 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
     float3 vertexNormal = VertexNormalTexture.Sample(defaultSampler, input.uv).rgb;
     float4 worldPosition = WorldPositionTexture.Sample(defaultSampler, input.uv);
     float AO = AOTexture.Sample(defaultSampler, input.uv).r;
-    const float3 NewDir = normalize(-DirLightDirection);
     const float metalness = material.r;
     const float roughness = material.g;
     const float emissive = material.b;
@@ -51,23 +52,27 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
     const float3 diffuseColor = lerp((float3) 0.0, albedo.xyz, 1.0f - metalness);
 
    
+    float3 directColor;
+    for (unsigned int i = 0; i < 8; ++i)
+    {
+        const float3 newLightDir = normalize(-dirData[i].DirLightDirection.xyz);
+        directColor += EvaluateDirectionalLight(
+	    diffuseColor,
+	    specularColor,
+	    normal,
+	    roughness,
+	    dirData[i].colorAndInstensity.rgb,
+	    dirData[i].colorAndInstensity.a,
+		
+		-newLightDir, toEye);
+    }
 
-    float3 directColor = EvaluateDirectionalLight(
-        diffuseColor,
-        specularColor,
-        normal,
-        roughness,
-        colorAndInstensity.rgb,
-        colorAndInstensity.a,
-        NewDir,
-        toEye);
-
-    for (unsigned int i = 0; i < 64; ++i)
+    for (unsigned int i = 0; i < 32; ++i)
     {
         directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye);
     }
     
-    for (unsigned int i = 0; i < 1000; ++i)
+    for (unsigned int i = 0; i < 16; ++i)
     {
         directColor += EvaluateSpotLight(diffuseColor,
         specularColor,
@@ -75,10 +80,10 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         roughness,
         spotData[i].colorAndIntensity.xyz,
         spotData[i].colorAndIntensity.w,
-        spotData[i].cutOff.x,
+        spotData[i].spotInfo.x,
         spotData[i].position.xyz,
         spotData[i].direction.xyz,
-        0.1, 1.6,
+        spotData[i].spotInfo.y, spotData[i].spotInfo.z,
         toEye, worldPosition.xyz);
     }
     

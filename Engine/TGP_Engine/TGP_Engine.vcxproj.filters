@@ -246,6 +246,7 @@
     <ClInclude Include="src\SnowFlake\String.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Scene\Prefab\Prefab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -369,6 +370,7 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
+    <ClCompile Include="src\Engine\Scene\Prefab\Prefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">

@@ -1,0 +1,4 @@
+FirstPath: assets\Prefab\tset.pfb
+SecondPath: assets\Prefab\weirdChest.pfb
+EntityId: 1
+BlendFactor: 1

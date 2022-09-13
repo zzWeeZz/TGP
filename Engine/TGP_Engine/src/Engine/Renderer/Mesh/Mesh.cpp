@@ -139,7 +139,7 @@ void Engine::Mesh::ProcessMaterials(const std::filesystem::path& path, TGA::FBXM
 		std::string DiffusePath = path.parent_path().string() + "/" + matName + "_C.dds";
 		std::string NormalPath = path.parent_path().string() + "/" + matName + "_N.dds";
 		std::string SpecularPath = path.parent_path().string() + "/" + matName + "_M.dds";
-		tempMaterial->SetShader("Forward");
+		tempMaterial->SetShader(FBXmodel.Meshes[i].MaterialName);
 		if (std::filesystem::exists(DiffusePath))
 		{
 			tempMaterial->AddDiffuseTexture(Texture2D::Create(DiffusePath));
@@ -152,8 +152,15 @@ void Engine::Mesh::ProcessMaterials(const std::filesystem::path& path, TGA::FBXM
 		{
 			tempMaterial->AddSpecularTexture(Texture2D::Create(SpecularPath));
 		}
-
-		outMaterials.push_back(tempMaterial);
+		if (std::find_if(outMaterials.begin(), outMaterials.end(), [=](Ref<Material>& one)
+			{return one->m_ShaderKey == FBXmodel.Meshes[i].MaterialName; }) == outMaterials.end())
+		{
+			outMaterials.push_back(tempMaterial);
+		}
+		else
+		{
+			continue;
+		}
 	}
 }
 
@@ -178,7 +185,13 @@ void Engine::Mesh::LoadMesh(const std::filesystem::path& aPath, std::vector<Ref<
 		{
 			index.emplace_back(FBXmodel.Meshes[i].Indices[j]);
 		}
-
-		m_SubMeshes.emplace_back(vertex, index, outMaterials[FBXmodel.Meshes[i].MaterialIndex]);
+		if (FBXmodel.Meshes[i].MaterialIndex >= outMaterials.size())
+		{
+			m_SubMeshes.emplace_back(vertex, index, outMaterials[0]);
+		}
+		else
+		{
+			m_SubMeshes.emplace_back(vertex, index, outMaterials[FBXmodel.Meshes[i].MaterialIndex]);
+		}
 	}
 }

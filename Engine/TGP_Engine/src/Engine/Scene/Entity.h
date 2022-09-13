@@ -54,6 +54,10 @@ namespace Engine
 		{
 			return m_EntityId;
 		}
+		uint32_t GetId()
+		{
+			return m_EntityId;
+		}
 
 	private:
 		Snowflake::Entity m_EntityId{ Snowflake::InvalidEntity };

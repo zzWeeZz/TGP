@@ -4,6 +4,7 @@
 #include "Panels/ContentBrowserPanel.h"
 #include "Panels/ThemeEditorPanel.h"
 #include "Panels/AnimatorEditorPanel.h"
+#include "Panels/PresetLerperPanel.h"
 #include "Engine/Renderer/Camera/Camera.h"
 namespace Engine
 {
@@ -22,5 +23,6 @@ namespace Engine
 		Ref<ThemeEditorPanel> myThemeEditorPanel;
 		Ref<SceneHierarchyPanel> mySceneHierarchyPanel;
 		Ref<ContentBrowserPanel> myContentBrowserPanel;
+		Ref<PresetLerperPanel> myPresetLerperPanel;
 	};
 }
