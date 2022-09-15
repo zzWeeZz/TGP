@@ -101,14 +101,7 @@ namespace Engine
 		{
 			s_Data->defferedGBuffer->Resize({ (float)s_Data->RendererFinalframeBuffer->GetSpecs().width , (float)s_Data->RendererFinalframeBuffer->GetSpecs().height });
 		}
-		if (s_Data->ActiveCamera)
-		{
-			s_Data->CameraBufferObject.cameraSpace = s_Data->ActiveCamera->GetLookAt();
-			s_Data->CameraBufferObject.toProjectionSpace = s_Data->ActiveCamera->GetProjection();
-			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
-			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
-			s_Data->cameraBuffer.Bind(0);
-		}
+
 
 		s_Data->directionalLightBuffer.SetData(&s_Data->DirectionalLightBufferObject);
 		s_Data->directionalLightBuffer.Bind(2);
@@ -121,8 +114,57 @@ namespace Engine
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		// ----------------------------------------------------------------------- //
+		// -------------------------- SHADOW PASS -------------------------------- //
+		// ----------------------------------------------------------------------- //
+		
+		for(size_t i = 0; i < s_Data->dirLightIterator; ++i)
+		{
+			s_Data->dirLightFBs[i]->Clear();
+			s_Data->dirLightFBs[i]->Bind();
+			s_Data->CameraBufferObject.cameraSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].view;
+			s_Data->CameraBufferObject.toProjectionSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].proj;
+			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
+			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
+			s_Data->cameraBuffer.Bind(0);
+			ShaderLibrary::Bind("DirShadowPass");
+			for (auto mesh : s_Data->Meshes)
+			{
+				s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
+				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+				s_Data->modelBuffer.Bind(1);
+				mesh->Draw();
+			}
+			ShaderLibrary::Bind("AnimDirShadowPass");
+
+			for (auto mesh : s_Data->AnimatedMeshes)
+			{
+				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+				memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
+				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+				s_Data->modelBuffer.Bind(1);
+				mesh->Draw();
+			}
+			s_Data->dirLightFBs[i]->UnBind();
+		}
+		// ----------------------------------------------------------------------- //
+		// -------------------------- END SHADOW PASS ---------------------------- //
+		// ----------------------------------------------------------------------- //
+		if (s_Data->ActiveCamera)
+		{
+			s_Data->CameraBufferObject.cameraSpace = s_Data->ActiveCamera->GetLookAt();
+			s_Data->CameraBufferObject.toProjectionSpace = s_Data->ActiveCamera->GetProjection();
+			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
+			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
+			s_Data->cameraBuffer.Bind(0);
+		}
+
+		// ----------------------------------------------------------------------- //
 		// ----------------------- DEFERRED RENDERING ---------------------------- //
 		// ----------------------------------------------------------------------- //
+		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Point, ShaderType::Pixel, 1);
+
+		s_Data->dirLightFBs[0]->BindDepthToShader(10);
 		s_Data->defferedGBuffer->Bind();
 		ShaderLibrary::Bind("DefferedPBR");
 		for (auto mesh : s_Data->Meshes)
@@ -152,7 +194,7 @@ namespace Engine
 		s_Data->defferedGBuffer->BindToShader(4, 4);
 		s_Data->defferedGBuffer->BindToShader(5, 5);
 		ShaderLibrary::Bind("DeferredLightCalc");
-		
+
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::None);
 		DX11::Context()->Draw(3, 0);
 		s_Data->RendererFinalframeBuffer->TransferDepth(s_Data->defferedGBuffer);
@@ -254,6 +296,10 @@ namespace Engine
 					PixelShader::Create("Shaders/GenerateDefferedImages_ps.cso"),
 					VertexShader::Create("Shaders/forwardAnimated_vs.cso", newLayout)
 				});
+			ShaderLibrary::AddToLibrary("AnimDirShadowPass",
+				{
+					VertexShader::Create("Shaders/AnimDirShadow_vs.cso", newLayout)
+				});
 		}
 		{
 			InputLayout newLayout
@@ -282,6 +328,17 @@ namespace Engine
 					PixelShader::Create("Shaders/GenerateDefferedImages_ps.cso"),
 					VertexShader::Create("Shaders/forward_vs.cso", newLayout)
 				});
+		}
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+			};
+			ShaderLibrary::AddToLibrary("DirShadowPass",
+				{
+					VertexShader::Create("Shaders/DirShadow_vs.cso", newLayout)
+				});
+			
 		}
 		{
 			InputLayout newLayout
@@ -359,6 +416,11 @@ namespace Engine
 			specs.formats = { ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::R8G8B8A8UN, ImageFormat::RGBA16SN, ImageFormat::RGBA32F, ImageFormat::R8UN, ImageFormat::R32UI, ImageFormat::Depth32 };
 			s_Data->defferedGBuffer = FrameBuffer::Create(specs);
 		}
+		FrameBufferSpecs specs{};
+		specs.width = 8192;
+		specs.height = 8192;
+		specs.formats = { ImageFormat::R8UN, ImageFormat::Depth32 };
+		s_Data->dirLightFBs[0] = FrameBuffer::Create(specs);
 	}
 
 	void Engine::Renderer::DefineBuffers()

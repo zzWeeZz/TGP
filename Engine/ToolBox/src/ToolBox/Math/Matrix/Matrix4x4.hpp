@@ -39,6 +39,7 @@ namespace ToolBox
 
 			static Matrix4x4<T> CreateLeftHandLookAtMatrix(const Vector3<T>& aPosition, const Vector3<T>& aDirection, const Vector3<T>& aUp);
 			static Matrix4x4<T> CreateLeftHandPerspectiveMatrix(float aFOV, Vector2i aSize, float aNearPlane, float aFarPlane);
+			static Matrix4x4<T> CreateOrtographicMatrix(Vector2i aSize, float aNearPlane, float aFarPlane);
 			static Matrix4x4<T> Transpose(const Matrix4x4<T>& aMatrixToTranspose);
 			static Matrix4x4<T> GetFastInverse(const Matrix4x4<T>& aTransform);
 		private:
@@ -476,6 +477,18 @@ namespace ToolBox
 			ProjectionMatrix(4, 4) = 0;
 
 			return ProjectionMatrix;
+		}
+
+		template<class T>
+		inline Matrix4x4<T> Matrix4x4<T>::CreateOrtographicMatrix(Vector2i aSize, float aNearPlane, float aFarPlane)
+		{
+			Matrix4x4<T> mat;
+			mat(1, 1) = 2.f / (float)aSize.x;
+			mat(2, 2) = 2.f / (float)aSize.y;
+			mat(3, 3) = 1.f / (aFarPlane - aNearPlane);
+			mat(4, 3) = aNearPlane / (aNearPlane - aFarPlane);
+			mat(4, 4) = 1.f;
+			return mat;
 		}
 
 		template <class T>

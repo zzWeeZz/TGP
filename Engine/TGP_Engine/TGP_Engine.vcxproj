@@ -102,7 +102,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Engine\Scene\Prefab\Prefab.h" />
     <ClInclude Include="src\Application\Application.h" />
     <ClInclude Include="src\Application\Window\Window.h" />
     <ClInclude Include="src\Engine.h" />
@@ -141,6 +140,7 @@
     <ClInclude Include="src\Engine\Renderer\Renderer.h" />
     <ClInclude Include="src\Engine\Scene\Components.h" />
     <ClInclude Include="src\Engine\Scene\Entity.h" />
+    <ClInclude Include="src\Engine\Scene\Prefab\Prefab.h" />
     <ClInclude Include="src\Engine\Scene\Scene.h" />
     <ClInclude Include="src\Engine\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Engine\Scripting\ImGuiHelper.h" />
@@ -164,7 +164,6 @@
     <ClInclude Include="src\SnowFlake\String.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Engine\Scene\Prefab\Prefab.cpp" />
     <ClCompile Include="src\Application\Application.cpp" />
     <ClCompile Include="src\Application\Window\Window.cpp" />
     <ClCompile Include="src\Engine\Assets\AssetPacker.cpp" />
@@ -193,6 +192,7 @@
     <ClCompile Include="src\Engine\Renderer\RenderPass.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine\Scene\Entity.cpp" />
+    <ClCompile Include="src\Engine\Scene\Prefab\Prefab.cpp" />
     <ClCompile Include="src\Engine\Scene\Scene.cpp" />
     <ClCompile Include="src\Engine\Scene\SceneSerializer.cpp" />
     <ClCompile Include="src\Engine\Scripting\ScriptBase.cpp" />
@@ -208,6 +208,11 @@
     <ClCompile Include="src\PlayGround.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="src\Shaders\AnimDirShadow_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/AnimDirShadow_vs.cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -217,6 +222,11 @@
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>../AssetData/Shaders/DefferedLightCalc_vs.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\DirShadow_vs.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>../AssetData/Shaders/DirShadow_vs.cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="src\Shaders\GenerateDefferedImages_ps.hlsl">
       <ShaderType>Pixel</ShaderType>

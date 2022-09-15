@@ -58,6 +58,9 @@
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{386D1796-24D0-A63A-CD55-DFF0B99772BD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Scene\Prefab">
+      <UniqueIdentifier>{77421791-E3A3-F49E-6C11-3B51D8712B5E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\Scripting">
       <UniqueIdentifier>{9D0A0F60-8903-2EB2-B235-13379E8D0DBE}</UniqueIdentifier>
     </Filter>
@@ -187,6 +190,9 @@
     <ClInclude Include="src\Engine\Scene\Entity.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Scene\Prefab\Prefab.h">
+      <Filter>Engine\Scene\Prefab</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Scene\Scene.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
@@ -246,7 +252,6 @@
     <ClInclude Include="src\SnowFlake\String.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Scene\Prefab\Prefab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -333,6 +338,9 @@
     <ClCompile Include="src\Engine\Scene\Entity.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Scene\Prefab\Prefab.cpp">
+      <Filter>Engine\Scene\Prefab</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Scene\Scene.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
@@ -370,13 +378,18 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
-    <ClCompile Include="src\Engine\Scene\Prefab\Prefab.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="src\Shaders\AnimDirShadow_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
     <FxCompile Include="src\Shaders\DefferedLightCalc_ps.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\DefferedLightCalc_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\DirShadow_vs.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\GenerateDefferedImages_ps.hlsl">

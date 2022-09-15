@@ -57,6 +57,7 @@ namespace Engine
 		DirLightBuffer DirectionalLightBufferObject;
 		ConstantBuffer<DirLightBuffer> directionalLightBuffer;
 		uint32_t dirLightIterator = 0;
+		std::array<Ref<FrameBuffer>, 8> dirLightFBs;
 
 		PointLightBuffer PointLightBufferObject;
 		ConstantBuffer<PointLightBuffer> pointLightBuffer;

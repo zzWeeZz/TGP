@@ -1,0 +1,9 @@
+Entity: 4
+TagComponent:
+  Tag: Chest
+TransformComponent:
+  Position: [-2.553277, 94.57669, 310.0113]
+  Rotation: [-1.263118e-05, -1.552922, 1.310832e-05]
+  Scale: [0.2396997, 0.2397, 0.2396997]
+ModelComponent:
+  Mesh: assets\Model\SM_Particle_Chest.fbx

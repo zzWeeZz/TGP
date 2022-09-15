@@ -1,0 +1,39 @@
+Scene: Name
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: Ground
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [200, 1, 200]
+    ModelComponent:
+      Mesh: Cube
+  - Entity: 1
+    TagComponent:
+      Tag: Chest
+    TransformComponent:
+      Position: [4.487768, 6.776344e-07, 92.99303]
+      Rotation: [-3.141593, 1.522575, -3.141593]
+      Scale: [0.5299956, 0.53, 0.5299956]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 2
+    TagComponent:
+      Tag: Cube
+    TransformComponent:
+      Position: [0, 24.29829, 0]
+      Rotation: [0, -0.3271296, 0]
+      Scale: [21.49999, 21.5, 21.49999]
+    ModelComponent:
+      Mesh: Cube
+  - Entity: 3
+    TagComponent:
+      Tag: DirLgiht
+    TransformComponent:
+      Position: [6.913994e-07, 44.12701, 2.955597e-06]
+      Rotation: [2.617762, 1.111203, 3.141593]
+      Scale: [1, 1, 0.9999998]
+    DirLightComponent:
+      Color: [1, 0.6281588, 0]
+      Intensity: 2

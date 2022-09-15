@@ -21,7 +21,7 @@ void Engine::EditorLayer::OnAttach()
 	myScene = CreateRef<Scene>();
 	mySceneHierarchyPanel->SetContext(myScene);
 	SceneSerializer serializer(myScene);
-	serializer.Deserialize("Assets/Scenes/TestScene2.scn");
+	serializer.Deserialize("Assets/Scenes/Sponza.scn");
 	myThemeEditorPanel->StartUp();
 }
 

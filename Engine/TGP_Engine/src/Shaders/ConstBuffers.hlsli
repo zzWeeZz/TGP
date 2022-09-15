@@ -19,6 +19,8 @@ cbuffer DirectionalLightBuffer : register(b2)
     {
         float4 colorAndInstensity;
         float4 DirLightDirection;
+        float4x4 view;
+        float4x4 proj;
     } dirData[8];
    
 };

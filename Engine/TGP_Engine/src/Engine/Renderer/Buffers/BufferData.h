@@ -23,6 +23,8 @@ namespace Engine
 	{
 		Vector4f colorAndIntensity = { 0,0,0,0 };
 		Vector4f direction;
+		Matrix4x4f view;
+		Matrix4x4f proj;
 	};
 	struct DirLightBuffer
 	{

@@ -15,7 +15,7 @@ Entities:
     TagComponent:
       Tag: Chest
     TransformComponent:
-      Position: [35.29954, 108.0841, 119.1585]
+      Position: [35.29954, 79.09832, 119.1585]
       Rotation: [0, 0.3822719, 0]
       Scale: [0.9999996, 1, 0.9999996]
     ModelComponent:
@@ -56,5 +56,24 @@ Entities:
       Position: [175.7574, 122.8643, -64.70091]
       Rotation: [-2.915845, -0.6229509, 2.7599]
       Scale: [0.4300003, 0.4300014, 0.4299997]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 6
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [3.14, -0, 0]
+      Scale: [1, 1, 1]
+    DirLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 1
+  - Entity: 7
+    TagComponent:
+      Tag: Chest
+    TransformComponent:
+      Position: [0, 75.17531, -0.1197203]
+      Rotation: [3.14, -0, 0]
+      Scale: [37.45108, 0.4554789, 92.75432]
     ModelComponent:
       Mesh: assets\Model\SM_Particle_Chest.fbx

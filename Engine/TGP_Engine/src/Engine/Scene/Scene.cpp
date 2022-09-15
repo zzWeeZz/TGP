@@ -75,6 +75,10 @@ namespace Engine
 				DirLightData plData;
 				plData.colorAndIntensity = { pl.color.x, pl.color.y , pl.color.z, pl.intensity };
 				plData.direction = { tf.transform.GetForward().x,tf.transform.GetForward().y, tf.transform.GetForward().z, 0 };
+				Matrix4x4f view;
+				memcpy(&view, &tf.transform.GetMatrix(), sizeof(Matrix4x4f));
+				plData.view = Matrix4x4f::CreateLookAt(tf.transform.GetForward() * 10000.f, { 0,0,0 }, { 0,1,0 });
+				plData.proj = Matrix4x4f::CreateOrtographicMatrix({ 2500, 2500 }, 1.f, 12000.0);
 				Renderer::SubmitDirectionalLight(plData);
 			});
 

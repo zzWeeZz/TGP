@@ -1,0 +1,77 @@
+Scene: Name
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: Sponza
+    TransformComponent:
+      Position: [0, 5.767673, 0]
+      Rotation: [3.140514, 1.466133, 0.0005161656]
+      Scale: [69.98329, 69.98325, 69.98325]
+    ModelComponent:
+      Mesh: assets\Model\Sponza\sponzaForTGE.fbx
+  - Entity: 1
+    TagComponent:
+      Tag: Dirlight
+    TransformComponent:
+      Position: [89.53388, 152.1172, 191.9697]
+      Rotation: [-0.9011326, -0.667366, 0.4141537]
+      Scale: [0.9999999, 1, 1]
+    DirLightComponent:
+      Color: [0.8231047, 0.5663652, 0.04160096]
+      Intensity: 1
+  - Entity: 2
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [3.463205, 158.3568, -3.828611]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 3.1
+      Range: 111.2
+  - Entity: 3
+    TagComponent:
+      Tag: SpotLight
+    TransformComponent:
+      Position: [42.32625, 169.9105, 74.56608]
+      Rotation: [-0.3870775, -0.7967445, 2.501435]
+      Scale: [0.9999998, 1, 0.9999999]
+    SpotLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 50000
+      Range: 1000
+      near: 0.5
+      far: 0.1
+  - Entity: 4
+    TagComponent:
+      Tag: Chest
+    TransformComponent:
+      Position: [-12.88089, 103.2825, 341.5917]
+      Rotation: [1.874322, -1.046897, -1.835623]
+      Scale: [0.2396998, 0.2397, 0.2396998]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 5
+    TagComponent:
+      Tag: Animated
+    TransformComponent:
+      Position: [-2.847078, 95.9184, 465.6727]
+      Rotation: [-3.344007e-07, -1.545764, 3.345247e-07]
+      Scale: [0.9999999, 1, 0.9999999]
+  - Entity: 6
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 97.06798, 203.9381]
+      Rotation: [-3.141592, -1.549306, 3.141592]
+      Scale: [1, 1, 1]
+  - Entity: 7
+    TagComponent:
+      Tag: Chest
+    TransformComponent:
+      Position: [-2.553277, 94.57669, 310.0113]
+      Rotation: [-1.263118e-05, -1.552922, 1.310832e-05]
+      Scale: [0.2396997, 0.2397, 0.2396997]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
