@@ -252,6 +252,7 @@
     <ClInclude Include="src\SnowFlake\String.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\CubeBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -378,6 +379,7 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
+    <ClCompile Include="src\Engine\Renderer\CubeBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\AnimDirShadow_vs.hlsl">
@@ -411,6 +413,15 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\ParticleSystem_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\PointShadow_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\PointShadow_vs.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Shaders\PointlightGen_gs.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="src\Shaders\QuadGenerator_gs.hlsl">

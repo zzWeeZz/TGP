@@ -58,7 +58,7 @@ void Engine::Mesh::SetMesh(const std::filesystem::path& aPath, std::vector<Ref<M
 			v[i * 4 + 3].UV[0] = { 0,1 };
 		}
 
-		{
+		/*{
 			int index = 0;
 			v[index].normal = { -1, 0, 0 };
 			Vector3f c1 = v[index].normal.Cross(Vector3f(0, 0, 1));
@@ -73,7 +73,7 @@ void Engine::Mesh::SetMesh(const std::filesystem::path& aPath, std::vector<Ref<M
 		}
 		{
 			int index = 1;
-			v[index].normal = { v[index].pos.x, v[0].pos.y, v[0].pos.z };
+			v[index].normal = {  };
 			Vector3f c1 = v[index].normal.Cross(Vector3f(0, 0, 1));
 			Vector3f c2 = v[index].normal.Cross(Vector3f(0, 1, 0));
 			if (c1.Length() > c2.Length())
@@ -83,7 +83,7 @@ void Engine::Mesh::SetMesh(const std::filesystem::path& aPath, std::vector<Ref<M
 
 			v[index].tangent.Normalize();
 			v[index].biTangent = v[index].normal.Cross(v[index].tangent).GetNormalized();
-		}
+		}*/
 
 		DWORD index[] =
 		{
@@ -163,9 +163,9 @@ void Engine::Mesh::ProcessMaterials(const std::filesystem::path& path, TGA::FBXM
 		{
 			tempMaterial->AddSpecularTexture(Texture2D::Create(SpecularPath));
 		}
-		if (std::find_if(outMaterials.begin(), outMaterials.end(), [=](Ref<Material>& one)
-			{return one->m_ShaderKey == FBXmodel.Meshes[i].MaterialName; }) == outMaterials.end())
+		if (!myMaterialSet[tempMaterial->m_ShaderKey])
 		{
+			myMaterialSet[tempMaterial->m_ShaderKey] = true;
 			outMaterials.push_back(tempMaterial);
 		}
 		else

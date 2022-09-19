@@ -14,8 +14,8 @@ Entities:
       Tag: Dirlight
     TransformComponent:
       Position: [0, 54.07911, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
+      Rotation: [-1.468801, -0, 0]
+      Scale: [1, 0.9999999, 0.9999999]
     DirLightComponent:
       Color: [0.9891697, 0.6665412, 0.0678492]
       Intensity: 1
@@ -48,7 +48,7 @@ Entities:
       Tag: Chest
     TransformComponent:
       Position: [163.6292, 8.703844, -47.5419]
-      Rotation: [0, -1.318556, 0]
-      Scale: [0.5099997, 0.51, 0.5099997]
+      Rotation: [0, 0.6764246, 0]
+      Scale: [0.5099992, 0.51, 0.5099992]
     ModelComponent:
       Mesh: assets\Model\SM_Particle_Chest.fbx

@@ -22,5 +22,6 @@ namespace Engine
 		void LoadMesh(const std::filesystem::path& aPath, std::vector<Ref<Material>>& outMaterials);
 		void ProcessMaterials(const std::filesystem::path& path, TGA::FBXModel& FBXmodel, std::vector<Ref<Material>>& outMaterials);
 		std::vector<SubMesh> m_SubMeshes;
+		std::unordered_map<std::string, bool> myMaterialSet;
 	};
 }

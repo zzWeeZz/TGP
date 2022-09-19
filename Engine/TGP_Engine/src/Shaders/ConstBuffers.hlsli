@@ -32,7 +32,8 @@ cbuffer PointLightBuffer : register(b3)
         float4 colorAndInstensity;
         float3 position;
         float radius;
-    } data[2000];
+        float4x4 transforms[6];
+    } data[128];
 }
 
 cbuffer SpotLightBuffer : register(b4)

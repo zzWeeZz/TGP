@@ -8,6 +8,7 @@
 #include "Engine/Assets/Lights/DirectionalLight.h"
 #include "Engine/Assets/ParticleSystem/ParticleSystem.h"
 #include "Engine/Renderer/FrameBuffer.h"
+#include "Engine/Renderer/CubeBuffer.h"
 #include "Engine/Renderer/Camera/Camera.h"
 
 namespace Engine
@@ -42,7 +43,9 @@ namespace Engine
 		Ref<FrameBuffer> RendererFinalframeBuffer;
 		Ref<FrameBuffer> defferedGBuffer;
 		Ref<FrameBuffer> colorPickingBuffer;
-		
+		Ref<CubeBuffer> shadowCube;
+
+		ConstantBuffer<PointShadowData> pointShadowBuffer;
 		
 		CameraBuffer CameraBufferObject;
 		ConstantBuffer<CameraBuffer> cameraBuffer;
@@ -88,6 +91,8 @@ namespace Engine
 		static void Shutdown();
 	private:
 		static void Flush();
+		static void BeginShadowPass();
+		static void BeginDeferredPass();
 		static void FlushLineBatch();
 		static void BeginLineDraw();
 		static void DefineShaders();

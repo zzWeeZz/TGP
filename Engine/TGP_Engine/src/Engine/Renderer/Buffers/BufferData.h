@@ -36,11 +36,20 @@ namespace Engine
 		Vector4f colorAndIntensity = { 0,0,0,0 };
 		Vector3f position = { 0,0,0 };
 		float radius = 0;
+		Matrix4x4f transforms[6];
 	};
 	struct PointLightBuffer
 	{
-		PointLightData  pointLightData[2000];
+		PointLightData  pointLightData[128];
 	};
+
+	struct PointShadowData
+	{
+		Matrix4x4f mat[6];
+		Vector3f lightPos;
+		float farPlane;
+	};
+
 	struct SpotLightData
 	{
 		Vector4f colorAndIntensity = { 0,0,0,0 };

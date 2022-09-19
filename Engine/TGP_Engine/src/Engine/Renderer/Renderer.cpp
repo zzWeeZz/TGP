@@ -113,43 +113,9 @@ namespace Engine
 		s_Data->spotLightBuffer.Bind(4);
 
 		DX11::Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		// ----------------------------------------------------------------------- //
-		// -------------------------- SHADOW PASS -------------------------------- //
-		// ----------------------------------------------------------------------- //
-		
-		for(size_t i = 0; i < s_Data->dirLightIterator; ++i)
-		{
-			s_Data->dirLightFBs[i]->Clear();
-			s_Data->dirLightFBs[i]->Bind();
-			s_Data->CameraBufferObject.cameraSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].view;
-			s_Data->CameraBufferObject.toProjectionSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].proj;
-			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
-			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
-			s_Data->cameraBuffer.Bind(0);
-			ShaderLibrary::Bind("DirShadowPass");
-			for (auto mesh : s_Data->Meshes)
-			{
-				s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
-				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
-				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
-				s_Data->modelBuffer.Bind(1);
-				mesh->Draw();
-			}
-			ShaderLibrary::Bind("AnimDirShadowPass");
 
-			for (auto mesh : s_Data->AnimatedMeshes)
-			{
-				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
-				memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
-				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
-				s_Data->modelBuffer.Bind(1);
-				mesh->Draw();
-			}
-			s_Data->dirLightFBs[i]->UnBind();
-		}
-		// ----------------------------------------------------------------------- //
-		// -------------------------- END SHADOW PASS ---------------------------- //
-		// ----------------------------------------------------------------------- //
+		BeginShadowPass();
+
 		if (s_Data->ActiveCamera)
 		{
 			s_Data->CameraBufferObject.cameraSpace = s_Data->ActiveCamera->GetLookAt();
@@ -158,50 +124,13 @@ namespace Engine
 			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
 			s_Data->cameraBuffer.Bind(0);
 		}
+		s_Data->shadowCube->BindToShader(11);
+		BeginDeferredPass();
 
-		// ----------------------------------------------------------------------- //
-		// ----------------------- DEFERRED RENDERING ---------------------------- //
-		// ----------------------------------------------------------------------- //
-		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Point, ShaderType::Pixel, 1);
-
-		s_Data->dirLightFBs[0]->BindDepthToShader(10);
-		s_Data->defferedGBuffer->Bind();
-		ShaderLibrary::Bind("DefferedPBR");
-		for (auto mesh : s_Data->Meshes)
-		{
-			s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
-			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
-			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
-			s_Data->modelBuffer.Bind(1);
-			mesh->Draw();
-		}
-		ShaderLibrary::Bind("AnimatedDefferedPBR");
-
-		for (auto mesh : s_Data->AnimatedMeshes)
-		{
-			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
-			memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
-			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
-			s_Data->modelBuffer.Bind(1);
-			mesh->Draw();
-		}
-		s_Data->defferedGBuffer->UnBind();
-		s_Data->RendererFinalframeBuffer->Bind();
-		s_Data->defferedGBuffer->BindToShader(0, 0);
-		s_Data->defferedGBuffer->BindToShader(1, 1);
-		s_Data->defferedGBuffer->BindToShader(2, 2);
-		s_Data->defferedGBuffer->BindToShader(3, 3);
-		s_Data->defferedGBuffer->BindToShader(4, 4);
-		s_Data->defferedGBuffer->BindToShader(5, 5);
-		ShaderLibrary::Bind("DeferredLightCalc");
-
-		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::None);
-		DX11::Context()->Draw(3, 0);
-		s_Data->RendererFinalframeBuffer->TransferDepth(s_Data->defferedGBuffer);
 		// ----------------------------------------------------------------------- //
 		// ----------------------- FORWARD RENDERING ----------------------------- //
 		// ----------------------------------------------------------------------- //
-		DX11::GetRenderStateManager().PopDepthStencilState();
+
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::ReadOnly);
 		DX11::GetRenderStateManager().PushBlendState(BlendMode::AlphaBlend);
 		ShaderLibrary::Bind("Grid");
@@ -246,6 +175,121 @@ namespace Engine
 		memset(&s_Data->DirectionalLightBufferObject, 0, sizeof(DirLightBuffer));
 		s_Data->AnimatedMeshes.clear();
 		s_Data->ParticleSystem.clear();
+	}
+
+	void Renderer::BeginShadowPass()
+	{
+		DX11::GetRenderStateManager().PushRasterizerState(CullMode::Front);
+		for (size_t i = 0; i < s_Data->dirLightIterator; ++i)
+		{
+			s_Data->dirLightFBs[i]->Clear();
+			s_Data->dirLightFBs[i]->Bind();
+			s_Data->CameraBufferObject.cameraSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].view;
+			s_Data->CameraBufferObject.toProjectionSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].proj;
+			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
+			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
+			s_Data->cameraBuffer.Bind(0);
+			ShaderLibrary::Bind("DirShadowPass");
+			for (auto mesh : s_Data->Meshes)
+			{
+				s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
+				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+				s_Data->modelBuffer.Bind(1);
+				mesh->Draw();
+			}
+			ShaderLibrary::Bind("AnimDirShadowPass");
+
+			for (auto mesh : s_Data->AnimatedMeshes)
+			{
+				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+				memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
+				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+				s_Data->modelBuffer.Bind(1);
+				mesh->Draw();
+			}
+			s_Data->dirLightFBs[i]->UnBind();
+		}
+		for (size_t i = 0; i < s_Data->pointLightIterator; ++i)
+		{
+			PointShadowData data{};
+			data.farPlane = s_Data->PointLightBufferObject.pointLightData[i].radius;
+			data.lightPos = s_Data->PointLightBufferObject.pointLightData[i].position;
+			memcpy(&data.mat[0], &s_Data->PointLightBufferObject.pointLightData[i].transforms[0], sizeof(Matrix4x4f) * 6);
+			s_Data->pointShadowBuffer.SetData(&data);
+			s_Data->pointShadowBuffer.Bind(8);
+			s_Data->shadowCube->Clear();
+			s_Data->shadowCube->Bind();
+			s_Data->CameraBufferObject.cameraSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].view;
+			s_Data->CameraBufferObject.toProjectionSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].proj;
+			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
+			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
+			s_Data->cameraBuffer.Bind(0);
+			ShaderLibrary::Bind("PointShadowPass");
+			for (auto mesh : s_Data->Meshes)
+			{
+				s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
+				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+				s_Data->modelBuffer.Bind(1);
+				mesh->Draw();
+			}
+			ShaderLibrary::UnBind("PointShadowPass");
+			ShaderLibrary::Bind("AnimPointShadowPass");
+
+			for (auto mesh : s_Data->AnimatedMeshes)
+			{
+				s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+				memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
+				s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+				s_Data->modelBuffer.Bind(1);
+				mesh->Draw();
+			}
+			ShaderLibrary::UnBind("AnimPointShadowPass");
+			s_Data->shadowCube->UnBind();
+		}
+		DX11::GetRenderStateManager().PopRasterizerState();
+	}
+
+	void Renderer::BeginDeferredPass()
+	{
+		DX11::GetRenderStateManager().SetSamplerState(SamplerMode::Point, ShaderType::Pixel, 1);
+
+		s_Data->dirLightFBs[0]->BindDepthToShader(10);
+		s_Data->defferedGBuffer->Bind();
+		ShaderLibrary::Bind("DefferedPBR");
+		for (auto mesh : s_Data->Meshes)
+		{
+			s_Data->ModelBufferObject.entityId = { (int)mesh->GetEntity(), 0, 0, 0 };
+			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+			s_Data->modelBuffer.Bind(1);
+			mesh->Draw();
+		}
+		ShaderLibrary::Bind("AnimatedDefferedPBR");
+
+		for (auto mesh : s_Data->AnimatedMeshes)
+		{
+			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+			memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
+			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+			s_Data->modelBuffer.Bind(1);
+			mesh->Draw();
+		}
+		s_Data->defferedGBuffer->UnBind();
+		s_Data->RendererFinalframeBuffer->Bind();
+		s_Data->defferedGBuffer->BindToShader(0, 0);
+		s_Data->defferedGBuffer->BindToShader(1, 1);
+		s_Data->defferedGBuffer->BindToShader(2, 2);
+		s_Data->defferedGBuffer->BindToShader(3, 3);
+		s_Data->defferedGBuffer->BindToShader(4, 4);
+		s_Data->defferedGBuffer->BindToShader(5, 5);
+		ShaderLibrary::Bind("DeferredLightCalc");
+
+		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::None);
+		DX11::Context()->Draw(3, 0);
+		s_Data->RendererFinalframeBuffer->TransferDepth(s_Data->defferedGBuffer);
+		DX11::GetRenderStateManager().PopDepthStencilState();
 	}
 
 	void Renderer::FlushLineBatch()
@@ -300,6 +344,7 @@ namespace Engine
 				{
 					VertexShader::Create("Shaders/AnimDirShadow_vs.cso", newLayout)
 				});
+			
 		}
 		{
 			InputLayout newLayout
@@ -338,7 +383,19 @@ namespace Engine
 				{
 					VertexShader::Create("Shaders/DirShadow_vs.cso", newLayout)
 				});
-			
+			ShaderLibrary::AddToLibrary("PointShadowPass",
+				{
+					VertexShader::Create("Shaders/PointShadow_vs.cso", newLayout),
+					GeometryShader::Create("Shaders/PointlightGen_gs.cso"),
+				PixelShader::Create("Shaders/PointShadow_ps.cso"),
+				});
+			ShaderLibrary::AddToLibrary("AnimPointShadowPass",
+				{
+					VertexShader::Create("Shaders/PointShadow_vs.cso", newLayout),
+					GeometryShader::Create("Shaders/PointlightGen_gs.cso"),
+					PixelShader::Create("Shaders/PointShadow_ps.cso"),
+
+				});
 		}
 		{
 			InputLayout newLayout
@@ -408,6 +465,12 @@ namespace Engine
 			specs.formats = { ImageFormat::RGBA32F, ImageFormat::Depth32 };
 			s_Data->RendererFinalframeBuffer = FrameBuffer::Create(specs);
 		}
+		{
+			CubeBufferSpecs specs{};
+			specs.height = 128;
+			specs.width = 128;
+			s_Data->shadowCube = CubeBuffer::Create(specs);
+		}
 
 		{
 			FrameBufferSpecs specs{};
@@ -427,6 +490,7 @@ namespace Engine
 	{
 		s_Data->lineVertexBuffer.Initialize(s_Data->lineVertices.data(), s_Data->lineVertices.size());
 
+		s_Data->pointShadowBuffer.Create();
 		s_Data->cameraBuffer.Create();
 		s_Data->modelBuffer.Create();
 		s_Data->pointLightBuffer.Create();
