@@ -9,6 +9,7 @@
 #include "Application/Application.h"
 #include "Engine/Scene/Prefab/Prefab.h"
 #include "ToolBox/Input/Input.h"
+#include "Editor/CommandStack.h"
 void Engine::EditorLayer::OnAttach()
 {
 	myEditorCamera = Camera::Create(90, { 100, 100 }, 0.1, 100000.f);
@@ -23,10 +24,29 @@ void Engine::EditorLayer::OnAttach()
 	SceneSerializer serializer(myScene);
 	serializer.Deserialize("Assets/Scenes/Sponza.scn");
 	myThemeEditorPanel->StartUp();
+	CommandStack::AddCallback([&](CommandSet set)
+		{
+			if (set.first == CommandType::Transform)
+			{
+
+				Matrix4x4f matData;
+				memcpy(&matData, set.second.data(), sizeof(float) * 16);
+				uint32_t entity = *(uint32_t*)(set.second.data() + 16);
+				Vector3f pos;
+				Vector3f rot;
+				Vector3f scale;
+				matData.Deconstruct(pos, rot, scale);
+				Entity entityread = { entity, myScene.get()};
+				entityread.GetComponent<TransformComponent>().transform.SetPosition(pos);
+				entityread.GetComponent<TransformComponent>().transform.SetRotation(rot);
+				entityread.GetComponent<TransformComponent>().transform.SetScale(scale);
+			}
+		});
 }
 
 void Engine::EditorLayer::OnUpdate()
 {
+	CommandStack::Update();
 	static bool pOpen = true;
 	static bool opt_fullscreen = true;
 	static bool opt_padding = false;
@@ -156,8 +176,8 @@ void Engine::EditorLayer::OnUpdate()
 					SceneSerializer serializer(myScene);
 					serializer.Deserialize(newp);
 				}
-				else if(thePath.extension() == ".pfb")
-				{ 
+				else if (thePath.extension() == ".pfb")
+				{
 					Prefab::LoadPrefab(myScene.get(), path);
 				}
 				else
@@ -227,11 +247,16 @@ void Engine::EditorLayer::OnUpdate()
 			}
 			mode = swapper ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 			ImGuizmo::Manipulate(&view[0], &proj[0], ops, mode, &trans[0]);
-
+			static bool ReadGizmo = false;
 			if (ImGuizmo::IsUsing())
 			{
 				Matrix4x4f matData;
 				memcpy(&matData, &trans[0], sizeof(float) * 16);
+				if (!ReadGizmo)
+				{
+					CommandStack::Register<CommandType::Transform>(&matData, mySceneHierarchyPanel->GetSelectedEntity().GetId());
+					ReadGizmo = true;
+				}
 				Vector3f pos;
 				Vector3f rot;
 				Vector3f scale;
@@ -240,6 +265,10 @@ void Engine::EditorLayer::OnUpdate()
 				mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetPosition(pos);
 				mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetRotation(rot);
 				mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetScale(scale);
+			}
+			else
+			{
+				ReadGizmo = false;
 			}
 		}
 		ImGui::End();

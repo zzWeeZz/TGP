@@ -8,6 +8,7 @@
 #include "Engine/Scene/Prefab/Prefab.h"
 #include <ToolBox/File/FileDialogs.h>
 #include "Application/Application.h"
+#include "Editor/CommandStack.h"
 namespace Engine
 {
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -207,11 +208,15 @@ namespace Engine
 			if (open)
 			{
 				float imPos[3] = { 0 };
+				bool hasEdited = false;
+				static bool prevEdited = hasEdited;
+				Matrix4x4f oldMat = tf.transform.GetMatrix();
 				memcpy(imPos, &tf.transform.GetPosition(), sizeof(Vector3f));
 				ImGui::Text("Position: ");
 				ImGui::SameLine();
 				if (ImGui::DragFloat3("##Pos", imPos, 0.1f))
 				{
+					hasEdited = true;
 					tf.transform.SetPosition({ imPos[0], imPos[1], imPos[2] });
 				}
 				float imRot[3] = { 0 };
@@ -220,6 +225,7 @@ namespace Engine
 				ImGui::SameLine();
 				if (ImGui::DragFloat3("##Rot", imRot, 0.1f))
 				{
+					hasEdited = true;
 					tf.transform.SetRotation({ imRot[0], imRot[1], imRot[2] });
 				}
 				float imScale[3] = { 0 };
@@ -228,8 +234,14 @@ namespace Engine
 				ImGui::SameLine();
 				if (ImGui::DragFloat3("##Sc", imScale, 0.1f))
 				{
+					hasEdited = true;
 					tf.transform.SetScale({ imScale[0], imScale[1], imScale[2] });
 				}
+				if (hasEdited && !prevEdited)
+				{
+					CommandStack::Register<CommandType::Transform>(&oldMat, entity.GetId());
+				}
+				prevEdited = hasEdited;
 			}
 			ImGui::Separator();
 

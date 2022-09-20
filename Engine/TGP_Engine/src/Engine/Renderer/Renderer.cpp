@@ -220,11 +220,6 @@ namespace Engine
 			s_Data->pointShadowBuffer.Bind(8);
 			s_Data->shadowCube->Clear();
 			s_Data->shadowCube->Bind();
-			s_Data->CameraBufferObject.cameraSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].view;
-			s_Data->CameraBufferObject.toProjectionSpace = s_Data->DirectionalLightBufferObject.dirLightData[i].proj;
-			s_Data->CameraBufferObject.cameraPosition = Vector4f(s_Data->ActiveCamera->GetPos().x, s_Data->ActiveCamera->GetPos().y, s_Data->ActiveCamera->GetPos().z, 1.0f);
-			s_Data->cameraBuffer.SetData(&s_Data->CameraBufferObject);
-			s_Data->cameraBuffer.Bind(0);
 			ShaderLibrary::Bind("PointShadowPass");
 			for (auto mesh : s_Data->Meshes)
 			{
@@ -383,6 +378,14 @@ namespace Engine
 				{
 					VertexShader::Create("Shaders/DirShadow_vs.cso", newLayout)
 				});
+			
+		}
+		{
+			InputLayout newLayout
+			{
+				{"POSITION", 0, Value::Float4},
+				{"INPUT", 0, Value::UInt}
+			};
 			ShaderLibrary::AddToLibrary("PointShadowPass",
 				{
 					VertexShader::Create("Shaders/PointShadow_vs.cso", newLayout),
@@ -397,6 +400,7 @@ namespace Engine
 
 				});
 		}
+
 		{
 			InputLayout newLayout
 			{
@@ -467,8 +471,8 @@ namespace Engine
 		}
 		{
 			CubeBufferSpecs specs{};
-			specs.height = 128;
-			specs.width = 128;
+			specs.height = 1024;
+			specs.width = 1024;
 			s_Data->shadowCube = CubeBuffer::Create(specs);
 		}
 

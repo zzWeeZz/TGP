@@ -1,8 +1,14 @@
 #include "ConstBuffers.hlsli"
 
-
-
-float4 main( float4 pos : POSITION ) : POSITION
+struct Output
 {
-    return mul(toWorld, pos);
+    float4 Pos : POSITION;
+    uint layer : INPUT;
+};
+
+Output main( float4 pos : POSITION ) : POSITION
+{
+    Output output;
+    output.Pos = mul(toWorld, pos);
+    return output;
 }

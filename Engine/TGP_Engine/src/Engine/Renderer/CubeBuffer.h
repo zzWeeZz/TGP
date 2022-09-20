@@ -27,6 +27,9 @@ namespace Engine
 		std::vector<ComPtr<ID3D11Texture2D>> m_ColorBuffers;
 		std::vector<ComPtr<ID3D11RenderTargetView>> m_RenderTargetViews;
 		std::vector<ComPtr<ID3D11ShaderResourceView>> m_ShaderResourceViews;
+		ComPtr<ID3D11DepthStencilView> m_DepthStencilView;
+		ComPtr<ID3D11ShaderResourceView> m_DepthShaderResource;
+		ComPtr<ID3D11Texture2D> m_DepthStencilBuffer;
 		D3D11_VIEWPORT m_Viewport = {};
 		CubeBufferSpecs m_Data;
 	};

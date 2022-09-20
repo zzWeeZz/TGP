@@ -132,8 +132,9 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
 
     for (unsigned int i = 0; i < 32; ++i)
     {
-        float Shadowvalue = 1 - ShadowCalculation(worldPosition.xyz, data[i].radius, data[i].position.xyz);
-        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye) * Shadowvalue;
+        //float4 pos = mul(data[i].transforms[0], worldPosition);
+        float shadow = ShadowCalculation(worldPosition.xyz, data[0].radius, data[0].position.xyz);
+        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye) * shadow;
     }
     
     for (unsigned int i = 0; i < 16; ++i)
@@ -151,6 +152,8 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         toEye, worldPosition.xyz);
     }
     
+    
+    
     float3 ambientLighting = EvaluateAmbience(
         env,
         normal,
@@ -166,7 +169,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
     float4 emissiveCol = albedo * emissive * emissiveStr;
     emissiveCol.xyz = emissiveCol.rgb * pow(2.0, ev100 + emissiveCol.w - 3.0);
     // gamma correction 
-    float3 final = pow(directColor + ambientLighting, (1.0 / 2.2));
+    float3 final = pow(directColor /* ambientLighting*/, (1.0 / 2.2));
    
     return float4(final, 1);
 }

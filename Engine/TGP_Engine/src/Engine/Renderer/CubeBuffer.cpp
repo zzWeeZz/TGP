@@ -17,7 +17,7 @@ namespace Engine
 	}
 	void CubeBuffer::Bind()
 	{
-		DX11::Context()->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), nullptr);
+		DX11::Context()->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_DepthStencilView.Get());
 		DX11::Context()->RSSetViewports(1, &m_Viewport);
 	}
 	void CubeBuffer::BindToShader(uint32_t slot)
@@ -35,6 +35,7 @@ namespace Engine
 	{
 		float clr[4] = { color.x, color.y, color.z, color.w };
 		DX11::Context()->ClearRenderTargetView(m_RenderTargetView.Get(), clr);
+		DX11::Context()->ClearDepthStencilView(m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 	Ref<CubeBuffer> Engine::CubeBuffer::Create(const CubeBufferSpecs& specs)
 	{
@@ -43,9 +44,12 @@ namespace Engine
 
 	void Engine::CubeBuffer::Validate()
 	{
-		if(m_RenderTargetView) m_RenderTargetView->Release();
+		if (m_RenderTargetView) m_RenderTargetView->Release();
 		if (m_ShaderResourceView) m_ShaderResourceView->Release();
 		if (m_TextureCube) m_TextureCube->Release();
+		if (m_DepthStencilBuffer) m_DepthStencilBuffer->Release();
+		if (m_DepthStencilView) m_DepthStencilView->Release();
+		//if (m_DepthShaderResource) m_DepthShaderResource->Release();
 		for (auto& cb : m_ColorBuffers)
 		{
 			if (cb) cb->Release();
@@ -112,6 +116,37 @@ namespace Engine
 
 		AssertIfFailed(DX11::Device()->CreateShaderResourceView(m_TextureCube.Get(), &SMViewDesc, m_ShaderResourceView.GetAddressOf()));
 
+		{
+
+			D3D11_TEXTURE2D_DESC depthStencilDesc = {};
+			depthStencilDesc.Width = m_Data.width;
+			depthStencilDesc.Height = m_Data.height;
+			depthStencilDesc.MipLevels = 1;
+			depthStencilDesc.ArraySize = 6;
+			depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+			depthStencilDesc.SampleDesc.Count = 1;
+			depthStencilDesc.SampleDesc.Quality = 0;
+			depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+			depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+			depthStencilDesc.MiscFlags =0;
+			AssertIfFailed(DX11::Device()->CreateTexture2D(&depthStencilDesc, nullptr, m_DepthStencilBuffer.GetAddressOf()));
+			D3D11_DEPTH_STENCIL_VIEW_DESC desc{};
+			desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+			desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+			desc.Texture2DArray.ArraySize = 6;
+			desc.Texture2DArray.MipSlice = 0;
+			desc.Texture2DArray.FirstArraySlice = 0;
+
+			AssertIfFailed(DX11::Device()->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &desc, m_DepthStencilView.GetAddressOf()));
+			/*D3D11_SHADER_RESOURCE_VIEW_DESC srvDecs{};
+			srvDecs.Format = DXGI_FORMAT_R24G8_TYPELESS;
+			srvDecs.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+			srvDecs.TextureCube.MipLevels = 1;
+			srvDecs.TextureCube.MostDetailedMip = 0;
+
+			AssertIfFailed(DX11::Device()->CreateShaderResourceView(m_DepthStencilBuffer.Get(), &srvDecs, m_DepthShaderResource.GetAddressOf()));*/
+		}
+
 		m_Viewport.Width = (float)m_Data.width;
 		m_Viewport.Height = (float)m_Data.height;
 		m_Viewport.MinDepth = 0.0f;
@@ -119,5 +154,5 @@ namespace Engine
 		m_Viewport.TopLeftX = 0;
 		m_Viewport.TopLeftY = 0;
 	}
-	
+
 }

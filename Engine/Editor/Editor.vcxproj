@@ -102,6 +102,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Editor\CommandStack.h" />
     <ClInclude Include="src\Editor\EditorLayer.h" />
     <ClInclude Include="src\Panels\AnimatorEditorPanel.h" />
     <ClInclude Include="src\Panels\ConsolePanel.h" />
@@ -111,6 +112,7 @@
     <ClInclude Include="src\Panels\ThemeEditorPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Editor\CommandStack.cpp" />
     <ClCompile Include="src\Editor\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\AnimatorEditorPanel.cpp" />
     <ClCompile Include="src\Panels\ConsolePanel.cpp" />

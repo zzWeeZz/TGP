@@ -30,6 +30,7 @@
     <ClInclude Include="src\Panels\ThemeEditorPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="src\Editor\CommandStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Editor\EditorLayer.cpp">
@@ -53,5 +54,6 @@
     <ClCompile Include="src\Panels\ThemeEditorPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\CommandStack.cpp" />
   </ItemGroup>
 </Project>
