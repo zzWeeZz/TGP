@@ -6,7 +6,7 @@ struct Output
     uint layer : INPUT;
 };
 
-Output main( float4 pos : POSITION ) : POSITION
+Output main( float4 pos : POSITION )
 {
     Output output;
     output.Pos = mul(toWorld, pos);

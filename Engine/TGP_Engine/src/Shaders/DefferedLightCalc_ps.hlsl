@@ -63,7 +63,7 @@ float ShadowCalculation(float3 fragPos, float far_plane, float3 lightPos)
     // get vector between fragment position and light position
     float3 fragToLight = fragPos - lightPos;
     // use the light to fragment vector to sample from the depth map    
-    float closestDepth = shadowCube.Sample(pointSampler, fragToLight.xyz).r;
+    float closestDepth = shadowCube.Sample(defaultSampler, fragToLight.xyz).r;
     // it is currently in linear range between [0,1]. Re-transform back to original value
     closestDepth *= far_plane;
     // now get current linear depth as the length between the fragment and light position
@@ -151,8 +151,6 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         spotData[i].spotInfo.y, spotData[i].spotInfo.z,
         toEye, worldPosition.xyz);
     }
-    
-    
     
     float3 ambientLighting = EvaluateAmbience(
         env,

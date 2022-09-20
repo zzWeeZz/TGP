@@ -179,7 +179,7 @@ namespace Engine
 
 	void Renderer::BeginShadowPass()
 	{
-		DX11::GetRenderStateManager().PushRasterizerState(CullMode::Front);
+		DX11::GetRenderStateManager().PushRasterizerState(CullMode::None);
 		for (size_t i = 0; i < s_Data->dirLightIterator; ++i)
 		{
 			s_Data->dirLightFBs[i]->Clear();
