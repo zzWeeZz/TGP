@@ -58,16 +58,15 @@ namespace Engine
 				plData.colorAndIntensity = { pl.color.x, pl.color.y , pl.color.z, pl.intensity };
 				plData.position = tf.transform.GetPosition();
 				plData.radius = pl.radius;
-				Matrix4x4f shadowProj = Matrix4x4f::CreateLeftHandPerspectiveMatrix(90, { 1,1 }, 0.001f, pl.radius * 2);
+				Matrix4x4f shadowProj = Matrix4x4f::CreateLeftHandPerspectiveMatrix(90, { 1,1 }, 0.001f, plData.radius * 2);
 
 				std::array<Matrix4x4f, 6> lookats;
-
-				lookats[0] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(-1.0, 0, 0), plData.position, Vector3f(0, 1, 0));
-				lookats[1] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(1.0, 0, 0), plData.position, Vector3f(0, 1, 0));
-				lookats[2] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(0, -1.0, 0), plData.position, Vector3f(0, 0, -1));
-				lookats[3] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(0, 1.0, 0), plData.position, Vector3f(0, 0, 1));
-				lookats[4] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(0, 0, -1.0), plData.position, Vector3f(0, 1, 0));
-				lookats[5] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(0, 0, 1.0), plData.position, Vector3f(0, 1, 0));
+				lookats[4] = Matrix4x4f::CreateLookAt(plData.position, plData.position + Vector3f(0, 0, -1.0), Vector3f(0, 1, 0));
+				lookats[5] = Matrix4x4f::CreateLookAt(plData.position, plData.position + Vector3f(0, 0, 1.0), Vector3f(0, 1, 0));
+				lookats[2] = Matrix4x4f::CreateLookAt(plData.position, plData.position + Vector3f(0, -1.0, 0), Vector3f(0, 0, 1));
+				lookats[3] = Matrix4x4f::CreateLookAt(plData.position, plData.position + Vector3f(0, 1.0, 0), Vector3f(0, 0, -1));
+				lookats[0] = Matrix4x4f::CreateLookAt(plData.position, plData.position + Vector3f( -1.0, 0, 0), Vector3f(0, 1, 0));
+				lookats[1] = Matrix4x4f::CreateLookAt(plData.position, plData.position + Vector3f(1.0, 0, 0), Vector3f(0, 1, 0));
 
 				for (uint32_t i = 0; i < 6; ++i)
 				{

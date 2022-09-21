@@ -61,18 +61,18 @@ float ShadowCalc(float4 pixelPosLightSpace, float3 normal, float3 dir)
 float ShadowCalculation(float3 fragPos, float far_plane, float3 lightPos)
 {
     // get vector between fragment position and light position
-    float3 fragToLight = fragPos - lightPos;
+    float3 fragToLight = lightPos - fragPos;
     // use the light to fragment vector to sample from the depth map    
-    float closestDepth = shadowCube.Sample(defaultSampler, fragToLight.xyz).r;
+    float closestDepth = shadowCube.Sample(pointSampler, fragToLight.xyz).r;
     // it is currently in linear range between [0,1]. Re-transform back to original value
     closestDepth *= far_plane;
     // now get current linear depth as the length between the fragment and light position
     float currentDepth = length(fragToLight);
     // now test for shadows
-    float bias = 0.05;   
+    float bias = 0.005;
     float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 
-    return shadow;
+    return closestDepth / far_plane;
 }
 
 float exposureSettings(float aperture, float shutterSpeed, float sensitivity)
@@ -133,8 +133,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
     for (unsigned int i = 0; i < 32; ++i)
     {
         //float4 pos = mul(data[i].transforms[0], worldPosition);
-        float shadow = ShadowCalculation(worldPosition.xyz, data[0].radius, data[0].position.xyz);
-        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye) * shadow;
+        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye);
     }
     
     for (unsigned int i = 0; i < 16; ++i)
@@ -163,6 +162,9 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         specularColor,
         defaultSampler
     );
+        float shadow = 1 - ShadowCalculation(worldPosition.xyz, data[0].radius * 2, data[0].position.xyz);
+ 
+    directColor = shadow;
     float ev100 = exposureSettings(10, 10, 10);
     float4 emissiveCol = albedo * emissive * emissiveStr;
     emissiveCol.xyz = emissiveCol.rgb * pow(2.0, ev100 + emissiveCol.w - 3.0);

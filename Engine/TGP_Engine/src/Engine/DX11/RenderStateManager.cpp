@@ -49,6 +49,10 @@ void Engine::RenderStateManager::Initialize()
 	DX11::Device()->CreateSamplerState(&samplerDesc, &mySamplerStates[SamplerMode::Wrap]);
 	samplerDesc.MaxAnisotropy = 1;
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	samplerDesc.BorderColor[0] = 1.0f;
+	samplerDesc.BorderColor[1] = 1.0f;
+	samplerDesc.BorderColor[2] = 1.0f;
+	samplerDesc.BorderColor[3] = 1.0f;
 	DX11::Device()->CreateSamplerState(&samplerDesc, &mySamplerStates[SamplerMode::Point]);
 
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;

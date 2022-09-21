@@ -15,7 +15,7 @@ namespace Engine
 		void Bind();
 		void BindToShader(uint32_t slot);
 		void UnBind();
-		void Clear(const Vector4f& color = { 0.1, 0.1,0.1, 1 });
+		void Clear(const Vector4f& color = { 0, 0,0, 1 });
 		inline CubeBufferSpecs& GetSpecs() { return m_Data; }
 
 		static Ref<CubeBuffer> Create(const CubeBufferSpecs& specs);
