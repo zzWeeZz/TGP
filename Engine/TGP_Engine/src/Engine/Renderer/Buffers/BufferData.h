@@ -37,6 +37,7 @@ namespace Engine
 		Vector3f position = { 0,0,0 };
 		float radius = 0;
 		Matrix4x4f transforms[6];
+		Matrix4x4f views[6];
 	};
 	struct PointLightBuffer
 	{
@@ -46,6 +47,7 @@ namespace Engine
 	struct PointShadowData
 	{
 		Matrix4x4f mat[6];
+		Matrix4x4f views[6];
 		Vector3f lightPos;
 		float farPlane;
 	};

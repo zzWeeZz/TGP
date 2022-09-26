@@ -217,6 +217,7 @@ namespace Engine
 			data.farPlane = s_Data->PointLightBufferObject.pointLightData[i].radius;
 			data.lightPos = s_Data->PointLightBufferObject.pointLightData[i].position;
 			memcpy(&data.mat[0], &s_Data->PointLightBufferObject.pointLightData[i].transforms[0], sizeof(Matrix4x4f) * 6);
+			memcpy(&data.views[0], &s_Data->PointLightBufferObject.pointLightData[i].views[0], sizeof(Matrix4x4f) * 6);
 			s_Data->pointShadowBuffer.SetData(&data);
 			s_Data->pointShadowBuffer.Bind(8);
 			s_Data->shadowCube->Bind();
