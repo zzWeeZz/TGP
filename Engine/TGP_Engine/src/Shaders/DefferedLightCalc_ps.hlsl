@@ -72,7 +72,7 @@ float ShadowCalculation(float3 fragPos, float far_plane, float3 lightPos)
     float bias = 0.005;
     float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 
-    return closestDepth / far_plane;
+    return shadow;
 }
 
 float exposureSettings(float aperture, float shutterSpeed, float sensitivity)
@@ -133,7 +133,8 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
     for (unsigned int i = 0; i < 32; ++i)
     {
         //float4 pos = mul(data[i].transforms[0], worldPosition);
-        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye);
+        float shadow = ShadowCalculation(worldPosition.xyz, data[0].radius, data[0].position.xyz);
+        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye) * shadow;
     }
     
     for (unsigned int i = 0; i < 16; ++i)
@@ -162,9 +163,8 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         specularColor,
         defaultSampler
     );
-        float shadow = 1 - ShadowCalculation(worldPosition.xyz, data[0].radius * 2, data[0].position.xyz);
- 
-    directColor = shadow;
+    //float shadow = ShadowCalculation(worldPosition.xyz, data[0].radius * 2, data[0].position.xyz);
+    //directColor = shadow;
     float ev100 = exposureSettings(10, 10, 10);
     float4 emissiveCol = albedo * emissive * emissiveStr;
     emissiveCol.xyz = emissiveCol.rgb * pow(2.0, ev100 + emissiveCol.w - 3.0);

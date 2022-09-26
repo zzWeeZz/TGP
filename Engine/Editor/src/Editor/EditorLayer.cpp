@@ -21,8 +21,6 @@ void Engine::EditorLayer::OnAttach()
 	myPresetLerperPanel = CreateRef<PresetLerperPanel>();
 	myScene = CreateRef<Scene>();
 	mySceneHierarchyPanel->SetContext(myScene);
-	SceneSerializer serializer(myScene);
-	serializer.Deserialize("Assets/Scenes/Sponza.scn");
 	myThemeEditorPanel->StartUp();
 	CommandStack::AddCallback([&](CommandSet set)
 		{

@@ -179,7 +179,7 @@ namespace Engine
 
 	void Renderer::BeginShadowPass()
 	{
-		DX11::GetRenderStateManager().PushRasterizerState(CullMode::None);
+		DX11::GetRenderStateManager().PushRasterizerState(CullMode::Back);
 		for (size_t i = 0; i < s_Data->dirLightIterator; ++i)
 		{
 			s_Data->dirLightFBs[i]->Clear();
@@ -210,6 +210,7 @@ namespace Engine
 			}
 			s_Data->dirLightFBs[i]->UnBind();
 		}
+		s_Data->shadowCube->Clear();
 		for (size_t i = 0; i < s_Data->pointLightIterator; ++i)
 		{
 			PointShadowData data{};
@@ -218,7 +219,6 @@ namespace Engine
 			memcpy(&data.mat[0], &s_Data->PointLightBufferObject.pointLightData[i].transforms[0], sizeof(Matrix4x4f) * 6);
 			s_Data->pointShadowBuffer.SetData(&data);
 			s_Data->pointShadowBuffer.Bind(8);
-			s_Data->shadowCube->Clear();
 			s_Data->shadowCube->Bind();
 			ShaderLibrary::Bind("PointShadowPass");
 			for (auto mesh : s_Data->Meshes)

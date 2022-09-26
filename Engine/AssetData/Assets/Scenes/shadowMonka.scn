@@ -1,0 +1,58 @@
+Scene: Name
+Entities:
+  - Entity: 0
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1000, 1, 1000]
+    ModelComponent:
+      Mesh: assets\Model\Cube.fbx
+  - Entity: 1
+    TagComponent:
+      Tag: pointlight
+    TransformComponent:
+      Position: [-22.85418, 220.3126, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 19.3
+      Range: 273.5
+  - Entity: 2
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [239.4266, 109.4285, -12.42296]
+      Rotation: [0, -0, 0]
+      Scale: [73.95769, 743.1912, 599.9316]
+    ModelComponent:
+      Mesh: assets\Model\Cube.fbx
+  - Entity: 3
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [72.62801, 109.4285, 226.1652]
+      Rotation: [-1.509561e-07, 1.57, 3.742994e-07]
+      Scale: [73.95776, 743.1912, 599.9316]
+    ModelComponent:
+      Mesh: assets\Model\Cube.fbx
+  - Entity: 4
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [-232.9478, 109.4285, -12.42296]
+      Rotation: [0, -0, 0]
+      Scale: [73.95769, 743.1912, 599.9316]
+    ModelComponent:
+      Mesh: assets\Model\Cube.fbx
+  - Entity: 5
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [72.99402, 109.4285, -233.5217]
+      Rotation: [-1.509561e-07, 1.57, 3.742994e-07]
+      Scale: [73.95776, 743.1912, 599.9316]
+    ModelComponent:
+      Mesh: assets\Model\Cube.fbx

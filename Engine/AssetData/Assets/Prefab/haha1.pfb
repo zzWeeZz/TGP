@@ -1,0 +1,9 @@
+Entity: 3
+TagComponent:
+  Tag: Unknown
+TransformComponent:
+  Position: [72.62801, 109.4285, 226.1652]
+  Rotation: [-1.509561e-07, 1.57, 3.742994e-07]
+  Scale: [73.95776, 743.1912, 599.9316]
+ModelComponent:
+  Mesh: assets\Model\Cube.fbx

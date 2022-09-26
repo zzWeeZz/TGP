@@ -18,10 +18,6 @@ void main(
 	inout TriangleStream<GSOutput> output
 )
 {
-    float4x4 idi = float4x4(1, 0, 0, 0,
-                            0, 1, 0, 0,
-                            0, 0, 1, 0,
-                            0, 0, 0, 1);
     for (uint face = 0; face < 6; face++)
     {
         GSOutput element;

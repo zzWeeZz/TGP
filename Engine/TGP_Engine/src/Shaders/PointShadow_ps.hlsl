@@ -15,16 +15,14 @@ cbuffer ShadowMatrices : register(b8)
 struct Output
 {
     float4 color : SV_Target;
-    float depth : SV_Depth;
 };
 
 Output main(Input input)
 {
-    float lightDistance = length(lightPos - input.pos.xyz);
+    float lightDistance = length(input.pos.xyz - lightPos);
     
     float normlightDistance = lightDistance / farPlane;
     Output output;
-    output.color = float4(normlightDistance, 0, 0, 0);
-    output.depth = normlightDistance;
+    output.color = float4(1, 0, 0, 1);
     return output;
 }

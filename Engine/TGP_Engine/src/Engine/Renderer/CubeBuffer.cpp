@@ -138,13 +138,15 @@ namespace Engine
 			desc.Texture2DArray.FirstArraySlice = 0;
 
 			AssertIfFailed(DX11::Device()->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &desc, m_DepthStencilView.GetAddressOf()));
-			/*D3D11_SHADER_RESOURCE_VIEW_DESC srvDecs{};
-			srvDecs.Format = DXGI_FORMAT_R24G8_TYPELESS;
-			srvDecs.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-			srvDecs.TextureCube.MipLevels = 1;
-			srvDecs.TextureCube.MostDetailedMip = 0;
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDecs{};
+			srvDecs.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+			srvDecs.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+			srvDecs.Texture2DArray.ArraySize = 6;
+			srvDecs.Texture2DArray.FirstArraySlice = 0;
+			srvDecs.Texture2DArray.MipLevels = 1;
+			srvDecs.Texture2DArray.MostDetailedMip = 0;
 
-			AssertIfFailed(DX11::Device()->CreateShaderResourceView(m_DepthStencilBuffer.Get(), &srvDecs, m_DepthShaderResource.GetAddressOf()));*/
+			AssertIfFailed(DX11::Device()->CreateShaderResourceView(m_DepthStencilBuffer.Get(), &srvDecs, m_DepthShaderResource.GetAddressOf()));
 		}
 
 		m_Viewport.Width = (float)m_Data.width;
