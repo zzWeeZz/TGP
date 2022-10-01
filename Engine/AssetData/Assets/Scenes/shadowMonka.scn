@@ -4,8 +4,8 @@ Entities:
     TagComponent:
       Tag: Unknown
     TransformComponent:
-      Position: [0, 0, 0]
-      Rotation: [0, 0, 0]
+      Position: [0, 340.7632, 0]
+      Rotation: [0, -0, 0]
       Scale: [1000, 1, 1000]
     ModelComponent:
       Mesh: assets\Model\Cube.fbx
@@ -13,7 +13,7 @@ Entities:
     TagComponent:
       Tag: pointlight
     TransformComponent:
-      Position: [-22.85418, 220.3126, 0]
+      Position: [-22.85418, 963.2033, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     PointLightComponent:
@@ -24,35 +24,44 @@ Entities:
     TagComponent:
       Tag: Unknown
     TransformComponent:
-      Position: [239.4266, 109.4285, -12.42296]
+      Position: [802.0185, 851.6208, -12.42296]
       Rotation: [0, -0, 0]
-      Scale: [73.95769, 743.1912, 599.9316]
+      Scale: [73.95769, 743.1912, 4973.751]
     ModelComponent:
       Mesh: assets\Model\Cube.fbx
   - Entity: 3
     TagComponent:
       Tag: Unknown
     TransformComponent:
-      Position: [72.62801, 109.4285, 226.1652]
+      Position: [117.3799, 1085.903, 844.6603]
       Rotation: [-1.509561e-07, 1.57, 3.742994e-07]
-      Scale: [73.95776, 743.1912, 599.9316]
+      Scale: [73.95776, 743.1912, 8952.828]
     ModelComponent:
       Mesh: assets\Model\Cube.fbx
   - Entity: 4
     TagComponent:
       Tag: Unknown
     TransformComponent:
-      Position: [-232.9478, 109.4285, -12.42296]
+      Position: [-916.9028, 1049.354, -12.42296]
       Rotation: [0, -0, 0]
-      Scale: [73.95769, 743.1912, 599.9316]
+      Scale: [73.95769, 743.1912, 2589.448]
     ModelComponent:
       Mesh: assets\Model\Cube.fbx
   - Entity: 5
     TagComponent:
       Tag: Unknown
     TransformComponent:
-      Position: [72.99402, 109.4285, -233.5217]
-      Rotation: [-1.509561e-07, 1.57, 3.742994e-07]
-      Scale: [73.95776, 743.1912, 599.9316]
+      Position: [73.45589, 927.8419, -813.9923]
+      Rotation: [-1.509562e-07, 1.57, 3.742994e-07]
+      Scale: [73.95776, 743.1912, 2313.71]
+    ModelComponent:
+      Mesh: assets\Model\Cube.fbx
+  - Entity: 6
+    TagComponent:
+      Tag: Unknown
+    TransformComponent:
+      Position: [73.12246, 1669.011, 226.1652]
+      Rotation: [1.57, -0, 1.57]
+      Scale: [73.95779, 4134.283, 2809.068]
     ModelComponent:
       Mesh: assets\Model\Cube.fbx

@@ -2,6 +2,7 @@
 struct GSOutput
 {
     float4 pos : SV_POSITION;
+    float4 worldPos : POSITION;
     uint layer : SV_RenderTargetArrayIndex;
 };
 
@@ -26,10 +27,7 @@ void main(
         for (int i = 0; i < 3; ++i)
         {
             element.pos = mul(mat[face], input[i]);
-            float3 viewPos = mul(views[face]
-            , input[i]).
-            xyz;
-            element.pos.z = length(viewPos) * element.pos.w / farPlane;
+            element.worldPos = input[i];
             output.Append(element);
         }
         output.RestartStrip();

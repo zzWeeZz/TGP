@@ -3,6 +3,7 @@
 #include "yaml-cpp/yaml.h"
 #include "Components.h"
 #include "Engine/Scripting/ScriptRegistry.h"
+#include "Engine/Assets/AssetPacker.h"
 
 Engine::SceneSerializer::SceneSerializer(Ref<Scene> scene)
 {
@@ -53,6 +54,17 @@ void Engine::SceneSerializer::SerializeEntity(Engine::Entity entity, YAML::Emitt
 
 		auto& mesh = entity.GetComponent<ModelComponent>();
 		out << YAML::Key << "Mesh" << YAML::Value << mesh.filePath.c_str();
+
+		out << YAML::EndMap;
+	}
+
+	if (entity.HasComponent<AnimatorComponent>())
+	{
+		out << YAML::Key << "AnimatorComponent";
+		out << YAML::BeginMap;
+
+		auto& mesh = entity.GetComponent<AnimatorComponent>();
+		out << YAML::Key << "Animator" << YAML::Value << mesh.animatorPath.c_str();
 
 		out << YAML::EndMap;
 	}
@@ -149,6 +161,21 @@ void Engine::SceneSerializer::DeserializeEntity(Engine::Entity& entity, YAML::No
 		auto& mc = DeserializedEntity.AddComponent<ModelComponent>();
 		auto str = meshComponent["Mesh"].as<std::string>();
 		mc.filePath = str.c_str();
+	}
+
+	auto animatorComponent = node["AnimatorComponent"];
+	if (animatorComponent)
+	{
+		auto& mc = DeserializedEntity.AddComponent<AnimatorComponent>();
+		auto str = animatorComponent["Animator"].as<std::string>();
+		mc.animatorPath = str.c_str();
+		AssetPacker::ReadAnimator(mc.animatorPath, mc.skPath, mc.specs);
+		mc.modelHandle = AnimatedModel::Create(mc.skPath);
+		for (size_t i = 0; i < mc.specs.size(); ++i)
+		{
+			mc.modelHandle->AddAnimation(mc.specs[i]);
+		}
+		mc.modelHandle->PlayAnimation(mc.specs[0].Name);
 	}
 
 	auto pointlightComponent = node["PointLightComponent"];

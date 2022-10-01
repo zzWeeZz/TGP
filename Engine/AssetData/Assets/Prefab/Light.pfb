@@ -1,0 +1,11 @@
+Entity: 2
+TagComponent:
+  Tag: Pointlight
+TransformComponent:
+  Position: [-157.4191, 79.79738, 131.3254]
+  Rotation: [0, -0, 0]
+  Scale: [1, 1, 1]
+PointLightComponent:
+  Color: [1, 1, 1]
+  Intensity: 3.1
+  Range: 200

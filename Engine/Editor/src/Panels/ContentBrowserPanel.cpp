@@ -1,32 +1,35 @@
 #include "ContentBrowserPanel.h"
 #include "imgui.h"
 #include <filesystem>
+#include <Engine/Core/Event/ApplicationEvent.h>
 namespace Engine
 {
 	const char* s_AssetsDirectory = "assets";
+	static std::filesystem::path assetDir = "assets";
+
 	ContentBrowserPanel::ContentBrowserPanel()
 	{
 		myTexture = Texture2D::Create("Assets/Textures/File.dds");
 		myFile = Texture2D::Create("Assets/Textures/Realfile.dds");
+		myCurrentDir = assetDir;
 	}
+
 	void ContentBrowserPanel::ImGuiRender()
 	{
 		ImGui::Begin("Content Browser");
-		static std::filesystem::path assetDir = "assets";
-		static std::filesystem::path currentDir = assetDir;
 
-		if (currentDir != std::filesystem::path(assetDir))
+		if (myCurrentDir != std::filesystem::path(assetDir))
 		{
 			if (ImGui::Button("<-"))
 			{
-				currentDir = currentDir.parent_path();
+				myCurrentDir = myCurrentDir.parent_path();
 			}
 		}
 
 		bool mouseClicked = ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
 		float panelwidth = ImGui::GetContentRegionAvail().x;
 		ImGui::Columns(panelwidth / (100, 100), 0, false);
-		for (auto& directoryEntry : std::filesystem::directory_iterator(currentDir))
+		for (auto& directoryEntry : std::filesystem::directory_iterator(myCurrentDir))
 		{
 			const auto& path = directoryEntry.path();
 			std::string filenameString = path.filename().string();
@@ -49,7 +52,7 @@ namespace Engine
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				if (directoryEntry.is_directory())
-					currentDir /= path.filename();
+					myCurrentDir /= path.filename();
 
 			}
 			ImGui::TextWrapped(filenameString.c_str());
@@ -60,5 +63,20 @@ namespace Engine
 		}
 
 		ImGui::End();
+	}
+	void ContentBrowserPanel::OnEvent(Event& e)
+	{
+		if (e.GetEventType() == EventType::AppDrop)
+		{
+			auto ev = *reinterpret_cast<AppDropEvent*>(&e);
+			char dropPath[MAX_PATH];
+			char newPath[MAX_PATH];
+			memset(dropPath, 0, sizeof(dropPath));
+			memset(newPath, 0, sizeof(newPath));
+			std::string newCurrPath = myCurrentDir.string() + "\\" + ev.GetPath().filename().string();
+			strcpy(dropPath, ev.GetPath().string().c_str());
+			strcpy(newPath, newCurrPath.c_str());
+			CopyFileA(dropPath, newPath, NULL);
+		}
 	}
 }

@@ -237,9 +237,13 @@ namespace Engine
 					hasEdited = true;
 					tf.transform.SetScale({ imScale[0], imScale[1], imScale[2] });
 				}
+				Matrix4x4f newMat = tf.transform.GetMatrix();
+
 				if (hasEdited && !prevEdited)
 				{
 					CommandStack::Register<CommandType::Transform>(&oldMat, entity.GetId());
+					CommandStack::RegisterCurrent<CommandType::Transform>(&newMat, entity.GetId());
+					CommandStack::WipeReDoCache();
 				}
 				prevEdited = hasEdited;
 			}

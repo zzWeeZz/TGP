@@ -10,6 +10,7 @@
 #include "Engine/Scene/Prefab/Prefab.h"
 #include "ToolBox/Input/Input.h"
 #include "Editor/CommandStack.h"
+#include <Engine/Core/Event/ApplicationEvent.h>
 void Engine::EditorLayer::OnAttach()
 {
 	myEditorCamera = Camera::Create(90, { 100, 100 }, 0.1, 100000.f);
@@ -20,13 +21,15 @@ void Engine::EditorLayer::OnAttach()
 	myAnimatorEditorPanel = CreateRef<AnimatorEditorPanel>();
 	myPresetLerperPanel = CreateRef<PresetLerperPanel>();
 	myScene = CreateRef<Scene>();
+	SceneSerializer ser(myScene);
+	ser.Deserialize("Assets/Scenes/Sponza.scn");
 	mySceneHierarchyPanel->SetContext(myScene);
+	
 	myThemeEditorPanel->StartUp();
 	CommandStack::AddCallback([&](CommandSet set)
 		{
 			if (set.first == CommandType::Transform)
 			{
-
 				Matrix4x4f matData;
 				memcpy(&matData, set.second.data(), sizeof(float) * 16);
 				uint32_t entity = *(uint32_t*)(set.second.data() + 16);
@@ -178,6 +181,17 @@ void Engine::EditorLayer::OnUpdate()
 				{
 					Prefab::LoadPrefab(myScene.get(), path);
 				}
+				else if (thePath.extension() == ".dds")
+				{
+					Entity entt = mySceneHierarchyPanel->GetSelectedEntity();
+					if (entt.HasComponent<ModelComponent>())
+					{
+						for (auto&  var : entt.GetComponent<ModelComponent>().modelHandle->GetMaterials())
+						{
+							var->AddDiffuseTexture(Texture2D::Create(thePath));
+						}
+					}
+				}
 				else
 				{
 					std::cout << "ERROR\n";
@@ -250,11 +264,7 @@ void Engine::EditorLayer::OnUpdate()
 			{
 				Matrix4x4f matData;
 				memcpy(&matData, &trans[0], sizeof(float) * 16);
-				if (!ReadGizmo)
-				{
-					CommandStack::Register<CommandType::Transform>(&matData, mySceneHierarchyPanel->GetSelectedEntity().GetId());
-					ReadGizmo = true;
-				}
+				
 				Vector3f pos;
 				Vector3f rot;
 				Vector3f scale;
@@ -263,6 +273,13 @@ void Engine::EditorLayer::OnUpdate()
 				mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetPosition(pos);
 				mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetRotation(rot);
 				mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.SetScale(scale);
+				Matrix4x4f matNew = mySceneHierarchyPanel->GetSelectedEntity().GetComponent<TransformComponent>().transform.GetMatrix();
+				if (!ReadGizmo)
+				{
+					CommandStack::Register<CommandType::Transform>(&matData, mySceneHierarchyPanel->GetSelectedEntity().GetId());
+					CommandStack::RegisterCurrent<CommandType::Transform>(&matNew, mySceneHierarchyPanel->GetSelectedEntity().GetId());
+					ReadGizmo = true;
+				}
 			}
 			else
 			{
@@ -298,6 +315,7 @@ void Engine::EditorLayer::OnDetach()
 
 void Engine::EditorLayer::OnEvent(Event& e)
 {
+	myContentBrowserPanel->OnEvent(e);
 }
 
 void Engine::EditorLayer::DrawPanels()

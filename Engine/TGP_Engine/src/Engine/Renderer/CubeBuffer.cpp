@@ -22,7 +22,7 @@ namespace Engine
 	}
 	void CubeBuffer::BindToShader(uint32_t slot)
 	{
-		DX11::Context()->PSSetShaderResources(slot, 1, m_ShaderResourceView.GetAddressOf());
+		DX11::Context()->PSSetShaderResources(slot, 1, m_DepthShaderResource.GetAddressOf());
 	}
 	void CubeBuffer::UnBind()
 	{

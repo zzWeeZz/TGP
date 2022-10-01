@@ -157,6 +157,9 @@
     <ClInclude Include="src\Engine\Renderer\Camera\Camera.h">
       <Filter>Engine\Renderer\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\CubeBuffer.h">
+      <Filter>Engine\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Renderer\FrameBuffer.h">
       <Filter>Engine\Renderer</Filter>
     </ClInclude>
@@ -252,7 +255,6 @@
     <ClInclude Include="src\SnowFlake\String.hpp">
       <Filter>SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Renderer\CubeBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp">
@@ -318,6 +320,9 @@
     <ClCompile Include="src\Engine\Renderer\Camera\Camera.cpp">
       <Filter>Engine\Renderer\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\CubeBuffer.cpp">
+      <Filter>Engine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Renderer\FrameBuffer.cpp">
       <Filter>Engine\Renderer</Filter>
     </ClCompile>
@@ -379,7 +384,6 @@
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayGround.cpp" />
-    <ClCompile Include="src\Engine\Renderer\CubeBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Shaders\AnimDirShadow_vs.hlsl">

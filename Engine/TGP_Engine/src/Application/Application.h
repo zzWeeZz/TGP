@@ -22,6 +22,7 @@ namespace Engine
 		PlayGround myPlayGround;
 		LayerStack myLayerStack;
 		bool myRunApp = true;
+		Ref<ParticleSystem> myParticleSystem;
 		inline static Window myWindow;
 	};
 	Application* CreateApplication();

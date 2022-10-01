@@ -130,15 +130,29 @@ namespace Engine
 		// ----------------------------------------------------------------------- //
 		// ----------------------- FORWARD RENDERING ----------------------------- //
 		// ----------------------------------------------------------------------- //
+		ShaderLibrary::Bind("AnimatedForwardPBR");
 
+		for (auto mesh : s_Data->AnimatedMeshes)
+		{
+			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
+			memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
+			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+			s_Data->modelBuffer.Bind(1);
+			mesh->Draw();
+		}
 		DX11::GetRenderStateManager().PushDepthStencilState(DepthStencilMode::ReadOnly);
 		DX11::GetRenderStateManager().PushBlendState(BlendMode::AlphaBlend);
 		ShaderLibrary::Bind("Grid");
 		DX11::Context()->Draw(6, 0);
 		ShaderLibrary::UnBind("Grid");
 		ShaderLibrary::Bind("Particle");
+
 		for (auto sys : s_Data->ParticleSystem)
 		{
+			s_Data->ModelBufferObject.modelSpace = (Matrix4x4f());
+			//memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
+			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
+			s_Data->modelBuffer.Bind(1);
 			sys->Bind();
 			sys->Draw();
 		}
@@ -217,7 +231,7 @@ namespace Engine
 			data.farPlane = s_Data->PointLightBufferObject.pointLightData[i].radius;
 			data.lightPos = s_Data->PointLightBufferObject.pointLightData[i].position;
 			memcpy(&data.mat[0], &s_Data->PointLightBufferObject.pointLightData[i].transforms[0], sizeof(Matrix4x4f) * 6);
-			memcpy(&data.views[0], &s_Data->PointLightBufferObject.pointLightData[i].views[0], sizeof(Matrix4x4f) * 6);
+			//memcpy(&data.views[0], &s_Data->PointLightBufferObject.pointLightData[i].views[0], sizeof(Matrix4x4f) * 6);
 			s_Data->pointShadowBuffer.SetData(&data);
 			s_Data->pointShadowBuffer.Bind(8);
 			s_Data->shadowCube->Bind();
@@ -262,16 +276,7 @@ namespace Engine
 			s_Data->modelBuffer.Bind(1);
 			mesh->Draw();
 		}
-		ShaderLibrary::Bind("AnimatedDefferedPBR");
-
-		for (auto mesh : s_Data->AnimatedMeshes)
-		{
-			s_Data->ModelBufferObject.modelSpace = (mesh->GetTransform().GetMatrix());
-			memcpy_s(s_Data->ModelBufferObject.bones, sizeof(s_Data->ModelBufferObject.bones), mesh->GetAnimatedMesh().GetCurrentTransforms().data(), sizeof(s_Data->ModelBufferObject.bones));
-			s_Data->modelBuffer.SetData(&s_Data->ModelBufferObject);
-			s_Data->modelBuffer.Bind(1);
-			mesh->Draw();
-		}
+		
 		s_Data->defferedGBuffer->UnBind();
 		s_Data->RendererFinalframeBuffer->Bind();
 		s_Data->defferedGBuffer->BindToShader(0, 0);

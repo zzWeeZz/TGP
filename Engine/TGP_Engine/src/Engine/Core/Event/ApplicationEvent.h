@@ -1,6 +1,7 @@
 #pragma once
 #include "Event.h"
 #include <sstream>
+#include <filesystem>
 namespace Engine
 {
 
@@ -60,5 +61,20 @@ namespace Engine
 
 		EVENT_CLASS_TYPE(AppRender)
 			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
+	class AppDropEvent : public Event
+	{
+	public:
+		AppDropEvent(const std::filesystem::path& path) : m_Path(path)
+		{
+		}
+
+		std::filesystem::path GetPath() { return m_Path; }
+		EVENT_CLASS_TYPE(AppDrop)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	private:
+		std::filesystem::path m_Path;
+
 	};
 }

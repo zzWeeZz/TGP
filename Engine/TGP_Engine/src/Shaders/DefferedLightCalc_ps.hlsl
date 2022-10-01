@@ -48,7 +48,7 @@ float ShadowCalc(float4 pixelPosLightSpace, float3 normal, float3 dir)
                 shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
             }
         }
-        shadow /= 9.0f;
+        shadow /= 9.f;
         if (projCoords.z > 100.0f)
         {
             shadow = 0.0;
@@ -58,21 +58,23 @@ float ShadowCalc(float4 pixelPosLightSpace, float3 normal, float3 dir)
     return 0;
 }
 
-float ShadowCalculation(float3 fragPos, float far_plane, float3 lightPos)
+float LinearizeDepth(float depth, float far_plane, float near_plane)
 {
-    // get vector between fragment position and light position
-    float3 fragToLight = lightPos - fragPos;
-    // use the light to fragment vector to sample from the depth map    
-    float closestDepth = shadowCube.Sample(pointSampler, fragToLight.xyz).r;
-    // it is currently in linear range between [0,1]. Re-transform back to original value
-    closestDepth *= far_plane;
-    // now get current linear depth as the length between the fragment and light position
-    float currentDepth = length(fragToLight);
-    // now test for shadows
-    float bias = 0.005;
-    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    float z = depth * 2.0 - 1.0; // Back to NDC 
+    return (2.0 * near_plane * far_plane) / (far_plane + near_plane - z * (far_plane - near_plane));
+}
 
-    return shadow;
+float3 ShadowCalculation(in float3 fragPos, in float far_plane, in float3 lightPos)
+{
+    
+    float dist = distance(fragPos, lightPos) / 1000;
+    float3 lightToFrag = normalize(fragPos - lightPos);
+    float depth = shadowCube.Sample(pointSampler, lightToFrag).r;
+    if (dist > depth)
+    {
+        return lightToFrag;
+    }
+    return float3(dist, dist, dist);
 }
 
 float exposureSettings(float aperture, float shutterSpeed, float sensitivity)
@@ -132,9 +134,7 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
 
     for (unsigned int i = 0; i < 32; ++i)
     {
-        //float4 pos = mul(data[i].transforms[0], worldPosition);
-        float shadow = ShadowCalculation(worldPosition.xyz, data[0].radius, data[0].position.xyz);
-        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye) * shadow;
+        directColor += EvaluatePointLight(diffuseColor, specularColor, normal, roughness, data[i].colorAndInstensity.xyz, data[i].colorAndInstensity.w, data[i].radius, data[i].position, worldPosition.xyz, toEye);
     }
     
     for (unsigned int i = 0; i < 16; ++i)
@@ -163,13 +163,13 @@ float4 main(DeferredVertextoPixel input) : SV_TARGET
         specularColor,
         defaultSampler
     );
-    //float shadow = ShadowCalculation(worldPosition.xyz, data[0].radius * 2, data[0].position.xyz);
-    //directColor = shadow;
+ 
     float ev100 = exposureSettings(10, 10, 10);
     float4 emissiveCol = albedo * emissive * emissiveStr;
     emissiveCol.xyz = emissiveCol.rgb * pow(2.0, ev100 + emissiveCol.w - 3.0);
-    // gamma correction 
-    float3 final = pow(directColor /* ambientLighting*/, (1.0 / 2.2));
+
+
+    float3 final = pow(directColor + ambientLighting, (1.0 / 2.2));
    
     return float4(final, 1);
 }

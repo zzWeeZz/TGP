@@ -9,6 +9,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Editor\CommandStack.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor\EditorLayer.h">
       <Filter>Editor</Filter>
     </ClInclude>
@@ -30,9 +33,11 @@
     <ClInclude Include="src\Panels\ThemeEditorPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="src\Editor\CommandStack.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Editor\CommandStack.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor\EditorLayer.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
@@ -54,6 +59,5 @@
     <ClCompile Include="src\Panels\ThemeEditorPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="src\Editor\CommandStack.cpp" />
   </ItemGroup>
 </Project>

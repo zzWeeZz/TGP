@@ -1,0 +1,7 @@
+SkPath: assets\Animations\Enemies\Minion\minion_sk.fbx
+AnimSpecs:
+  - Name: run
+    skPath: assets\Animations\Enemies\Minion\minion_idle_anim.fbx
+    Interp: true
+    Loop: true
+    Speed: 1

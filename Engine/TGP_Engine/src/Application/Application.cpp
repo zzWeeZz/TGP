@@ -6,12 +6,16 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #include <ImGuizmo.h>
+#include "Engine/Assets/AssetPacker.h"
 
 Engine::Application::Application()
 {
 	myWindow.InitWindow(L"TGP", 1280, 720);
 	Renderer::Initialize();
 	myPlayGround.Init();
+	myParticleSystem = ParticleSystem::Create("agja");
+	AssetPacker::Particle(myParticleSystem, "Maybe");
+	myWindow.SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 }
 
 void Engine::Application::Run()
@@ -44,7 +48,9 @@ void Engine::Application::Run()
 			ToolBox::Input::UpdateData();
 			ToolBox::Chrono::UpdateTimeData();
 			myPlayGround.Update();
+			myParticleSystem->Run();
 			DX11::ClearView();
+			Renderer::SubmitParticleSystem(myParticleSystem);
 			myPlayGround.Render();
 			
 			Renderer::Begin();

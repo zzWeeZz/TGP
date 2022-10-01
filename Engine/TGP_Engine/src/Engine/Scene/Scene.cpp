@@ -53,28 +53,27 @@ namespace Engine
 					Renderer::SubmitAnimatedMesh(mdl.modelHandle.get());
 				}
 			});
-		static float nearPlane = 0.1;
-		ImGui::DragFloat("alsdkfja", &nearPlane);
+	
 		m_Registry.Execute<PointLightComponent, TransformComponent>([&](auto& entity, PointLightComponent& pl, TransformComponent& tf)
 			{
 				PointLightData plData;
 				plData.colorAndIntensity = { pl.color.x, pl.color.y , pl.color.z, pl.intensity };
 				plData.position = tf.transform.GetPosition();
 				plData.radius = pl.radius;
-				Matrix4x4f shadowProj = Matrix4x4f::CreateLeftHandPerspectiveMatrix(90, { 1,1 }, 0.5f, plData.radius * 4);
+				Matrix4x4f shadowProj = Matrix4x4f::CreateLeftHandPerspectiveMatrix(90, { 1,1 }, 1.f, plData.radius);
 
 				std::array<Matrix4x4f, 6> lookats;
-				lookats[4] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(   0,   0, 1.0), plData.position, Vector3f(0, 1, 0));
-				lookats[5] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(   0,   0,-1.0), plData.position, Vector3f(0, 1, 0));
+				lookats[4] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(   0,   0,-1.0), plData.position, Vector3f(0, 1, 0));
+				lookats[5] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(   0,   0, 1.0), plData.position, Vector3f(0, 1, 0));
 				lookats[2] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(   0, 1.0,   0), plData.position, Vector3f(0, 0,-1));
 				lookats[3] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(   0,-1.0,   0), plData.position, Vector3f(0, 0, 1));
-				lookats[0] = Matrix4x4f::CreateLookAt(plData.position + Vector3f( 1.0,   0,   0), plData.position, Vector3f(0, 1, 0));
-				lookats[1] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(-1.0,   0,   0), plData.position, Vector3f(0, 1, 0));
+				lookats[0] = Matrix4x4f::CreateLookAt(plData.position + Vector3f(-1.0,   0,   0), plData.position, Vector3f(0, 1, 0));
+				lookats[1] = Matrix4x4f::CreateLookAt(plData.position + Vector3f( 1.0,   0,   0), plData.position, Vector3f(0, 1, 0));
 
 				for (uint32_t i = 0; i < 6; ++i)
 				{
 					plData.transforms[i] = lookats[i] * shadowProj;
-					plData.views[i] = Matrix4x4f::GetFastInverse(lookats[i]);
+					//plData.views[i] = Matrix4x4f::GetFastInverse(lookats[i]);
 				}
 			
 
@@ -99,7 +98,7 @@ namespace Engine
 				Matrix4x4f view;
 				memcpy(&view, &tf.transform.GetMatrix(), sizeof(Matrix4x4f));
 				plData.view = Matrix4x4f::CreateLookAt(tf.transform.GetForward() * 10000.f, { 0,0,0 }, { 0,1,0 });
-				plData.proj = Matrix4x4f::CreateOrtographicMatrix({ 2500, 2500 }, 1.f, 12000.0);
+				plData.proj = Matrix4x4f::CreateOrtographicMatrix({ 3000, 3000 }, 1.f, 12000.0);
 				Renderer::SubmitDirectionalLight(plData);
 			});
 

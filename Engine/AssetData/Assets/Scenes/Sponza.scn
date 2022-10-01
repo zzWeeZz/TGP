@@ -2,11 +2,11 @@ Scene: Name
 Entities:
   - Entity: 0
     TagComponent:
-      Tag: Sponza
+      Tag: Sponza_I_Am_Deferred
     TransformComponent:
-      Position: [0, 5.767673, 0]
+      Position: [0, 2.905014, 0]
       Rotation: [0, -0, 0]
-      Scale: [69.9833, 69.9833, 69.9833]
+      Scale: [100, 100, 100]
     ModelComponent:
       Mesh: assets\Model\Sponza\sponzaForTGE.fbx
   - Entity: 1
@@ -14,8 +14,8 @@ Entities:
       Tag: Dirlight
     TransformComponent:
       Position: [0, 54.07911, 0]
-      Rotation: [-1.468801, -0, 0]
-      Scale: [1, 0.9999999, 0.9999999]
+      Rotation: [-1.454018, 0.04364222, -0.4408199]
+      Scale: [0.9999996, 0.9999994, 0.9999999]
     DirLightComponent:
       Color: [0.9891697, 0.6665412, 0.0678492]
       Intensity: 1
@@ -23,20 +23,20 @@ Entities:
     TagComponent:
       Tag: Pointlight
     TransformComponent:
-      Position: [3.463205, 63.13151, -129.0169]
+      Position: [-0.36092, 79.79738, 131.3254]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     PointLightComponent:
-      Color: [1, 1, 1]
+      Color: [0.5920578, 1, 0]
       Intensity: 3.1
-      Range: 1011.2
+      Range: 200
   - Entity: 3
     TagComponent:
       Tag: SpotLight
     TransformComponent:
-      Position: [170.8215, 208.0048, -61.77795]
-      Rotation: [-1.544609, -0.4271509, -3.125972]
-      Scale: [1, 1, 1]
+      Position: [499.746, 119.3512, -98.38963]
+      Rotation: [-1.623045, -0.04633232, -1.808576]
+      Scale: [0.999999, 1, 0.9999968]
     SpotLightComponent:
       Color: [1, 0, 0.9314079]
       Intensity: 1000000
@@ -45,10 +45,94 @@ Entities:
       far: 0.1
   - Entity: 4
     TagComponent:
-      Tag: Chest
+      Tag: Chest_I_Am_Deferred
     TransformComponent:
-      Position: [163.6292, 8.703844, -47.5419]
-      Rotation: [0, 0.6764246, 0]
-      Scale: [0.5099992, 0.51, 0.5099992]
+      Position: [-182.7653, -5.108494, -106.3987]
+      Rotation: [0, 0.3733734, 0]
+      Scale: [0.5099993, 0.51, 0.5099993]
     ModelComponent:
       Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 5
+    TagComponent:
+      Tag: Chest_I_Am_Deferred
+    TransformComponent:
+      Position: [97.62128, -15.06111, -84.965]
+      Rotation: [-0.09589896, -0.4858557, 0.01542681]
+      Scale: [0.9999998, 0.9999925, 0.9999977]
+    ModelComponent:
+      Mesh: assets\Model\SM_Particle_Chest.fbx
+  - Entity: 6
+    TagComponent:
+      Tag: Anim__I_Am_Forward
+    TransformComponent:
+      Position: [-350.1202, -0.7886734, -102.5235]
+      Rotation: [0, -0.02234404, 0]
+      Scale: [1, 1, 1]
+    AnimatorComponent:
+      Animator: assets\Animation\Test.anim
+  - Entity: 7
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [-157.4191, 79.79738, 131.3254]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 3.1
+      Range: 200
+  - Entity: 8
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [-331.0431, 79.79738, 131.3254]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 0, 0]
+      Intensity: 3.1
+      Range: 200
+  - Entity: 9
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [-507.0323, 79.79738, 131.3254]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 3.1
+      Range: 200
+  - Entity: 10
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [-666.484, 79.79738, 131.3254]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0, 0.361011, 1]
+      Intensity: 3.1
+      Range: 200
+  - Entity: 11
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [175.0638, 79.79738, 131.3254]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [1, 1, 1]
+      Intensity: 3.1
+      Range: 200
+  - Entity: 12
+    TagComponent:
+      Tag: Pointlight
+    TransformComponent:
+      Position: [339.1299, 79.79738, 131.3254]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      Color: [0, 0.9675093, 1]
+      Intensity: 3.1
+      Range: 200

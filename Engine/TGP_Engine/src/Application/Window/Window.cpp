@@ -2,6 +2,8 @@
 #include "ToolBox/Input/Input.h"
 #include "Engine/DX11/DX11.h"
 #include <imgui_impl_win32.cpp>
+#include <Shellapi.h>
+#include <Engine/Core/Event/ApplicationEvent.h>
 #define WIN32_LEAN_AND_MEAN         
 bool Engine::Window::InitWindow(const std::wstring& title, int width, int height)
 {
@@ -41,10 +43,27 @@ LRESULT CALLBACK Engine::Window::WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 	}
 	else if (uMsg == WM_CREATE)
 	{
+		DragAcceptFiles(hWnd, true);
 		const CREATESTRUCT* createdStruct = reinterpret_cast<CREATESTRUCT*>(lParam);
 		reinterpret_cast<Window*>(createdStruct->lpCreateParams)->myHandle = hWnd;
 
 		reinterpret_cast<Window*>(createdStruct->lpCreateParams)->myCreateFunc();
+	}
+	else if (uMsg == WM_DROPFILES)
+	{
+		HDROP drop = (HDROP)wParam;
+		auto l = lParam;
+		UINT count = 0xFFFFFFFF;
+		LPWSTR str = NULL;
+		UINT size = 0;
+		auto fileCount = DragQueryFile(drop, count, NULL, size);
+		std::filesystem::path path;
+		char szFileName[MAX_PATH];
+		DragQueryFileA(drop, 0, szFileName, MAX_PATH);
+		path = szFileName;
+		DragFinish(drop);
+		AppDropEvent ev(path);
+		myEventFunc(ev);
 	}
 	else if (uMsg == WM_SIZE)
 	{
